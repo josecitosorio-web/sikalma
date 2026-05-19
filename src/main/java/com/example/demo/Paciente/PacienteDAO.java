@@ -10,6 +10,8 @@ public interface PacienteDAO {
 
     Paciente findById(int id);
 
+    Paciente findPaciente(String dni);
+
     void update(Paciente p);
 
     void delete(int id);

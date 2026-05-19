@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.Cita.CitaService;
+import com.example.demo.Usuario.UsuarioService;
 
 import java.util.List;
 
@@ -15,10 +16,12 @@ public class PacienteController {
 
     private final PacienteService pacienteService;
     private final CitaService citaService;
+    private final UsuarioService usuarioService;
 
-    public PacienteController(PacienteService pacienteService, CitaService citaService){
+    public PacienteController(PacienteService pacienteService, CitaService citaService, UsuarioService usuarioService){
         this.pacienteService = pacienteService;
         this.citaService = citaService;
+        this.usuarioService = usuarioService;
     }
 
     @GetMapping("/gestion")
@@ -27,6 +30,7 @@ public class PacienteController {
         List<Paciente> pacientes = pacienteService.listar();
         model.addAttribute("pacientes" , pacientes);
         model.addAttribute("paginaActiva", "paciente");
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
         return "Gestion-pacientes";
     }
@@ -35,6 +39,7 @@ public class PacienteController {
     public String nuevoPaciente(Model model){
 
         model.addAttribute("paginaActiva" , "paciente");
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
         return "Registrar-paciente";
     }
@@ -48,6 +53,7 @@ public class PacienteController {
             model.addAttribute("error", error);
             model.addAttribute("paciente" , p);
             model.addAttribute("paginaActiva" , "paciente");
+            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
             return "Registrar-paciente";
 
         }
@@ -62,6 +68,7 @@ public class PacienteController {
 
         model.addAttribute("paciente" , pacienteService.buscarPorId(id));
         model.addAttribute("paginaActiva" , "paciente");
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
         return "Editar-paciente";
 
@@ -76,6 +83,7 @@ public class PacienteController {
             model.addAttribute("error", error);
             model.addAttribute("paciente" , p);
             model.addAttribute("paginaActiva" , "paciente");
+            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
             return "Editar-paciente";
 
         }
@@ -92,11 +100,13 @@ public class PacienteController {
         if(error != null){
 
             model.addAttribute("error" ,error);
+            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
             
             return "Eliminar-paciente-error-message";
         }
 
         model.addAttribute("paciente" , pacienteService.buscarPorId(id));
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
         return "Eliminar-paciente";
     }
@@ -114,6 +124,7 @@ public class PacienteController {
 
         model.addAttribute("pacientes" , pacienteService.buscarPorDni(dni));
         model.addAttribute("paginaActiva" , "paciente");
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
         return "Gestion-pacientes";
     }

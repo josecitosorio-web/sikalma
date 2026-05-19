@@ -30,6 +30,11 @@ public class PacienteServiceImpl implements PacienteService {
     }
 
     @Override
+    public Paciente buscarPaciente(String dni){
+        return PacienteDAO.findPaciente(dni);
+    }
+
+    @Override
     public void actualizar(Paciente p){
         PacienteDAO.update(p);
     }

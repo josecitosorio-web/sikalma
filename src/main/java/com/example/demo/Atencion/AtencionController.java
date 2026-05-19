@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.Cita.CitaService;
+import com.example.demo.Usuario.UsuarioService;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -16,10 +17,12 @@ public class AtencionController {
 
     private final AtencionService atencionService;
     private final CitaService citaService;
+    private final UsuarioService usuarioService;
 
-    public AtencionController(AtencionService atencionService, CitaService citaService) {
+    public AtencionController(AtencionService atencionService, CitaService citaService, UsuarioService usuarioService) {
         this.atencionService = atencionService;
         this.citaService = citaService;
+        this.usuarioService = usuarioService;
     }
 
     
@@ -28,6 +31,7 @@ public class AtencionController {
         List<Atencion> atenciones = atencionService.obtenerTodos();
         model.addAttribute("atenciones", atenciones);
         model.addAttribute("paginaActiva", "atencion");
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         return "Gestion-atenciones";
     }
 
@@ -45,7 +49,8 @@ public class AtencionController {
         String error = atencionService.validarDatosRegistro(atencion);
         if (error != null) {
             model.addAttribute("error", error);
-            model.addAttribute("cita", citaService.buscarPorId(citaId)); // ← necesitas inyectar CitaService
+            model.addAttribute("cita", citaService.buscarPorId(citaId)); 
+            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
             return "Registrar-atencion";
         }
 
@@ -59,6 +64,7 @@ public class AtencionController {
     public String ver(@RequestParam int id, Model model) {
         model.addAttribute("atencion", atencionService.buscarPorId(id));
         model.addAttribute("paginaActiva", "atencion");
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         return "Ver-atencion";
     }
 
@@ -67,6 +73,7 @@ public class AtencionController {
     public String editar(@RequestParam int id, Model model) {
         model.addAttribute("atencion", atencionService.buscarPorId(id));
         model.addAttribute("paginaActiva", "atencion");
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         return "Editar-atencion";
     }
 
@@ -87,6 +94,7 @@ public class AtencionController {
         if (error != null) {
             model.addAttribute("error", error);
             model.addAttribute("atencion", atencionService.buscarPorId(id));
+            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
             return "Editar-atencion";
         }
 

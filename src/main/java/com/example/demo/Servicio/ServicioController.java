@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.Cita.CitaService;
+import com.example.demo.Usuario.UsuarioService;
 
 import java.util.List;
 
@@ -14,10 +15,12 @@ public class ServicioController {
 
     private final ServicioService servicioService;
     private final CitaService citaService;
+    private final UsuarioService usuarioService;
 
-    public ServicioController(ServicioService servicioService , CitaService citaService) {
+    public ServicioController(ServicioService servicioService , CitaService citaService, UsuarioService usuarioService) {
         this.servicioService = servicioService;
         this.citaService = citaService;
+        this.usuarioService = usuarioService;
     }
 
     @GetMapping("/gestion")
@@ -25,12 +28,14 @@ public class ServicioController {
         List<Servicio> servicios = servicioService.listar();
         model.addAttribute("servicios", servicios);
         model.addAttribute("paginaActiva", "servicios");
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         return "Gestion-servicios";
     }
 
     @GetMapping("/nuevo")
     public String nuevoServicio(Model model) {
         model.addAttribute("paginaActiva", "servicios");
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         return "Registrar-servicio";
     }
 
@@ -43,6 +48,7 @@ public class ServicioController {
             model.addAttribute("error", error);
             model.addAttribute("servicio" , s);
             model.addAttribute("paginaActiva" , "servicios");
+            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
             return "Registrar-servicio";
 
         } 
@@ -56,6 +62,7 @@ public class ServicioController {
     public String editarServicio(@RequestParam int id, Model model) {
         model.addAttribute("servicio", servicioService.buscarPorId(id));
         model.addAttribute("paginaActiva", "servicios");
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         return "Editar-servicio";
     }
 
@@ -68,6 +75,7 @@ public class ServicioController {
             model.addAttribute("error", error);
             model.addAttribute("servicio" , s);
             model.addAttribute("paginaActiva" , "servicios");
+            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
             return "Editar-servicio";
 
         }
@@ -83,11 +91,13 @@ public class ServicioController {
         if(error != null){
 
             model.addAttribute("error" ,error);
+            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
             
             return "Eliminar-servicio-error-message";
         }
 
         model.addAttribute("servicio", servicioService.buscarPorId(id));
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         
         return "Eliminar-servicio";
     }
@@ -102,6 +112,7 @@ public class ServicioController {
     public String buscarServicio(@RequestParam String nombre, Model model) {
         model.addAttribute("servicios", servicioService.buscarPorNombre(nombre));
         model.addAttribute("paginaActiva", "servicios");
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         return "Gestion-servicios";
     }
 

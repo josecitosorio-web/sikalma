@@ -10,6 +10,8 @@ public interface PacienteService {
 
     Paciente buscarPorId(int id);
 
+    Paciente buscarPaciente(String dni);
+
     void actualizar(Paciente paciente);
 
     void eliminar(int id);

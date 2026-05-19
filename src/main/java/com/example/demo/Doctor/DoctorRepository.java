@@ -32,6 +32,14 @@ public class DoctorRepository implements DoctorDAO {
     }
 
     @Override
+    public Doctor findDoctor(String dni) {
+        return lista.stream()
+                .filter(d -> d.getDni().equals(dni))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
     public void update(Doctor d) {
         for (int i = 0; i < lista.size(); i++) {
             if (lista.get(i).getId() == d.getId()) {

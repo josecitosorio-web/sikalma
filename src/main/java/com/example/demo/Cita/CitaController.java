@@ -3,6 +3,8 @@ package com.example.demo.Cita;
 import com.example.demo.Doctor.DoctorService;
 import com.example.demo.Paciente.PacienteService;
 import com.example.demo.Servicio.ServicioService;
+import com.example.demo.Usuario.UsuarioService;
+
 import org.springframework.ui.Model;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -19,13 +21,15 @@ public class CitaController {
     private final PacienteService pacienteService;
     private final DoctorService doctorService;
     private final ServicioService servicioService;
+    private final UsuarioService usuarioService;
 
     public CitaController(CitaService citaService, PacienteService pacienteService, DoctorService doctorService,
-            ServicioService servicioService) {
+            ServicioService servicioService, UsuarioService usuarioService) {
         this.citaService = citaService;
         this.pacienteService = pacienteService;
         this.doctorService = doctorService;
         this.servicioService = servicioService;
+        this.usuarioService = usuarioService;
     }
 
     @GetMapping("/g-citas")
@@ -33,6 +37,7 @@ public class CitaController {
 
         model.addAttribute("paginaActiva", "citas");
         model.addAttribute("citas", citaService.listar());
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         return "Gestion-citas";
 
     }
@@ -43,6 +48,7 @@ public class CitaController {
         model.addAttribute("pacientes", pacienteService.listar());
         model.addAttribute("doctores", doctorService.obtenerTodos());
         model.addAttribute("servicios", servicioService.listar());
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
         return "Registrar-cita";
     }
@@ -66,12 +72,25 @@ public class CitaController {
             model.addAttribute("pacientes", pacienteService.listar());
             model.addAttribute("doctores", doctorService.obtenerTodos());
             model.addAttribute("servicios", servicioService.listar());
+            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
             return "Registrar-cita";
 
         }
 
         citaService.guardar(paciente, doctor, servicio, fecha, hora, estado);
         return "redirect:/cita/g-citas";
+    }
+
+    @GetMapping("/buscar")
+    public String buscarPac(@RequestParam String dni, Model model){
+
+        model.addAttribute("paciente" , pacienteService.buscarPaciente(dni));
+        model.addAttribute("paginaActiva" , "r-citas");
+        model.addAttribute("doctores", doctorService.obtenerTodos());
+        model.addAttribute("servicios", servicioService.listar());
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
+
+        return "Registrar-cita";
     }
 
     @GetMapping("/editar")
@@ -81,6 +100,7 @@ public class CitaController {
         model.addAttribute("servicios", servicioService.listar());
         model.addAttribute("doctores", doctorService.obtenerTodos());
         model.addAttribute("paginaActiva", "r-citas");
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
         return "Editar-cita";
     }
@@ -97,6 +117,7 @@ public class CitaController {
             model.addAttribute("servicios", servicioService.listar());
             model.addAttribute("doctores", doctorService.obtenerTodos());
             model.addAttribute("paginaActiva", "citas");
+            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
             return "Editar-cita";
 
         }
@@ -111,6 +132,7 @@ public class CitaController {
 
         model.addAttribute("cita", citaService.buscarPorId(id));
         model.addAttribute("paginaActiva", "citas");
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
         return "Registrar-atencion";
     }
@@ -119,23 +141,27 @@ public class CitaController {
     public String cancelar(@RequestParam int id, Model model) {
 
         model.addAttribute("cita", citaService.buscarPorId(id));
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
         return "Cancelar-cita";
     }
 
     @GetMapping("/eliminar")
-    public String eliminar(@RequestParam int id) {
+    public String eliminar(@RequestParam int id, Model model) {
         citaService.eliminar(id);
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         return "redirect:/cita/g-citas";
     }
 
     @GetMapping("/no-asistio")
-    public String marcarNoAsistio(@RequestParam int id) {
+    public String marcarNoAsistio(@RequestParam int id, Model model) {
         Cita cita = citaService.buscarPorId(id);
 
         if (cita != null && cita.getEstado().equalsIgnoreCase("Confirmada")) {
             citaService.cambiarEstado(id, "No asistió");
+            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         }
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
         return "redirect:/cita/g-citas";
     }

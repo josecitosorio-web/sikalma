@@ -30,6 +30,11 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    public Doctor buscarDoctor(String dni){
+        return doctorDAO.findDoctor(dni);
+    }
+
+    @Override
     public void actualizar(Doctor doctor) {
         doctorDAO.update(doctor);
     }
@@ -60,7 +65,7 @@ public class DoctorServiceImpl implements DoctorService {
             return "Ya existe un doctor registrado con ese DNI";
 
         } else if (!doctorDAO.findByCorreo(doctor.getCorreo()).isEmpty()) {
-            return "Ya existe un usuario registrado con ese correo";
+            return "Ya existe un doctor registrado con ese correo";
         }
 
         return null;

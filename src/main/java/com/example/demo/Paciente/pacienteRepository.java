@@ -32,6 +32,14 @@ public class pacienteRepository implements PacienteDAO {
     }
 
     @Override
+    public Paciente findPaciente(String dni) {
+        return lista.stream()
+                .filter(p -> p.getDni().equals(dni))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
     public void update(Paciente p) {
         for (int i = 0; i < lista.size(); i++) {
             if (lista.get(i).getId() == p.getId()) {

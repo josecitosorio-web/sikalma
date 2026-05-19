@@ -6,6 +6,7 @@ public interface DoctorService {
     List<Doctor> obtenerTodos();
     void agregar(Doctor doctor);
     Doctor buscarPorId(int id);
+    Doctor buscarDoctor(String dni);
     void actualizar(Doctor doctor);
     void eliminar(int id);
     List<Doctor> buscarPorDni(String dni);

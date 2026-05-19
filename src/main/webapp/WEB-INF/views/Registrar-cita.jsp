@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="jakarta.tags.core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -25,6 +25,14 @@
             </div>
         </div>
 
+        <div class="buscador-seccion" style="margin: 20px 0; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <form action="/cita/buscar" method="get" style="display: flex; gap: 10px; align-items: center;">
+                    <input type="text" name="dni" placeholder="Ingrese DNI del paciente..."
+                        style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; width: 300px;" required>
+                    <button type="submit" class="btn-primario">Buscar por DNI</button>
+                </form>
+        </div>
+
         <div class="formulario-card">
             <h2>Datos de la Cita</h2>
 
@@ -39,12 +47,8 @@
                 <!-- Datos del paciente -->
                 <div class="campo">
                     <label>Paciente</label>
-                    <select name="paciente">
-                        <option value="0">— Seleccione un paciente —</option>
-                        <c:forEach var="paciente" items="${pacientes}" >
-                        <option value="${paciente.id}">${paciente.nombres}</option>
-                        </c:forEach>
-                    </select>
+                    <input type="text"  value="${paciente.nombres}"  readonly>
+                    <input type="hidden" name="paciente" value="${paciente.id}">
                 </div>
 
                 <!-- Servicio y especialidad -->

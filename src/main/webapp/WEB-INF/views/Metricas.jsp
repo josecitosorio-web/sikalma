@@ -1,12 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="../images/logo-policlinico.png">
+    <link rel="icon" href="/images/logo-policlinico.png">
     <title>Métricas - SIKALMA</title>
-    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="/css/admin.css">
     <style>
         .metricas-grid {
             display: flex;
@@ -57,27 +58,27 @@
             <div class="metricas-fila">
                 <div class="metrica-card">
                     <h3>Citas registradas por día</h3>
-                    <img src="../images/metrica-cita-registrada.png" alt="gráfico de citas registradas por día">
+                    <img src="/images/metrica-cita-registrada.png" alt="gráfico de citas registradas por día">
                 </div>
                 <div class="metrica-card">
                     <h3>Citas atendidas por día</h3>
-                    <img src="../images/metrica-cita-atendida.png" alt="gráfico de citas atendidas por día">
+                    <img src="/images/metrica-cita-atendida.png" alt="gráfico de citas atendidas por día">
                 </div>
             </div>
             <div class="metricas-fila">
                 <div class="metrica-card">
                     <h3>Citas canceladas por día</h3>
-                    <img src="../images/metrica-cita-cancelada.png" alt="gráfico de citas canceladas por día">
+                    <img src="/images/metrica-cita-cancelada.png" alt="gráfico de citas canceladas por día">
                 </div>
                 <div class="metrica-card">
                     <h3>Tiempo promedio de espera por día</h3>
-                    <img src="../images/metrica-tiempo-espera.png" alt="gráfico de tiempo promedio de espera">
+                    <img src="/images/metrica-tiempo-espera.png" alt="gráfico de tiempo promedio de espera">
                 </div>
             </div>
             <div class="metricas-fila">
                 <div class="metrica-card metrica-unica">
                     <h3>Ingresos por citas por día</h3>
-                    <img src="../images/metrica-ingresos-dia.png" alt="gráfico de ingresos por citas">
+                    <img src="/images/metrica-ingresos-dia.png" alt="gráfico de ingresos por citas">
                 </div>
             </div>
         </div>
