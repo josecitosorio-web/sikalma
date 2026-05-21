@@ -1,6 +1,15 @@
 package com.example.demo.Paciente;
 
 import com.example.demo.Cita.Cita;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -8,14 +17,23 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity(name = "paciente")
 public class Paciente {
 
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "nombre_pac")
     private String nombres;
+    @Column(name = "dni_pac")
     private String dni;
+    @Column(name = "telefono_pac")
     private String telefono;
+    @Column(name = "fecha_pac")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaNacimiento;
+    @OneToMany(mappedBy = "paciente" ,cascade = CascadeType.ALL)
     private List<Cita> citas = new ArrayList<>();
 
     public Paciente () {}
@@ -29,7 +47,7 @@ public class Paciente {
 
     }
 
-    public int getId () {
+    public Long getId () {
         return this.id;
     }
 
@@ -59,7 +77,7 @@ public class Paciente {
         return citas;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -77,6 +95,10 @@ public class Paciente {
 
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public void setCitas(List<Cita> citas) {
+        this.citas = citas;
     }
 
 }

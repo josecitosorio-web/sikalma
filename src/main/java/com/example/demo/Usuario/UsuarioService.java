@@ -6,19 +6,19 @@ import com.example.demo.Doctor.Doctor;
 
 public interface UsuarioService {
     
-    void agregar(String correo, String contrasena, String rol, int idDoctor);
+    void agregar(String correo, String contrasena, String rol, Long idDoctor);
 
     List<Usuario> Listar();
 
-    Usuario buscarPorId(int id);
+    Usuario buscarPorId(Long id);
 
     Usuario buscarPorCorreo(String correo);
 
-    void actualizar(int idUsuario, String correo, String contrasena, String rol, int idDoctor);
+    void actualizar(Long idUsuario, String correo, String contrasena, String rol, Long idDoctor);
 
-    void eliminar(int id);
+    void eliminar(Long id);
 
-    Doctor buscarPorDoctor(int idDoctor);
+    Doctor buscarPorDoctor(Long idDoctor);
 
     List<Usuario> buscarPorDni(String dni);
 
@@ -28,7 +28,7 @@ public interface UsuarioService {
 
     void cerrarSesion();
 
-    String validarDatosRegistro(String correo, String contrasena, String rol, int idDoctor);
-    String validarDatosEdicion(String correo, String contrasena, String rol, int idDoctor);
+    String validarDatosRegistro(String correo, String contrasena, String rol, Long idDoctor);
+    String validarDatosEdicion(String correo, String contrasena, String rol, Long idDoctor);
     String validarUsuario(String correo, String contrasena);
 }

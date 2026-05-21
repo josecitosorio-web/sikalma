@@ -1,45 +1,43 @@
 package com.example.demo.Servicio;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class ServicioServiceImpl implements ServicioService {
 
-    private final ServicioDAO servicioDAO;
-
-    public ServicioServiceImpl(ServicioDAO servicioDAO) {
-        this.servicioDAO = servicioDAO;
-    }
+    @Autowired
+    private ServicioRepository servicioRepository;
 
     @Override
     public void agregar(Servicio s) {
-        servicioDAO.save(s);
+        servicioRepository.save(s);
     }
 
     @Override
     public List<Servicio> listar() {
-        return servicioDAO.findAll();
+        return servicioRepository.findAll();
     }
 
     @Override
-    public Servicio buscarPorId(int id) {
-        return servicioDAO.findById(id);
+    public Servicio buscarPorId(Long id) {
+        return servicioRepository.findById(id).orElse(null);
     }
 
     @Override
     public void actualizar(Servicio s) {
-        servicioDAO.update(s);
+        servicioRepository.save(s);
     }
 
     @Override
-    public void eliminar(int id) {
-        servicioDAO.delete(id);
+    public void eliminar(Long id) {
+        servicioRepository.deleteById(id);
     }
 
     @Override
     public List<Servicio> buscarPorNombre(String nombre) {
-        return servicioDAO.findByNombre(nombre);
+        return servicioRepository.findByNombreContainingIgnoreCase(nombre);
     }
 
     // validaciones
@@ -53,7 +51,7 @@ public class ServicioServiceImpl implements ServicioService {
 
             return error;
 
-        }else if(!servicioDAO.findByNombre(servicio.getNombre()).isEmpty()){
+        }else if(!servicioRepository.findByNombreContainingIgnoreCase(servicio.getNombre()).isEmpty()){
 
             return "Ya existe un servicio con ese nombre";
 

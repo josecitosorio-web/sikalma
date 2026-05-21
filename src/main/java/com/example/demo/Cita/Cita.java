@@ -1,24 +1,57 @@
 package com.example.demo.Cita;
 
+import com.example.demo.Atencion.Atencion;
 import com.example.demo.Doctor.Doctor;
 import com.example.demo.Paciente.Paciente;
 import com.example.demo.Servicio.Servicio;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@Entity(name = "cita")
 public class Cita {
 
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    
+    @ManyToOne
+    @JoinColumn(name = "paciente_id")
     private Paciente paciente;
+
+    @ManyToOne
+    @JoinColumn(name = "doctor_id")
     private Doctor doctor;
+
+    @ManyToOne
+    @JoinColumn(name = "servicio_id")
     private Servicio servicio;
+
+    @OneToOne(mappedBy = "cita")
+    private Atencion atencion;
+
+    @Column(name = "fecha_cita")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fecha;
+
+    @Column(name = "hora_cita")
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime hora;
+
+    @Column(name = "estado_cita")
     private String estado;
+
 
 
     public Cita() {
@@ -36,7 +69,7 @@ public class Cita {
     }
 
     // GETTERS
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -64,12 +97,15 @@ public class Cita {
         return estado;
     }
 
-    // 🔥 SETTER DE ID (IMPORTANTE PARA EDITAR)
-    public void setId(int id) {
-        this.id = id;
+    public Atencion getAtencion() {
+        return atencion;
     }
 
     // SETTERS
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
     }
@@ -92,5 +128,9 @@ public class Cita {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public void setAtencion(Atencion atencion) {
+        this.atencion = atencion;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.Atencion;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.Cita.CitaService;
 import com.example.demo.Cita.Cita;
@@ -11,48 +12,47 @@ import java.util.List;
 @Service
 public class AtencionServiceImpl implements AtencionService {
 
-    private final AtencionDAO atencionDAO;
-    private final CitaService citaService;
 
-    public AtencionServiceImpl(AtencionDAO atencionDAO, CitaService citaService) {
-        this.atencionDAO = atencionDAO;
-        this.citaService = citaService;
-    }
+    @Autowired
+    private AtencionRepository atencionRepository;
+
+    @Autowired
+    private CitaService citaService;
 
     @Override
     public List<Atencion> obtenerTodos() {
-        return atencionDAO.findAll();
+        return atencionRepository.findAll();
     }
 
     @Override
-    public void agregar(int CitaId , LocalTime horaInicio, LocalTime horaFin , String diagnostico, String tratamiento , String estado) {
+    public void agregar(Long CitaId , LocalTime horaInicio, LocalTime horaFin , String diagnostico, String tratamiento , String estado) {
 
         Cita c = citaService.buscarPorId(CitaId);
 
         Atencion a = new Atencion(c, horaInicio,horaFin,diagnostico,tratamiento,estado);
 
-        atencionDAO.save(a);
+        atencionRepository.save(a);
     }
 
     @Override
-    public Atencion buscarPorId(int id) {
-        return atencionDAO.findById(id);
+    public Atencion buscarPorId(Long id) {
+        return atencionRepository.findById(id).orElse(null);
     }
 
     @Override
-    public void actualizar(int id, int citaId , LocalTime horaInicio, LocalTime horaFin , String diagnostico, String tratamiento , String estado) {
+    public void actualizar(Long id, Long citaId , LocalTime horaInicio, LocalTime horaFin , String diagnostico, String tratamiento , String estado) {
 
         Cita c = citaService.buscarPorId(citaId);
 
         Atencion a = new Atencion(c, horaInicio,horaFin,diagnostico,tratamiento,estado);
         a.setId(id);
 
-        atencionDAO.update(a);
+        atencionRepository.save(a);
     }
 
     @Override
-    public void eliminar(int id) {
-        atencionDAO.delete(id);
+    public void eliminar(Long id) {
+        atencionRepository.deleteById(id);
     }
 
 

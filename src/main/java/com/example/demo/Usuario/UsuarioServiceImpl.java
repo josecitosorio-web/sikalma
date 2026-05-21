@@ -3,72 +3,74 @@ package com.example.demo.Usuario;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Doctor.Doctor;
-import com.example.demo.Doctor.DoctorDAO;
+import com.example.demo.Doctor.DoctorRepository;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
-    private final UsuarioDAO usuarioDAO;
-    private final DoctorDAO doctorDAO;
-    private Usuario usuarioActual;
-
-    public UsuarioServiceImpl(UsuarioDAO usuarioDAO, DoctorDAO doctorDAO) {
-        this.usuarioDAO = usuarioDAO;
-        this.doctorDAO = doctorDAO;
-    }
     
-    @Override
-    public void agregar(String correo, String contrasena, String rol, int idDoctor) {
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-        Doctor doctor = doctorDAO.findById(idDoctor);
+    @Autowired
+    private DoctorRepository doctorRepository;
+
+    private Usuario usuarioActual;
+    
+
+    @Override
+    public void agregar(String correo, String contrasena, String rol, Long idDoctor) {
+
+        Doctor doctor = doctorRepository.findById(idDoctor).orElse(null);
 
         Usuario usuario = new Usuario(correo,contrasena,rol,doctor);
 
-        usuarioDAO.save(usuario);
+        usuarioRepository.save(usuario);
     }
 
     @Override
     public List<Usuario> Listar() {
-        return usuarioDAO.findAll();
+        return usuarioRepository.findAll();
     }
 
     @Override
-    public Usuario buscarPorId(int id) {
-        return usuarioDAO.findById(id);
+    public Usuario buscarPorId(Long id) {
+        return usuarioRepository.findById(id).orElse(usuarioActual);
     }
 
     @Override
     public Usuario buscarPorCorreo(String correo) {
-        return usuarioDAO.findByCorreo(correo);
+        return usuarioRepository.findByCorreo(correo).orElse(usuarioActual);
     }
 
     @Override
-    public void actualizar(int idUsuario, String correo, String contrasena, String rol, int idDoctor) {
+    public void actualizar(Long idUsuario, String correo, String contrasena, String rol, Long idDoctor) {
 
-        Doctor doctor = doctorDAO.findById(idDoctor);
+        Doctor doctor = doctorRepository.findById(idDoctor).orElse(null);
 
         Usuario usuario = new Usuario(correo, contrasena,rol,doctor);
         usuario.setId(idUsuario);
 
-        usuarioDAO.update(usuario);
+        usuarioRepository.save(usuario);
     }
 
     @Override
-    public void eliminar(int id){
-        usuarioDAO.delete(id);
+    public void eliminar(Long id){
+        usuarioRepository.deleteById(id);
     }
 
     @Override
-    public Doctor buscarPorDoctor(int idDoctor) {
-        return doctorDAO.findById(idDoctor);
+    public Doctor buscarPorDoctor(Long idDoctor) {
+        return doctorRepository.findById(idDoctor).orElse(null);
     }
 
     @Override
     public List<Usuario> buscarPorDni(String dni){
-        return usuarioDAO.findByDni(dni);
+        return usuarioRepository.findByDoctorDni(dni);
     }
 
     @Override
@@ -93,15 +95,15 @@ public class UsuarioServiceImpl implements UsuarioService {
     // VALIDACIONES
 
     @Override
-    public String validarDatosRegistro(String correo, String contrasena, String rol, int idDoctor) {
+    public String validarDatosRegistro(String correo, String contrasena, String rol, Long idDoctor) {
 
-        Doctor doctor = doctorDAO.findById(idDoctor);
+        Doctor doctor = doctorRepository.findById(idDoctor).orElse(null);
         Usuario usuario = new Usuario(correo,contrasena,rol,doctor);
 
         String error = validacionesGenerales(usuario);
         if(error != null) {
             return error;
-        } else if (!usuarioDAO.findByDni(usuario.getCorreo()).isEmpty()){
+        } else if (usuarioRepository.findByCorreo(usuario.getCorreo()).isPresent()){
 
             return "Ya hay un usuario registrado con ese correo";
 
@@ -111,9 +113,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public String validarDatosEdicion(String correo, String contrasena, String rol, int idDoctor){
+    public String validarDatosEdicion(String correo, String contrasena, String rol, Long idDoctor){
 
-        Doctor doctor = doctorDAO.findById(idDoctor);
+        Doctor doctor = doctorRepository.findById(idDoctor).orElse(null);
         Usuario usuario = new Usuario(correo,contrasena,rol,doctor);
 
         String error = validacionesGenerales(usuario);
@@ -127,7 +129,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public String validarUsuario( String correo, String contrasena) {
 
-        Usuario user = usuarioDAO.findByCorreo(correo);
+        Usuario user = usuarioRepository.findByCorreo(correo).orElse(usuarioActual);
         if(user != null){
 
             if(user.getContrasena().equals(contrasena)){

@@ -1,6 +1,8 @@
 package com.example.demo.Doctor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -8,46 +10,43 @@ import java.util.List;
 @Service
 public class DoctorServiceImpl implements DoctorService {
 
-    private final DoctorDAO doctorDAO;
-
-    public DoctorServiceImpl(DoctorDAO doctorDAO){
-        this.doctorDAO = doctorDAO;
-    }
+    @Autowired
+    private DoctorRepository doctorRepository;
 
     @Override
     public void agregar(Doctor doctor) {
-        doctorDAO.save((doctor));
+        doctorRepository.save(doctor);
     }
 
     @Override
     public List<Doctor> obtenerTodos() {
-        return doctorDAO.findAll();
+        return doctorRepository.findAll();
     }
 
     @Override
-    public Doctor buscarPorId(int id) {
-        return doctorDAO.findById(id);
+    public Doctor buscarPorId(Long id) {
+        return doctorRepository.findById(id).orElse(null);
     }
 
     @Override
     public Doctor buscarDoctor(String dni){
-        return doctorDAO.findDoctor(dni);
+        return doctorRepository.findByDni(dni).orElse(null);
     }
 
     @Override
     public void actualizar(Doctor doctor) {
-        doctorDAO.update(doctor);
+        doctorRepository.save(doctor);
     }
 
     @Override
-    public void eliminar(int id) {
-        doctorDAO.delete(id);
+    public void eliminar(Long id) {
+        doctorRepository.deleteById(id);
     }
 
     @Override
     public List<Doctor> buscarPorDni(String dni) {
         
-        return doctorDAO.findByDni(dni);
+        return doctorRepository.findAllByDni(dni);
     }
 
 
@@ -60,11 +59,11 @@ public class DoctorServiceImpl implements DoctorService {
 
         if (error != null) {
             return error;
-        } else if (!doctorDAO.findByDni(doctor.getDni()).isEmpty()) {
+        } else if (!doctorRepository.findByDni(doctor.getDni()).isEmpty()) {
 
             return "Ya existe un doctor registrado con ese DNI";
 
-        } else if (!doctorDAO.findByCorreo(doctor.getCorreo()).isEmpty()) {
+        } else if (!doctorRepository.findByCorreo(doctor.getCorreo()).isEmpty()) {
             return "Ya existe un doctor registrado con ese correo";
         }
 

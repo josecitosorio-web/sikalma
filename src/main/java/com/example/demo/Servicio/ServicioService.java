@@ -8,11 +8,11 @@ public interface ServicioService {
 
     List<Servicio> listar();
 
-    Servicio buscarPorId(int id);
+    Servicio buscarPorId(Long id);
 
     void actualizar(Servicio servicio);
 
-    void eliminar(int id);
+    void eliminar(Long id);
 
     List<Servicio> buscarPorNombre(String nombre);
 

@@ -2,15 +2,30 @@ package com.example.demo.Servicio;
 
 import com.example.demo.Cita.Cita;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity(name = "servicio")
 public class Servicio {
 
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "nombre_servi")
     private String nombre;
+    @Column(name = "descripcion_servi")
     private String descripcion;
+    @Column(name = "costo_servi")
     private double costo;
+    @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL)
     private List<Cita> citas = new ArrayList<>();
 
     public Servicio () {}
@@ -21,7 +36,7 @@ public class Servicio {
         this.costo = costo;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -41,7 +56,7 @@ public class Servicio {
         return citas;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

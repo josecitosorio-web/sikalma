@@ -8,13 +8,13 @@ public interface AtencionService {
 
     List<Atencion> obtenerTodos();
 
-    void agregar(int CitaId , LocalTime horaInicio, LocalTime horaFin , String diagnostico, String tratamiento , String estado );
+    void agregar(Long CitaId , LocalTime horaInicio, LocalTime horaFin , String diagnostico, String tratamiento , String estado );
 
-    Atencion buscarPorId(int id);
+    Atencion buscarPorId(Long id);
 
-    void actualizar(int id , int citaId , LocalTime horaInicio, LocalTime horaFin , String diagnostico, String tratamiento , String estado);
+    void actualizar(Long id , Long citaId , LocalTime horaInicio, LocalTime horaFin , String diagnostico, String tratamiento , String estado);
     
-    void eliminar(int id);
+    void eliminar(Long id);
 
     //validaciones
 

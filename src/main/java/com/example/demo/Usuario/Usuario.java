@@ -2,12 +2,28 @@ package com.example.demo.Usuario;
 
 import com.example.demo.Doctor.Doctor;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+
+@Entity(name = "usuario")
 public class Usuario {
     
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "correo_user")
     private String correo;
+    @Column(name = "contrasena_user")
     private String contrasena;
+    @Column(name = "rol_user")
     private String rol;
+    @OneToOne
+    @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 
     public Usuario() {}
@@ -22,7 +38,7 @@ public class Usuario {
 
     // GETTERS
 
-    public int getId() {
+    public Long getId() {
         return this.id;
     }
 
@@ -42,7 +58,7 @@ public class Usuario {
         return this.doctor;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
