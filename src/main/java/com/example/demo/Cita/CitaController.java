@@ -56,9 +56,9 @@ public class CitaController {
     @PostMapping("/guardar")
     public String guardar(
 
-            @RequestParam int paciente,
-            @RequestParam int doctor,
-            @RequestParam int servicio,
+            @RequestParam Long paciente,
+            @RequestParam Long doctor,
+            @RequestParam Long servicio,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fecha,
             @RequestParam @DateTimeFormat(pattern = "HH:mm") LocalTime hora,
             @RequestParam String estado,
@@ -94,7 +94,7 @@ public class CitaController {
     }
 
     @GetMapping("/editar")
-    public String editar(@RequestParam int id, Model model) {
+    public String editar(@RequestParam Long id, Model model) {
 
         model.addAttribute("cita", citaService.buscarPorId(id));
         model.addAttribute("servicios", servicioService.listar());
@@ -106,8 +106,8 @@ public class CitaController {
     }
 
     @PostMapping("/actualizar")
-    public String actualizar(@RequestParam int id, @RequestParam int paciente, @RequestParam int doctor,
-            @RequestParam int servicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fecha,
+    public String actualizar(@RequestParam Long id, @RequestParam Long paciente, @RequestParam Long doctor,
+            @RequestParam Long servicio, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fecha,
             @RequestParam @DateTimeFormat(pattern = "HH:mm") LocalTime hora, @RequestParam String estado, Model model) {
 
         String error = citaService.validarDatosEdicion(id,paciente, doctor, servicio, fecha, hora);
@@ -128,7 +128,7 @@ public class CitaController {
     }
 
     @GetMapping("/atender")
-    public String atenderCita(@RequestParam int id, Model model) {
+    public String atenderCita(@RequestParam Long id, Model model) {
 
         model.addAttribute("cita", citaService.buscarPorId(id));
         model.addAttribute("paginaActiva", "citas");
@@ -138,7 +138,7 @@ public class CitaController {
     }
 
     @GetMapping("/cancelar")
-    public String cancelar(@RequestParam int id, Model model) {
+    public String cancelar(@RequestParam Long id, Model model) {
 
         model.addAttribute("cita", citaService.buscarPorId(id));
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
@@ -147,14 +147,14 @@ public class CitaController {
     }
 
     @GetMapping("/eliminar")
-    public String eliminar(@RequestParam int id, Model model) {
+    public String eliminar(@RequestParam Long id, Model model) {
         citaService.eliminar(id);
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         return "redirect:/cita/g-citas";
     }
 
     @GetMapping("/no-asistio")
-    public String marcarNoAsistio(@RequestParam int id, Model model) {
+    public String marcarNoAsistio(@RequestParam Long id, Model model) {
         Cita cita = citaService.buscarPorId(id);
 
         if (cita != null && cita.getEstado().equalsIgnoreCase("Confirmada")) {

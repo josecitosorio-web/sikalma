@@ -6,21 +6,21 @@ import java.util.List;
 
 public interface CitaDAO {
 
-    List<Cita> listar();
+    List<CitaEntity> listar();
 
-    void guardar(Cita cita);
+    void guardar(CitaEntity cita);
 
-    Cita buscarPorId(int id);
+    CitaEntity buscarPorId(int id);
 
     void eliminar(int id);
 
-    void actualizar(Cita cita);
+    void actualizar(CitaEntity cita);
 
-    List<Cita> buscarPorPaciente(int idPaciente);
+    List<CitaEntity> buscarPorPaciente(int idPaciente);
 
-    List<Cita> buscarPorDoctor(int idDoctor);
+    List<CitaEntity> buscarPorDoctor(int idDoctor);
 
-    List<Cita> buscarPorServicio(int idServicio);
+    List<CitaEntity> buscarPorServicio(int idServicio);
 
     void cambiarEstado(int id, String estado);
 

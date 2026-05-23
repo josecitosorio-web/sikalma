@@ -12,22 +12,22 @@ public class ServicioServiceImpl implements ServicioService {
 
     @Override
     public void agregar(Servicio s) {
-        servicioRepository.save(s);
+        servicioRepository.save(ServicioAdapter.toEntity(s));
     }
 
     @Override
     public List<Servicio> listar() {
-        return servicioRepository.findAll();
+        return ServicioAdapter.toModelList(servicioRepository.findAll());
     }
 
     @Override
     public Servicio buscarPorId(Long id) {
-        return servicioRepository.findById(id).orElse(null);
+        return ServicioAdapter.toModel(servicioRepository.findById(id).orElse(null)) ;
     }
 
     @Override
     public void actualizar(Servicio s) {
-        servicioRepository.save(s);
+        servicioRepository.save(ServicioAdapter.toEntity(s));
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ServicioServiceImpl implements ServicioService {
 
     @Override
     public List<Servicio> buscarPorNombre(String nombre) {
-        return servicioRepository.findByNombreContainingIgnoreCase(nombre);
+        return ServicioAdapter.toModelList(servicioRepository.findByNombreContainingIgnoreCase(nombre)) ;
     }
 
     // validaciones

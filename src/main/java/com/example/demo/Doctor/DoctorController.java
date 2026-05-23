@@ -68,7 +68,7 @@ public class DoctorController {
     }
 
     @GetMapping("/editar")
-    public String editar(@RequestParam int id, Model model) {
+    public String editar(@RequestParam Long id, Model model) {
         model.addAttribute("doctor", doctorService.buscarPorId(id));
         model.addAttribute("servicios" , servicioService.listar());
         model.addAttribute("paginaActiva", "personal");
@@ -95,7 +95,7 @@ public class DoctorController {
     }
 
     @GetMapping("/advertir")
-    public String advertir(@RequestParam int id, Model model) {
+    public String advertir(@RequestParam Long id, Model model) {
 
         String error = citaService.validarCitasExistentesDoctor(id);
         if(error != null){
@@ -113,7 +113,7 @@ public class DoctorController {
     }
 
     @GetMapping("/eliminar")
-    public String eliminar(@RequestParam int id) {
+    public String eliminar(@RequestParam Long id) {
         doctorService.eliminar(id);
         return "redirect:/doctor/gestion";
     }

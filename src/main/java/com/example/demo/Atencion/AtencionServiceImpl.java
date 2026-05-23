@@ -6,6 +6,7 @@ import com.example.demo.Cita.CitaService;
 import com.example.demo.Cita.Cita;
 
 
+
 import java.time.LocalTime;
 import java.util.List;
 
@@ -19,9 +20,11 @@ public class AtencionServiceImpl implements AtencionService {
     @Autowired
     private CitaService citaService;
 
+
+
     @Override
     public List<Atencion> obtenerTodos() {
-        return atencionRepository.findAll();
+        return AtencionAdapter.toModelList(atencionRepository.findAll());
     }
 
     @Override
@@ -31,12 +34,12 @@ public class AtencionServiceImpl implements AtencionService {
 
         Atencion a = new Atencion(c, horaInicio,horaFin,diagnostico,tratamiento,estado);
 
-        atencionRepository.save(a);
+        atencionRepository.save(AtencionAdapter.toEntity(a));
     }
 
     @Override
     public Atencion buscarPorId(Long id) {
-        return atencionRepository.findById(id).orElse(null);
+        return AtencionAdapter.toModel(atencionRepository.findById(id).orElse(null));
     }
 
     @Override
@@ -47,7 +50,7 @@ public class AtencionServiceImpl implements AtencionService {
         Atencion a = new Atencion(c, horaInicio,horaFin,diagnostico,tratamiento,estado);
         a.setId(id);
 
-        atencionRepository.save(a);
+        atencionRepository.save(AtencionAdapter.toEntity(a));
     }
 
     @Override

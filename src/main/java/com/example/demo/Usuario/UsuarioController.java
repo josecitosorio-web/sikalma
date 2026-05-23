@@ -60,7 +60,7 @@ public class UsuarioController {
     public String registrarUusario(@RequestParam String correo,
         @RequestParam String contrasena,
         @RequestParam String rol,
-        @RequestParam int idDoctor,
+        @RequestParam Long idDoctor,
         Model model){
 
         String error = usuarioService.validarDatosRegistro(correo,contrasena,rol,idDoctor);
@@ -79,7 +79,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/editar")
-    public String editar(@RequestParam int id, Model model) {
+    public String editar(@RequestParam Long id, Model model) {
 
         model.addAttribute("usuario", usuarioService.buscarPorId(id));
         model.addAttribute("paginaActiva", "usuario");
@@ -89,10 +89,10 @@ public class UsuarioController {
     }
 
     @PostMapping("/editar")
-    public String editarUsuario(@RequestParam int idUsuario, @RequestParam String correo,
+    public String editarUsuario(@RequestParam Long idUsuario, @RequestParam String correo,
         @RequestParam String contrasena,
         @RequestParam String rol,
-        @RequestParam int idDoctor,
+        @RequestParam Long idDoctor,
         Model model){
 
         String error = usuarioService.validarDatosEdicion(correo, contrasena, rol, idDoctor);

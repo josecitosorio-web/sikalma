@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Doctor.Doctor;
+import com.example.demo.Doctor.DoctorAdapter;
+import com.example.demo.Doctor.DoctorEntity;
 import com.example.demo.Doctor.DoctorRepository;
 
 @Service
@@ -25,37 +27,37 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public void agregar(String correo, String contrasena, String rol, Long idDoctor) {
 
-        Doctor doctor = doctorRepository.findById(idDoctor).orElse(null);
+        DoctorEntity doctor = doctorRepository.findById(idDoctor).orElse(null);
 
-        Usuario usuario = new Usuario(correo,contrasena,rol,doctor);
+        UsuarioEntity usuario = new UsuarioEntity(correo,contrasena,rol,doctor);
 
         usuarioRepository.save(usuario);
     }
 
     @Override
     public List<Usuario> Listar() {
-        return usuarioRepository.findAll();
+        return UsuarioAdapter.toModelList(usuarioRepository.findAll()) ;
     }
 
     @Override
     public Usuario buscarPorId(Long id) {
-        return usuarioRepository.findById(id).orElse(usuarioActual);
+        return UsuarioAdapter.toModel(usuarioRepository.findById(id).orElse(null)) ;
     }
 
     @Override
     public Usuario buscarPorCorreo(String correo) {
-        return usuarioRepository.findByCorreo(correo).orElse(usuarioActual);
+        return UsuarioAdapter.toModel(usuarioRepository.findByCorreo(correo).orElse(null)) ;
     }
 
     @Override
     public void actualizar(Long idUsuario, String correo, String contrasena, String rol, Long idDoctor) {
 
-        Doctor doctor = doctorRepository.findById(idDoctor).orElse(null);
+        Doctor doctor = DoctorAdapter.toModel(doctorRepository.findById(idDoctor).orElse(null)) ;
 
         Usuario usuario = new Usuario(correo, contrasena,rol,doctor);
         usuario.setId(idUsuario);
 
-        usuarioRepository.save(usuario);
+        usuarioRepository.save(UsuarioAdapter.toEntity(usuario));
     }
 
     @Override
@@ -65,12 +67,12 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Doctor buscarPorDoctor(Long idDoctor) {
-        return doctorRepository.findById(idDoctor).orElse(null);
+        return DoctorAdapter.toModel(doctorRepository.findById(idDoctor).orElse(null));
     }
 
     @Override
     public List<Usuario> buscarPorDni(String dni){
-        return usuarioRepository.findByDoctorDni(dni);
+        return UsuarioAdapter.toModelList(usuarioRepository.findByDoctorDni(dni));
     }
 
     @Override
@@ -97,7 +99,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public String validarDatosRegistro(String correo, String contrasena, String rol, Long idDoctor) {
 
-        Doctor doctor = doctorRepository.findById(idDoctor).orElse(null);
+        Doctor doctor = DoctorAdapter.toModel(doctorRepository.findById(idDoctor).orElse(null));
         Usuario usuario = new Usuario(correo,contrasena,rol,doctor);
 
         String error = validacionesGenerales(usuario);
@@ -115,7 +117,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public String validarDatosEdicion(String correo, String contrasena, String rol, Long idDoctor){
 
-        Doctor doctor = doctorRepository.findById(idDoctor).orElse(null);
+        Doctor doctor = DoctorAdapter.toModel(doctorRepository.findById(idDoctor).orElse(null));
         Usuario usuario = new Usuario(correo,contrasena,rol,doctor);
 
         String error = validacionesGenerales(usuario);
@@ -129,7 +131,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public String validarUsuario( String correo, String contrasena) {
 
-        Usuario user = usuarioRepository.findByCorreo(correo).orElse(usuarioActual);
+        Usuario user = UsuarioAdapter.toModel(usuarioRepository.findByCorreo(correo).orElse(null));
         if(user != null){
 
             if(user.getContrasena().equals(contrasena)){

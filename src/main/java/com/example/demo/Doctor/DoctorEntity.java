@@ -1,21 +1,48 @@
 package com.example.demo.Doctor;
 
+import com.example.demo.Cita.CitaEntity;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Doctor {
+@Entity(name = "doctor")
+public class DoctorEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "nombre_doc")
     private String nombre;
+    @Column(name = "dni_doc")
     private String dni;
+    @Column(name = "especialidad_doc")
     private String especialidad;
+    @Column(name = "telefono_doc")
     private String telefono;
+    @Column(name = "correo_doc")
     private String correo;
+    @Column(name = "fecha_doc")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaNacimiento;
+    @OneToMany(mappedBy = "doctor" , cascade = CascadeType.ALL)
+    private List<CitaEntity> citas = new ArrayList<>();
 
-    public Doctor() {}
+    public DoctorEntity() {
+    }
 
-    public Doctor(String nombre, String dni, String especialidad, String telefono, String correo, LocalDate fechaNacimiento) {
+    public DoctorEntity(String nombre, String dni, String especialidad, String telefono, String correo, LocalDate fechaNacimiento) {
         this.nombre = nombre;
         this.dni = dni;
         this.especialidad = especialidad;
@@ -24,6 +51,7 @@ public class Doctor {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    // --- GETTERS Y SETTERS ---
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -39,13 +67,14 @@ public class Doctor {
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }
 
+    public int getEdad(){return Period.between(this.fechaNacimiento , LocalDate.now()).getYears() ;}
+
     public String getCorreo() { return correo; }
     public void setCorreo(String correo) { this.correo = correo; }
 
     public LocalDate getFechaNacimiento() { return fechaNacimiento; }
     public void setFechaNacimiento(LocalDate fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
 
-    public int getEdad() {
-        return Period.between(this.fechaNacimiento, LocalDate.now()).getYears();
-    }
+    public List<CitaEntity> getCitas () {return citas;}
+    public void setCitas (List<CitaEntity> citas) {this.citas = citas;}
 }

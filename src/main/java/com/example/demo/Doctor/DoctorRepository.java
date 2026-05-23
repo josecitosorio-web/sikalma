@@ -8,11 +8,11 @@ import java.util.List;
 
 
 @Repository
-public interface DoctorRepository extends JpaRepository<Doctor, Long> {
+public interface DoctorRepository extends JpaRepository<DoctorEntity, Long> {
 
-    Optional<Doctor> findByDni (String dni);
+    Optional<DoctorEntity> findByDni (String dni);
 
-    Optional<Doctor> findByCorreo(String correo);
+    Optional<DoctorEntity> findByCorreo(String correo);
 
-    List<Doctor> findAllByDni(String dni);
+    List<DoctorEntity> findAllByDni(String dni);
 }

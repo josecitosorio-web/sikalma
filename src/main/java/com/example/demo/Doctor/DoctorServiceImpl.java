@@ -15,27 +15,27 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public void agregar(Doctor doctor) {
-        doctorRepository.save(doctor);
+        doctorRepository.save(DoctorAdapter.toEntity(doctor));
     }
 
     @Override
     public List<Doctor> obtenerTodos() {
-        return doctorRepository.findAll();
+        return DoctorAdapter.toModelList(doctorRepository.findAll()) ;
     }
 
     @Override
     public Doctor buscarPorId(Long id) {
-        return doctorRepository.findById(id).orElse(null);
+        return DoctorAdapter.toModel(doctorRepository.findById(id).orElse(null)) ;
     }
 
     @Override
     public Doctor buscarDoctor(String dni){
-        return doctorRepository.findByDni(dni).orElse(null);
+        return DoctorAdapter.toModel( doctorRepository.findByDni(dni).orElse(null));
     }
 
     @Override
     public void actualizar(Doctor doctor) {
-        doctorRepository.save(doctor);
+        doctorRepository.save(DoctorAdapter.toEntity(doctor));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public List<Doctor> buscarPorDni(String dni) {
         
-        return doctorRepository.findAllByDni(dni);
+        return DoctorAdapter.toModelList(doctorRepository.findAllByDni(dni)) ;
     }
 
 
@@ -59,11 +59,11 @@ public class DoctorServiceImpl implements DoctorService {
 
         if (error != null) {
             return error;
-        } else if (!doctorRepository.findByDni(doctor.getDni()).isEmpty()) {
+        } else if (doctorRepository.findByDni(doctor.getDni()).isPresent()) {
 
             return "Ya existe un doctor registrado con ese DNI";
 
-        } else if (!doctorRepository.findByCorreo(doctor.getCorreo()).isEmpty()) {
+        } else if (doctorRepository.findByCorreo(doctor.getCorreo()).isPresent()) {
             return "Ya existe un doctor registrado con ese correo";
         }
 

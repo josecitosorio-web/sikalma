@@ -34,7 +34,7 @@ public class CitaServiceImpl implements CitaService {
 
     @Override
     public List<Cita> listar() {
-        return citaRepository.findAll();
+        return CitaAdapter.toModelList(citaRepository.findAll()) ;
     }
 
     @Override
@@ -46,12 +46,12 @@ public class CitaServiceImpl implements CitaService {
 
         Cita c = new Cita(p, d, s, fecha, hora, estado);
 
-        citaRepository.save(c);
+        citaRepository.save(CitaAdapter.toEntity(c));
     }
 
     @Override
     public Cita buscarPorId(Long id) {
-        return citaRepository.findById(id).orElse(null);
+        return CitaAdapter.toModel(citaRepository.findById(id).orElse(null)) ;
     }
 
     @Override
@@ -70,12 +70,12 @@ public class CitaServiceImpl implements CitaService {
         Cita c = new Cita(p, d, s, fecha, hora, estado);
         c.setId(id);
 
-        citaRepository.save(c);
+        citaRepository.save(CitaAdapter.toEntity(c));
     }
 
     @Override
     public List<Cita> buscarCitaPorPaciente(Long idPaciente) {
-        return citaRepository.findByPacienteId(idPaciente);
+        return CitaAdapter.toModelList(citaRepository.findByPacienteId(idPaciente));
     }
 
     // validaciones

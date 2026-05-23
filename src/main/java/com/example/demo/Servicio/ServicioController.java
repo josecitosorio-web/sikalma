@@ -59,7 +59,7 @@ public class ServicioController {
     }
 
     @GetMapping("/editar")
-    public String editarServicio(@RequestParam int id, Model model) {
+    public String editarServicio(@RequestParam Long id, Model model) {
         model.addAttribute("servicio", servicioService.buscarPorId(id));
         model.addAttribute("paginaActiva", "servicios");
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
@@ -85,7 +85,7 @@ public class ServicioController {
     }
 
     @GetMapping("/advertir")
-    public String advertir(@RequestParam int id, Model model) {
+    public String advertir(@RequestParam Long id, Model model) {
 
         String error = citaService.validarCitasExistentesServicio(id);
         if(error != null){
@@ -103,7 +103,7 @@ public class ServicioController {
     }
 
     @GetMapping("/eliminar")
-    public String eliminarServicio(@RequestParam int id) {
+    public String eliminarServicio(@RequestParam Long id) {
         servicioService.eliminar(id);
         return "redirect:/servicio/gestion";
     }

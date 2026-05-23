@@ -36,7 +36,7 @@ public class AtencionController {
     }
 
     @PostMapping("/nuevo")
-    public String registrarAtencion(@RequestParam int citaId,
+    public String registrarAtencion(@RequestParam Long citaId,
         @RequestParam @DateTimeFormat(pattern = "HH:mm") LocalTime horaInicio,
         @RequestParam @DateTimeFormat(pattern = "HH:mm") LocalTime horaFin,
         @RequestParam String diagnostico,
@@ -61,7 +61,7 @@ public class AtencionController {
 
 
     @GetMapping("/ver")
-    public String ver(@RequestParam int id, Model model) {
+    public String ver(@RequestParam Long id, Model model) {
         model.addAttribute("atencion", atencionService.buscarPorId(id));
         model.addAttribute("paginaActiva", "atencion");
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
@@ -70,7 +70,7 @@ public class AtencionController {
 
     
     @GetMapping("/editar")
-    public String editar(@RequestParam int id, Model model) {
+    public String editar(@RequestParam Long id, Model model) {
         model.addAttribute("atencion", atencionService.buscarPorId(id));
         model.addAttribute("paginaActiva", "atencion");
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
@@ -79,8 +79,8 @@ public class AtencionController {
 
     
     @PostMapping("/actualizar")
-    public String actualizar(@RequestParam int id,
-        @RequestParam int citaId,
+    public String actualizar(@RequestParam Long id,
+        @RequestParam Long citaId,
         @RequestParam @DateTimeFormat(pattern = "HH:mm") LocalTime horaInicio,
         @RequestParam @DateTimeFormat(pattern = "HH:mm") LocalTime horaFin,
         @RequestParam String diagnostico,

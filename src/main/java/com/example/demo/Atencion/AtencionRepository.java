@@ -4,6 +4,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
-public interface AtencionRepository extends JpaRepository<Atencion, Long> {
+public interface AtencionRepository extends JpaRepository<AtencionEntity, Long> {
 
 }

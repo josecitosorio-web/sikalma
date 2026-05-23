@@ -12,13 +12,13 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Repository
-public interface CitaRepository extends JpaRepository<Cita, Long> {
+public interface CitaRepository extends JpaRepository<CitaEntity, Long> {
 
-    List<Cita> findByPacienteId(Long idPaciente);
+    List<CitaEntity> findByPacienteId(Long idPaciente);
 
-    List<Cita> findByDoctorId(Long idDoctor);
+    List<CitaEntity> findByDoctorId(Long idDoctor);
 
-    List<Cita> findByServicioId(Long idServicio);
+    List<CitaEntity> findByServicioId(Long idServicio);
 
     boolean existsByDoctorIdAndFechaAndHora(Long doctorId, LocalDate fecha, LocalTime hora);
 

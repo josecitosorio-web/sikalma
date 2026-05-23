@@ -4,16 +4,16 @@ import java.util.List;
 
 public interface ServicioDAO {
 
-    void save(Servicio s);
+    void save(ServicioEntity s);
 
-    List<Servicio> findAll();
+    List<ServicioEntity> findAll();
 
-    Servicio findById(int id);
+    ServicioEntity findById(int id);
 
-    void update(Servicio s);
+    void update(ServicioEntity s);
 
     void delete(int id);
 
-    List<Servicio> findByNombre(String nombre);
+    List<ServicioEntity> findByNombre(String nombre);
 
 }

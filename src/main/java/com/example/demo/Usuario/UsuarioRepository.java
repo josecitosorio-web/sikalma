@@ -8,10 +8,10 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+public interface UsuarioRepository extends JpaRepository<UsuarioEntity, Long> {
 
-    Optional<Usuario> findByCorreo(String correo);
+    Optional<UsuarioEntity> findByCorreo(String correo);
 
-    List<Usuario> findByDoctorDni(String dni);
+    List<UsuarioEntity> findByDoctorDni(String dni);
     
 }

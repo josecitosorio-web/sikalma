@@ -1,7 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,20 +9,24 @@
     <link rel="stylesheet" href="/css/admin.css">
     <link rel="stylesheet" href="/css/eliminar.css">
 </head>
+
 <body class="modal-eliminar">
     <div class="modal-card">
         <div class="icono-alerta">⚠️</div>
         <h2>¿Eliminar este paciente?</h2>
         <p>
-            Estás a punto de eliminar el registro de <strong>${paciente.nombres}</strong>
-            (DNI: ${paciente.dni}). Si existen citas o atenciones asociadas, podrían verse afectadas.
+            Estás a punto de eliminar el registro de
+            <strong th:text="${paciente.nombres}"></strong>
+            (DNI: <span th:text="${paciente.dni}"></span>).
+            Si existen citas o atenciones asociadas, podrían verse afectadas.
             <br><br>
             Esta acción no puede deshacerse.
         </p>
         <div class="modal-acciones">
             <a href="/paciente/gestion" class="btn-secundario">Volver</a>
-            <a href="/paciente/eliminar?id=${paciente.id}" class="btn-danger">Sí, eliminar</a>
+            <a th:href="@{/paciente/eliminar(id=${paciente.id})}" class="btn-danger">Sí, eliminar</a>
         </div>
     </div>
 </body>
+
 </html>

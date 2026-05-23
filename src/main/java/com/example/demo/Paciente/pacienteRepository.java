@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PacienteRepository extends JpaRepository<Paciente, Long> {
+public interface PacienteRepository extends JpaRepository<PacienteEntity, Long> {
 
    
-    Optional<Paciente> findByDni(String dni);
+    Optional<PacienteEntity> findByDni(String dni);
 
-    List<Paciente> findAllByDni(String dni);
+    List<PacienteEntity> findAllByDni(String dni);
 
 }

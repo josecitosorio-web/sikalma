@@ -6,9 +6,9 @@ import java.util.List;
 
 
 @Repository
-public interface ServicioRepository extends JpaRepository<Servicio, Long> {
+public interface ServicioRepository extends JpaRepository<ServicioEntity, Long> {
 
-    List<Servicio> findByNombreContainingIgnoreCase(String nombre);
+    List<ServicioEntity> findByNombreContainingIgnoreCase(String nombre);
 
 
 }

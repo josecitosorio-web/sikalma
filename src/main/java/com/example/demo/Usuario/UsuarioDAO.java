@@ -4,18 +4,18 @@ import java.util.List;
 
 public interface UsuarioDAO {
     
-    void save(Usuario usuario);
+    void save(UsuarioEntity usuario);
 
-    List<Usuario> findAll();
+    List<UsuarioEntity> findAll();
 
-    Usuario findById(int id);
+    UsuarioEntity findById(int id);
 
-    void update(Usuario usuario);
+    void update(UsuarioEntity usuario);
 
     void delete(int id);
 
-    List<Usuario> findByDni(String dni);
+    List<UsuarioEntity> findByDni(String dni);
 
-    Usuario findByCorreo(String correo);
+    UsuarioEntity findByCorreo(String correo);
 
 }

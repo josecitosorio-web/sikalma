@@ -16,27 +16,28 @@ public class PacienteServiceImpl implements PacienteService {
     
     @Override
     public void agregar(Paciente p){
-        pacienteRepository.save(p);
+
+        pacienteRepository.save(PacienteAdapter.toEntity(p));
     }
 
     @Override
     public List<Paciente> listar() {
-        return pacienteRepository.findAll();
+        return PacienteAdapter.toModelList(pacienteRepository.findAll());
     }
 
     @Override
     public Paciente buscarPorId(Long id){
-        return pacienteRepository.findById(id).orElse(null);
+        return PacienteAdapter.toModel(pacienteRepository.findById(id).orElse(null));
     }
 
     @Override
     public Paciente buscarPaciente(String dni){
-        return pacienteRepository.findByDni(dni).orElse(null);
+        return PacienteAdapter.toModel(pacienteRepository.findByDni(dni).orElse(null));
     }
 
     @Override
     public void actualizar(Paciente p){
-        pacienteRepository.save(p);
+        pacienteRepository.save(PacienteAdapter.toEntity(p));
     }
 
     @Override
@@ -46,7 +47,7 @@ public class PacienteServiceImpl implements PacienteService {
 
     @Override
     public List<Paciente> buscarPorDni(String dni){
-        return pacienteRepository.findAllByDni(dni);
+        return PacienteAdapter.toModelList(pacienteRepository.findAllByDni(dni)) ;
     }
 
     //validaciones 
@@ -59,7 +60,7 @@ public class PacienteServiceImpl implements PacienteService {
 
             return error;
 
-        }else if(!pacienteRepository.findByDni(paciente.getDni()).isPresent()){
+        }else if(pacienteRepository.findByDni(paciente.getDni()).isPresent()){
 
             return "Ya existe un paciente con ese DNI";
 
