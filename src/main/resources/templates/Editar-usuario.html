@@ -26,6 +26,7 @@
                     <span style="font-weight: 500;" th:text="${error}"></span>
                 </div>
             </div>
+            
             <form th:action="@{/usuario/editar}" method="post">
                 <input type="hidden" name="idUsuario" th:value="${usuario.id}">
                 <input type="hidden" name="idDoctor" th:value="${usuario.doctor.id}">
