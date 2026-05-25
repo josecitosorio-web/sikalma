@@ -2,7 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Gestión de Uusarios - SIKALMA</title>
+    <title>Gestión de Usuarios - SIKALMA</title>
     <link rel="stylesheet" href="/css/admin.css">
 </head>
 <body>
@@ -41,7 +41,7 @@
                         <td th:text="|#U${user.id}|"></td>
                         <td th:text="${user.correo}"></td>
                         <td th:text="${user.rol}"></td>
-                        <td th:text="${user.doctor.nombre}"></td>
+                        <td th:text="${user.doctor != null ? user.doctor.nombre : 'N/A'}"></td>
                         <td class="acciones-celda">
                                 <a th:href="@{/usuario/editar(id=${user.id})}" class="btn-editar">Editar</a>
                             </td>

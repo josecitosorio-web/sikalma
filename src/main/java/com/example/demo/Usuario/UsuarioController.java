@@ -41,6 +41,7 @@ public class UsuarioController {
 
         model.addAttribute("paginaActiva", "usuario");
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
+        model.addAttribute("usuarioForm", new Usuario());
 
         return "Registrar-usuario";
 
@@ -81,7 +82,7 @@ public class UsuarioController {
     @GetMapping("/editar")
     public String editar(@RequestParam Long id, Model model) {
 
-        model.addAttribute("usuario", usuarioService.buscarPorId(id));
+        model.addAttribute("usuarioEditar", usuarioService.buscarPorId(id));
         model.addAttribute("paginaActiva", "usuario");
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
@@ -100,7 +101,7 @@ public class UsuarioController {
         if(error != null) {
             model.addAttribute("error" , error);
             
-            return "redirect:/usuario/editar?id =" + idUsuario;
+            return "redirect:/usuario/editar?id=" + idUsuario;
         }
 
         usuarioService.actualizar(idUsuario ,correo, contrasena, rol, idDoctor);    
@@ -130,7 +131,7 @@ public class UsuarioController {
 
     @GetMapping("/cerrar-sesion")
     public String cerrarLogin(){
-        usuarioService.cerrarSesion();;
+        usuarioService.cerrarSesion();
         return "login";
     }
 

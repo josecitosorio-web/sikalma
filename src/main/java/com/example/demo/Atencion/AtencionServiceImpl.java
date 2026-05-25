@@ -95,7 +95,12 @@ public class AtencionServiceImpl implements AtencionService {
             
             return "El diagnostico es obligatorio";
 
-        }else if(atencion.getTratamiento() == null || atencion.getTratamiento().trim().isEmpty()){
+        }else if (atencion.getHoraFin() == null) {
+
+        return "La hora de fin es obligatoria";
+        
+        }
+        else if(atencion.getTratamiento() == null || atencion.getTratamiento().trim().isEmpty()){
 
             return "El tratamiento es obligatorio";
 

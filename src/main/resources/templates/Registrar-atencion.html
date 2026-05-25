@@ -84,24 +84,24 @@
                     </div>
                     <div>
                         <label>Hora de fin</label>
-                        <input type="time" name="horaFin">
+                        <input type="time" name="horaFin" required>
                     </div>
                 </div>
 
                 <div class="campo">
                     <label>Diagnóstico</label>
-                    <textarea name="diagnostico" rows="3" placeholder="Describa el diagnóstico del paciente..."></textarea>
+                    <textarea name="diagnostico" rows="3" placeholder="Describa el diagnóstico del paciente..." required></textarea>
                 </div>
 
                 <div class="campo">
                     <label>Tratamiento indicado</label>
-                    <textarea name="tratamiento" rows="3" placeholder="Indique el tratamiento o medicación recetada..."></textarea>
+                    <textarea name="tratamiento" rows="3" placeholder="Indique el tratamiento o medicación recetada..." required></textarea>
                 </div>
 
                 <div class="fila-form">
                     <div>
                         <label>Costo del servicio (S/)</label>
-                        <input type="text" th:value="${cita.servicio.costo}" name="costo">
+                        <input type="text" th:value="${cita.servicio.costo}" name="costo" readonly>
                     </div>
                     <div>
                         <label>Estado de la atención</label>

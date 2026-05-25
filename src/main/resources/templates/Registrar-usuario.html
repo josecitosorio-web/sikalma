@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/css/admin.css">
 </head>
 <body>
+
     <div th:replace="fragments/menu :: menu"></div>
     <main>
         <div class="encabezado">
@@ -37,24 +38,24 @@
             <form th:action="@{/usuario/registrar}" method="post">
                 <div class="campo">
                         <label>Doctor</label>
-                         <input type="text" name="nombre" th:value="${doctor.nombre}"  readonly>
+                         <input type="text" name="nombre" th:value="${doctor != null ? doctor.nombre : ''}"  readonly>
 
                 </div>
                 <div class="campo">
                     <label>Correo Electronico</label>
-                         <input type="text" name="correo" th:value="${doctor.correo}"  readonly>
+                         <input type="text" name="correo" th:value="${doctor != null ? doctor.correo : ''}"  readonly>
                 </div>
 
                 <div class="fila-form">
                     <div class="campo">
                         <label>Contraseña</label>
-                        <input type="password" name="contrasena" th:value="${usuario.contrasena}"  placeholder="contraseña" required>
+                        <input type="password" name="contrasena" th:value="${usuarioForm != null ? usuarioForm.contrasena : ''}"  placeholder="contraseña" required>
                     </div>
 
                 </div>
 
                 <input type="hidden" name="rol" value="DOCTOR">
-                <input type="hidden" name="idDoctor" th:value="${doctor.id}"> 
+                <input type="hidden" name="idDoctor" th:value="${doctor != null ? doctor.id : 0}"> 
 
                 <div class="form-acciones" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
                     <a href="/doctor/gestion" class="btn-secundario">Cancelar</a>

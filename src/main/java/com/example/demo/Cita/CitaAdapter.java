@@ -24,9 +24,6 @@ public class CitaAdapter {
         model.setDoctor(DoctorAdapter.toModel(entity.getDoctor()));
         model.setServicio(ServicioAdapter.toModel(entity.getServicio()));
 
-        // Atencion la omitimos para evitar referencia circular
-        // Cita → Atencion → Cita → ...
-
         return model;
     }
 

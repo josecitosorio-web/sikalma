@@ -45,7 +45,7 @@ public class CitaController {
     @GetMapping("/r-citas")
     public String registrarCita(Model model) {
         model.addAttribute("paginaActiva", "r-citas");
-        model.addAttribute("pacientes", pacienteService.listar());
+        model.addAttribute("pacientes", null);
         model.addAttribute("doctores", doctorService.obtenerTodos());
         model.addAttribute("servicios", servicioService.listar());
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());

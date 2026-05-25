@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,8 +8,9 @@
     <title>Editar Atención - SIKALMA</title>
     <link rel="stylesheet" href="/css/admin.css">
 </head>
+
 <body>
-    
+
     <div th:replace="fragments/menu :: menu"></div>
 
     <main>
@@ -28,15 +30,16 @@
         <div class="formulario-card">
 
             <div th:if="${error != null}">
-                <div style="display: flex; align-items: center; gap: 12px; background-color: #FFFFFF; color: #842029; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; border-left: 5px solid #dc3545; box-shadow: 0 2px 12px rgba(0,0,0,0.06); font-size: 0.95rem;">
+                <div
+                    style="display: flex; align-items: center; gap: 12px; background-color: #FFFFFF; color: #842029; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; border-left: 5px solid #dc3545; box-shadow: 0 2px 12px rgba(0,0,0,0.06); font-size: 0.95rem;">
                     <span style="color: #dc3545; font-size: 1.1rem; font-weight: bold;">⚠️</span>
                     <span style="font-weight: 500;" th:text="${error}"></span>
                 </div>
             </div>
-            
+
             <h2 th:text="|Datos de la Atención — ID: #A0${atencion.id} / Cita origen: #${atencion.cita.id}|"></h2>
 
-            <form  th:action="@{/atencion/actualizar}" method="post">
+            <form th:action="@{/atencion/actualizar}" method="post">
 
                 <input type="hidden" name="id" th:value="${atencion.id}">
                 <input type="hidden" name="citaId" th:value="${atencion.cita.id}">
@@ -44,25 +47,26 @@
                 <div class="fila-form">
                     <div>
                         <label>Paciente</label>
-                        <input type="text" th:value="${atencion.cita.paciente.nombres}"
-                               readonly style="background-color:#f5f0f0; color:#9a8a88;">
+                        <input type="text" th:value="${atencion.cita.paciente.nombres}" readonly
+                            style="background-color:#f5f0f0; color:#9a8a88;">
                     </div>
                     <div>
                         <label>Doctor</label>
-                        <input type="text" th:value="${atencion.cita.doctor.nombre}"
-                               readonly style="background-color:#f5f0f0; color:#9a8a88;">
+                        <input type="text" th:value="${atencion.cita.doctor.nombre}" readonly
+                            style="background-color:#f5f0f0; color:#9a8a88;">
                     </div>
                 </div>
 
                 <div class="fila-form">
                     <div>
                         <label>Servicio</label>
-                        <input type="text" th:value="${atencion.cita.servicio.nombre}"
-                               readonly style="background-color:#f5f0f0; color:#9a8a88;">
+                        <input type="text" th:value="${atencion.cita.servicio.nombre}" readonly
+                            style="background-color:#f5f0f0; color:#9a8a88;">
                     </div>
                     <div>
                         <label>Fecha de atención</label>
-                        <input type="date" th:value="${atencion.cita.fecha}" readonly style="background-color:#f5f0f0; color:#9a8a88;">
+                        <input type="date" th:value="${atencion.cita.fecha}" readonly
+                            style="background-color:#f5f0f0; color:#9a8a88;">
                     </div>
                 </div>
 
@@ -70,7 +74,7 @@
                 <div class="fila-form">
                     <div>
                         <label>Hora de inicio</label>
-                        <input type="time" th:value="${atencion.horaInicio}" name="horaInicio" readonly >
+                        <input type="time" th:value="${atencion.horaInicio}" name="horaInicio" readonly>
                     </div>
                     <div>
                         <label>Hora de fin</label>
@@ -91,14 +95,15 @@
                 <div class="fila-form">
                     <div>
                         <label>Costo del servicio (S/)</label>
-                        <input type="text" th:value="${atencion.cita.servicio.costo}" readonly style="background-color:#f5f0f0; color:#9a8a88;">
+                        <input type="text" th:value="${atencion.cita.servicio.costo}" readonly
+                            style="background-color:#f5f0f0; color:#9a8a88;">
                     </div>
                     <div>
                         <label>Estado de la atención</label>
                         <select name="estado">
-                            <option th:value="${atencion.estado}" th:text="${atencion.estado}"></option>
-                            <option  th:value="En curso">En curso</option>
-                            <option th:value="Completada">Completada</option>
+                            <option th:value="'En curso'" th:selected="${atencion.estado == 'En curso'}">En curso</option>
+                            <option th:value="'Completada'" th:selected="${atencion.estado == 'Completada'}">Completada
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -111,4 +116,5 @@
         </div>
     </main>
 </body>
+
 </html>

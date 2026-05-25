@@ -3,6 +3,8 @@ package com.example.demo.Atencion;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.example.demo.Cita.CitaAdapter;
+
 public class AtencionAdapter {
 
     public static Atencion toModel(AtencionEntity entity) {
@@ -15,7 +17,10 @@ public class AtencionAdapter {
         model.setDiagnostico(entity.getDiagnostico());
         model.setTratamiento(entity.getTratamiento());
         model.setEstado(entity.getEstado());
-        // Cita omitida para evitar referencia circular
+        
+        if(entity.getCita() != null) {
+            model.setCita(CitaAdapter.toModel(entity.getCita()));
+        }
 
         return model;
     }
@@ -30,7 +35,10 @@ public class AtencionAdapter {
         entity.setDiagnostico(model.getDiagnostico());
         entity.setTratamiento(model.getTratamiento());
         entity.setEstado(model.getEstado());
-        // Cita omitida para evitar referencia circular
+        
+        if(model.getCita() != null){
+            entity.setCita(CitaAdapter.toEntity(model.getCita()));
+        }
 
         return entity;
     }

@@ -40,6 +40,7 @@ public class PacienteController {
 
         model.addAttribute("paginaActiva" , "paciente");
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
+        model.addAttribute("paciente", new Paciente());
 
         return "Registrar-paciente";
     }

@@ -46,6 +46,7 @@ public class DoctorController {
         model.addAttribute("paginaActiva", "personal");
         model.addAttribute("servicios", servicioService.listar());
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
+        model.addAttribute("doctor", new Doctor());
         return "Registrar-doctor";
     }
 

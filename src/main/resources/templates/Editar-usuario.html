@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Editar Doctor - SIKALMA</title>
+    <title>Editar Usuario - SIKALMA</title>
     <link rel="stylesheet" href="/css/admin.css">
 </head>
 
@@ -28,24 +28,24 @@
             </div>
             
             <form th:action="@{/usuario/editar}" method="post">
-                <input type="hidden" name="idUsuario" th:value="${usuario.id}">
-                <input type="hidden" name="idDoctor" th:value="${usuario.doctor.id}">
+                <input type="hidden" name="idUsuario" th:value="${usuarioEditar.id}">
+                <input type="hidden" name="idDoctor" th:value="${usuarioEditar.doctor != null ? usuarioEditar.doctor.id : 0}">
                 <input type="hidden" name="rol" th:value="${usuario.rol}">
 
                 <div class="campo">
                     <label>Nombre </label>
-                    <input type="text" name="nombre" th:value="${usuario.doctor.nombre}" readonly>
+                    <input type="text" name="nombre" th:value="${usuarioEditar.doctor != null ? usuarioEditar.doctor.nombre : ''}" readonly>
                 </div>
 
                 <div class="campo">
                     <label>Correo Electrónico</label>
-                    <input type="email" name="correo" th:value="${usuario.correo}" readonly>
+                    <input type="email" name="correo" th:value="${usuarioEditar.correo}" readonly>
                 </div>
 
                 <div class="fila-form">
                     <div class="campo">
                         <label>Contraseña</label>
-                        <input type="password" name="contrasena" th:value="${usuario.contrasena}" required>
+                        <input type="password" name="contrasena" th:value="${usuarioEditar.contrasena}" required>
                     </div>
 
                 </div>

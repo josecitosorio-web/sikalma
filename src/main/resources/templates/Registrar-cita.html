@@ -49,8 +49,8 @@
                 <!-- Datos del paciente -->
                 <div class="campo">
                     <label>Paciente</label>
-                    <input type="text" th:value="${paciente.nombres}" readonly>
-                    <input type="hidden" name="paciente" th:value="${paciente.id}">
+                    <input type="text" th:value="${paciente != null ? paciente.nombres : ''}" readonly>
+                    <input type="hidden" name="paciente" th:value="${paciente != null ? paciente.id : 0}">
                 </div>
 
                 <!-- Servicio y especialidad -->
