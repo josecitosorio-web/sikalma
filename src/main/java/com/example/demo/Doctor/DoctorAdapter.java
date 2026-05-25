@@ -17,6 +17,8 @@ public class DoctorAdapter {
         model.setTelefono(entity.getTelefono());
         model.setCorreo(entity.getCorreo());
         model.setFechaNacimiento(entity.getFechaNacimiento());
+        model.setHoraAtencionInicio(entity.getHoraAtencionInicio());
+        model.setHoraAtencionFin(entity.getHoraAtencionFin());
 
         return model;
     }
@@ -33,6 +35,8 @@ public class DoctorAdapter {
         entity.setTelefono(model.getTelefono());
         entity.setCorreo(model.getCorreo());
         entity.setFechaNacimiento(model.getFechaNacimiento());
+        entity.setHoraAtencionInicio(model.getHoraAtencionInicio());
+        entity.setHoraAtencionFin(model.getHoraAtencionFin());
 
         return entity;
     }

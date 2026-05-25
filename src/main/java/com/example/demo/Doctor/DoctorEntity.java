@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,19 +37,25 @@ public class DoctorEntity {
     @Column(name = "fecha_doc")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaNacimiento;
+    @Column(name = "hora_atencion_inicio")
+    private LocalTime hora_atencion_inicio;
+    @Column(name = "hora_atencion_fin")
+    private LocalTime hora_atencion_fin;
     @OneToMany(mappedBy = "doctor" , cascade = CascadeType.ALL)
     private List<CitaEntity> citas = new ArrayList<>();
 
     public DoctorEntity() {
     }
 
-    public DoctorEntity(String nombre, String dni, String especialidad, String telefono, String correo, LocalDate fechaNacimiento) {
+    public DoctorEntity(String nombre, String dni, String especialidad, String telefono, String correo, LocalDate fechaNacimiento , LocalTime hora_atencion_inicio, LocalTime hora_atencion_fin) {
         this.nombre = nombre;
         this.dni = dni;
         this.especialidad = especialidad;
         this.telefono = telefono;
         this.correo = correo;
         this.fechaNacimiento = fechaNacimiento;
+        this.hora_atencion_inicio = hora_atencion_inicio;
+        this.hora_atencion_fin = hora_atencion_fin;
     }
 
     // --- GETTERS Y SETTERS ---
@@ -74,6 +81,12 @@ public class DoctorEntity {
 
     public LocalDate getFechaNacimiento() { return fechaNacimiento; }
     public void setFechaNacimiento(LocalDate fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
+
+    public LocalTime getHoraAtencionInicio() { return hora_atencion_inicio; }
+    public void setHoraAtencionInicio(LocalTime hora_atencion_inicio) { this.hora_atencion_inicio = hora_atencion_inicio ;}
+
+    public LocalTime getHoraAtencionFin() { return hora_atencion_fin; }
+    public void setHoraAtencionFin(LocalTime hora_atencion_fin) { this.hora_atencion_fin = hora_atencion_fin ;}
 
     public List<CitaEntity> getCitas () {return citas;}
     public void setCitas (List<CitaEntity> citas) {this.citas = citas;}

@@ -1,6 +1,7 @@
 package com.example.demo.Doctor;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.Period;
 
 public class Doctor {
@@ -12,16 +13,20 @@ public class Doctor {
     private String telefono;
     private String correo;
     private LocalDate fechaNacimiento;
+    private LocalTime hora_atencion_inicio;
+    private LocalTime hora_atencion_fin;
 
     public Doctor() {}
 
-    public Doctor(String nombre, String dni, String especialidad, String telefono, String correo, LocalDate fechaNacimiento) {
+    public Doctor(String nombre, String dni, String especialidad, String telefono, String correo, LocalDate fechaNacimiento, LocalTime hora_atencion_inicio, LocalTime hora_atencion_fin) {
         this.nombre = nombre;
         this.dni = dni;
         this.especialidad = especialidad;
         this.telefono = telefono;
         this.correo = correo;
         this.fechaNacimiento = fechaNacimiento;
+        this.hora_atencion_inicio = hora_atencion_inicio;
+        this.hora_atencion_fin = hora_atencion_fin;
     }
 
     public Long getId() { return id; }
@@ -44,6 +49,12 @@ public class Doctor {
 
     public LocalDate getFechaNacimiento() { return fechaNacimiento; }
     public void setFechaNacimiento(LocalDate fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
+
+    public LocalTime getHoraAtencionInicio() { return hora_atencion_inicio; }
+    public void setHoraAtencionInicio(LocalTime hora_atencion_inicio) { this.hora_atencion_inicio = hora_atencion_inicio ;}
+
+    public LocalTime getHoraAtencionFin() { return hora_atencion_fin; }
+    public void setHoraAtencionFin(LocalTime hora_atencion_fin) { this.hora_atencion_fin = hora_atencion_fin ;}
 
     public int getEdad() {
         return Period.between(this.fechaNacimiento, LocalDate.now()).getYears();

@@ -3,8 +3,8 @@ package com.example.demo.Doctor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -20,17 +20,17 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public List<Doctor> obtenerTodos() {
-        return DoctorAdapter.toModelList(doctorRepository.findAll()) ;
+        return DoctorAdapter.toModelList(doctorRepository.findAll());
     }
 
     @Override
     public Doctor buscarPorId(Long id) {
-        return DoctorAdapter.toModel(doctorRepository.findById(id).orElse(null)) ;
+        return DoctorAdapter.toModel(doctorRepository.findById(id).orElse(null));
     }
 
     @Override
-    public Doctor buscarDoctor(String dni){
-        return DoctorAdapter.toModel( doctorRepository.findByDni(dni).orElse(null));
+    public Doctor buscarDoctor(String dni) {
+        return DoctorAdapter.toModel(doctorRepository.findByDni(dni).orElse(null));
     }
 
     @Override
@@ -45,13 +45,11 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public List<Doctor> buscarPorDni(String dni) {
-        
-        return DoctorAdapter.toModelList(doctorRepository.findAllByDni(dni)) ;
+
+        return DoctorAdapter.toModelList(doctorRepository.findAllByDni(dni));
     }
 
-
     // VALIDACIONES
-
 
     @Override
     public String validarDatosRegistro(Doctor doctor) {
@@ -78,7 +76,7 @@ public class DoctorServiceImpl implements DoctorService {
 
             return error;
 
-        } 
+        }
 
         return null;
     }
@@ -97,6 +95,26 @@ public class DoctorServiceImpl implements DoctorService {
 
             return "El teléfono del doctor es obligatorio";
 
+        } else if (doctor.getHoraAtencionInicio() == null) {
+
+            return "El horario de inicio de atención es obligatorio";
+
+        } else if (doctor.getHoraAtencionFin() == null) {
+
+            return "El horario de fin de atención es obligatorio";
+
+        } else if (!doctor.getHoraAtencionFin().isAfter(doctor.getHoraAtencionInicio())) {
+
+            return "El horario de fin debe ser mayor al horario de inicio";
+            
+        } else if (doctor.getHoraAtencionInicio().isBefore(LocalTime.of(7, 0))) {
+
+            return "El horario de inicio no puede ser antes de las 7:00 am";
+
+        } else if (doctor.getHoraAtencionFin().isAfter(LocalTime.of(20, 0))) {
+
+            return "El horario de fin no puede ser después de las 8:00 pm";
+
         } else if (doctor.getFechaNacimiento() == null) {
 
             return "La fecha de nacimiento es obligatoria";
@@ -109,11 +127,11 @@ public class DoctorServiceImpl implements DoctorService {
 
             return "El teléfono solo debe contener números";
 
-        }   else if(doctor.getEdad() < 24 || doctor.getEdad() > 75 || doctor.getEdad() == 0){
+        } else if (doctor.getEdad() < 24 || doctor.getEdad() > 75 || doctor.getEdad() == 0) {
 
             return "La fecha de nacimiento no es válida";
 
-        }   else if( doctor.getFechaNacimiento().isAfter(LocalDate.now())){
+        } else if (doctor.getFechaNacimiento().isAfter(LocalDate.now())) {
 
             return "La fecha de nacimiento no debería ser futura";
 
