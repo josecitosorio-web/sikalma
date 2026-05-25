@@ -118,6 +118,7 @@ public class CitaController {
             model.addAttribute("doctores", doctorService.obtenerTodos());
             model.addAttribute("paginaActiva", "citas");
             model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
+            model.addAttribute("cita", citaService.buscarPorId(id));
             return "Editar-cita";
 
         }

@@ -3,6 +3,9 @@ package com.example.demo.Doctor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.Servicio.ServicioEntity;
+import com.example.demo.Servicio.ServicioRepository;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -13,9 +16,19 @@ public class DoctorServiceImpl implements DoctorService {
     @Autowired
     private DoctorRepository doctorRepository;
 
+    @Autowired
+    private ServicioRepository servicioRepository;
+
     @Override
     public void agregar(Doctor doctor) {
-        doctorRepository.save(DoctorAdapter.toEntity(doctor));
+        DoctorEntity entity = DoctorAdapter.toEntity(doctor);
+
+        if (doctor.getServicio() != null) {
+            ServicioEntity servicioGestionado = servicioRepository.findById(doctor.getServicio().getId()).orElse(null);
+            entity.setServicio(servicioGestionado);
+        }
+
+        doctorRepository.save(entity);
     }
 
     @Override
@@ -35,7 +48,14 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public void actualizar(Doctor doctor) {
-        doctorRepository.save(DoctorAdapter.toEntity(doctor));
+        DoctorEntity entity = DoctorAdapter.toEntity(doctor);
+
+        if (doctor.getServicio() != null) {
+            ServicioEntity servicioGestionado = servicioRepository.findById(doctor.getServicio().getId()).orElse(null);
+            entity.setServicio(servicioGestionado);
+        }
+
+        doctorRepository.save(entity);
     }
 
     @Override
@@ -87,15 +107,15 @@ public class DoctorServiceImpl implements DoctorService {
 
             return "El nombre del doctor es obligatorio";
 
-        } else if (doctor.getEspecialidad() == null || doctor.getEspecialidad().trim().isEmpty()) {
-
-            return "La especialidad es obligatoria";
-
-        } else if (doctor.getTelefono() == null || doctor.getTelefono().trim().isEmpty()) {
+        }else if (doctor.getTelefono() == null || doctor.getTelefono().trim().isEmpty()) {
 
             return "El teléfono del doctor es obligatorio";
 
-        } else if (doctor.getHoraAtencionInicio() == null) {
+        }else if (doctor.getServicio() == null || doctor.getServicio().getId() == null) {
+            return "La especialidad es obligatoria";
+        } 
+        
+        else if (doctor.getHoraAtencionInicio() == null) {
 
             return "El horario de inicio de atención es obligatorio";
 
@@ -106,7 +126,7 @@ public class DoctorServiceImpl implements DoctorService {
         } else if (!doctor.getHoraAtencionFin().isAfter(doctor.getHoraAtencionInicio())) {
 
             return "El horario de fin debe ser mayor al horario de inicio";
-            
+
         } else if (doctor.getHoraAtencionInicio().isBefore(LocalTime.of(7, 0))) {
 
             return "El horario de inicio no puede ser antes de las 7:00 am";

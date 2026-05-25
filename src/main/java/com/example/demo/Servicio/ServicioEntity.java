@@ -1,6 +1,7 @@
 package com.example.demo.Servicio;
 
 import com.example.demo.Cita.CitaEntity;
+import com.example.demo.Doctor.DoctorEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -27,6 +28,8 @@ public class ServicioEntity {
     private double costo;
     @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL)
     private List<CitaEntity> citas = new ArrayList<>();
+    @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL)
+    private List<DoctorEntity> doctores = new ArrayList<>();
 
     public ServicioEntity () {}
 
@@ -56,6 +59,10 @@ public class ServicioEntity {
         return citas;
     }
 
+    public List<DoctorEntity> getDoctores(){
+        return doctores;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -74,5 +81,9 @@ public class ServicioEntity {
 
     public void setCitas(List<CitaEntity> citas) {
         this.citas = citas;
+    }
+
+    public void setDoctores(List<DoctorEntity> doctores){
+        this.doctores = doctores;
     }
 }

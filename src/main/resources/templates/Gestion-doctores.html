@@ -44,7 +44,7 @@
                         <td th:text="${doc.nombre}"></td>
                         <td th:text="${doc.dni}"></td>
                         <td th:text="${doc.getEdad()}"></td>
-                        <td th:text="${doc.especialidad}"></td>
+                        <td th:text="${doc.servicio.nombre}"></td>
                         <td th:text="${doc.telefono}"></td>
                         <td class="acciones-celda">
                                 <a th:href="@{/doctor/editar(id=${doc.id})}" class="btn-editar">Editar</a>

@@ -3,6 +3,8 @@ package com.example.demo.Atencion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.Cita.CitaService;
+import com.example.demo.Usuario.Usuario;
+import com.example.demo.Usuario.UsuarioService;
 import com.example.demo.Cita.Cita;
 
 
@@ -20,10 +22,20 @@ public class AtencionServiceImpl implements AtencionService {
     @Autowired
     private CitaService citaService;
 
-
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Override
     public List<Atencion> obtenerTodos() {
+
+        Usuario usuario = usuarioService.obtenerUsuarioActual();
+
+        if(usuario.getRol().equals("DOCTOR")){
+
+            return AtencionAdapter.toModelList(atencionRepository.findByCitaDoctorId(usuario.getDoctor().getId()));
+
+        }
+
         return AtencionAdapter.toModelList(atencionRepository.findAll());
     }
 

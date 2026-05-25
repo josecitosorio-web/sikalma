@@ -82,10 +82,10 @@
                         <td th:text="${cita.hora}"></td>
                         <td><span class="estado estado-confirmado" th:text="${cita.estado}"></span></td>
                         <td class="td-acciones">
-                            <a th:href="@{/cita/editar(id=${cita.id})}" class="btn-editar">Editar</a>
-                            <a th:href="@{/cita/cancelar(id=${cita.id})}" class="btn-cancelar">Cancelar</a>
-                            <a th:if="${cita.estado == 'Confirmada'}" th:href="@{/cita/atender(id=${cita.id})}" class="btn-primario">Atender</a>
-                            <a th:if="${cita.estado == 'Confirmada'}" th:href="@{/cita/no-asistio(id=${cita.id})}" 
+                            <a th:if="${usuario.rol == 'ADMIN'}" th:href="@{/cita/editar(id=${cita.id})}" class="btn-editar">Editar</a>
+                            <a th:if="${usuario.rol == 'ADMIN'}" th:href="@{/cita/cancelar(id=${cita.id})}" class="btn-cancelar">Cancelar</a>
+                            <a th:if="${cita.estado == 'Confirmada' && usuario.rol == 'DOCTOR'}" th:href="@{/cita/atender(id=${cita.id})}" class="btn-primario">Atender</a>
+                            <a th:if="${cita.estado == 'Confirmada' && usuario.rol == 'ADMIN'}" th:href="@{/cita/no-asistio(id=${cita.id})}" 
                                     style="padding: 0.35em 1em;
                                         text-decoration: none;
                                         color: white;

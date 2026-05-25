@@ -6,6 +6,8 @@ import com.example.demo.Paciente.Paciente;
 import com.example.demo.Paciente.PacienteService;
 import com.example.demo.Servicio.Servicio;
 import com.example.demo.Servicio.ServicioService;
+import com.example.demo.Usuario.Usuario;
+import com.example.demo.Usuario.UsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,8 +18,6 @@ import java.util.List;
 
 @Service
 public class CitaServiceImpl implements CitaService {
-
-    
 
     @Autowired
     private CitaRepository citaRepository;
@@ -31,14 +31,26 @@ public class CitaServiceImpl implements CitaService {
     @Autowired
     private ServicioService servicioService;
 
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Override
     public List<Cita> listar() {
-        return CitaAdapter.toModelList(citaRepository.findAll()) ;
+
+        Usuario usuario = usuarioService.obtenerUsuarioActual();
+
+        if (usuario.getRol().equals("DOCTOR")) {
+
+            return CitaAdapter.toModelList(citaRepository.findByDoctorId(usuario.getDoctor().getId()));
+
+        }
+
+        return CitaAdapter.toModelList(citaRepository.findAll());
     }
 
     @Override
-    public void guardar(Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora, String estado) {
+    public void guardar(Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora,
+            String estado) {
 
         Paciente p = pacienteService.buscarPorId(pacienteId);
         Doctor d = doctorService.buscarPorId(doctorId);
@@ -51,7 +63,7 @@ public class CitaServiceImpl implements CitaService {
 
     @Override
     public Cita buscarPorId(Long id) {
-        return CitaAdapter.toModel(citaRepository.findById(id).orElse(null)) ;
+        return CitaAdapter.toModel(citaRepository.findById(id).orElse(null));
     }
 
     @Override
@@ -80,7 +92,8 @@ public class CitaServiceImpl implements CitaService {
 
     // validaciones
     @Override
-    public String validarDatosRegistro(Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora) {
+    public String validarDatosRegistro(Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha,
+            LocalTime hora) {
 
         String error = validacionesGenerales(pacienteId, doctorId, servicioId, fecha, hora);
 
@@ -99,10 +112,12 @@ public class CitaServiceImpl implements CitaService {
     }
 
     @Override
-    public String validarDatosEdicion(Long id, Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora) {
+    public String validarDatosEdicion(Long id, Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha,
+            LocalTime hora) {
 
-        String error = validacionesGenerales(pacienteId, doctorId, servicioId, fecha, hora);
-        if (error != null) return error;
+        String error = validacionesGeneralesEdicion(id,pacienteId, doctorId, servicioId, fecha, hora);
+        if (error != null)
+            return error;
 
         if (citaRepository.existeCitaDoctorExcluyendo(doctorId, fecha, hora, id)) {
             return "El doctor ya tiene una cita registrada en esa fecha y hora";
@@ -149,9 +164,8 @@ public class CitaServiceImpl implements CitaService {
 
     }
 
-    
-
-    public String validacionesGenerales(Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora) {
+    public String validacionesGenerales(Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha,
+            LocalTime hora) {
 
         if (pacienteId <= 0) {
 
@@ -177,6 +191,65 @@ public class CitaServiceImpl implements CitaService {
 
             return "La fecha de la cita no puede ser anterior a hoy";
 
+        } else if (fecha.isEqual(LocalDate.now()) && hora.isBefore(LocalTime.now())) {
+
+            return "La hora de la cita no puede ser anterior a la hora actual";
+
+        } else {
+
+            Doctor d = doctorService.buscarPorId(doctorId);
+
+            if (hora.isBefore(d.getHoraAtencionInicio()) || hora.isAfter(d.getHoraAtencionFin())) {
+
+                return "La hora de la cita está fuera del horario del doctor";
+
+            }
+
+            List<Cita> citasDoctor = CitaAdapter.toModelList(citaRepository.findByDoctorId(doctorId));
+
+            for (Cita c : citasDoctor) {
+
+                if (c.getFecha().isEqual(fecha)) {
+
+                    LocalTime inicio = c.getHora();
+                    LocalTime fin = c.getHora().plusHours(1);
+
+                    if (hora.isAfter(inicio.minusMinutes(1)) && hora.isBefore(fin)) {
+
+                        return "El doctor ya tiene una cita en ese horario, cada cita dura 1 hora";
+
+                    }
+                }
+
+            }
+
+        }
+
+        return null;
+
+    }
+
+    public String validacionesGeneralesEdicion(Long id, Long pacienteId, Long doctorId, Long servicioId,
+            LocalDate fecha, LocalTime hora) {
+
+        List<Cita> citasDoctor = CitaAdapter.toModelList(citaRepository.findByDoctorId(doctorId));
+
+        for (Cita c : citasDoctor) {
+
+            if (c.getId().equals(id)) {
+                continue;
+            }
+
+            if (c.getFecha().isEqual(fecha)) {
+
+                LocalTime inicio = c.getHora();
+                LocalTime fin = c.getHora().plusHours(1);
+
+                if (hora.isAfter(inicio.minusMinutes(1)) && hora.isBefore(fin)) {
+
+                    return "El doctor ya tiene una cita en ese horario";
+                }
+            }
         }
 
         return null;
@@ -186,7 +259,7 @@ public class CitaServiceImpl implements CitaService {
     @Override
     public String validarCitasExistentesServicio(Long idServicio) {
 
-        if(!citaRepository.findByServicioId(idServicio).isEmpty()) {
+        if (!citaRepository.findByServicioId(idServicio).isEmpty()) {
 
             return "El servicio tiene citas registradas";
 
