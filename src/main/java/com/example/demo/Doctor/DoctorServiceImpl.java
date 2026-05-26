@@ -107,15 +107,15 @@ public class DoctorServiceImpl implements DoctorService {
 
             return "El nombre del doctor es obligatorio";
 
-        }else if (doctor.getTelefono() == null || doctor.getTelefono().trim().isEmpty()) {
+        } else if (doctor.getTelefono() == null || doctor.getTelefono().trim().isEmpty()) {
 
             return "El teléfono del doctor es obligatorio";
 
-        }else if (doctor.getServicio() == null || doctor.getServicio().getId() == null) {
+        } else if (doctor.getServicio() == null || doctor.getServicio().getId() == null) {
+
             return "La especialidad es obligatoria";
-        } 
-        
-        else if (doctor.getHoraAtencionInicio() == null) {
+
+        } else if (doctor.getHoraAtencionInicio() == null) {
 
             return "El horario de inicio de atención es obligatorio";
 
@@ -155,6 +155,10 @@ public class DoctorServiceImpl implements DoctorService {
 
             return "La fecha de nacimiento no debería ser futura";
 
+        } else if (doctor.getHoraAtencionInicio().plusHours(6).isAfter(doctor.getHoraAtencionFin())) {
+
+            return "El doctor debe trabajar mínimo 6 horas al día";
+            
         }
 
         return null;

@@ -12,6 +12,7 @@ import com.example.demo.Usuario.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -115,7 +116,7 @@ public class CitaServiceImpl implements CitaService {
     public String validarDatosEdicion(Long id, Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha,
             LocalTime hora) {
 
-        String error = validacionesGeneralesEdicion(id,pacienteId, doctorId, servicioId, fecha, hora);
+        String error = validacionesGeneralesEdicion(id, pacienteId, doctorId, servicioId, fecha, hora);
         if (error != null)
             return error;
 
@@ -195,6 +196,10 @@ public class CitaServiceImpl implements CitaService {
 
             return "La hora de la cita no puede ser anterior a la hora actual";
 
+        } else if (fecha.getDayOfWeek() == DayOfWeek.SUNDAY) {
+
+            return "No se pueden registrar citas los domingos";
+
         } else {
 
             Doctor d = doctorService.buscarPorId(doctorId);
@@ -231,6 +236,48 @@ public class CitaServiceImpl implements CitaService {
 
     public String validacionesGeneralesEdicion(Long id, Long pacienteId, Long doctorId, Long servicioId,
             LocalDate fecha, LocalTime hora) {
+
+        if (pacienteId <= 0) {
+
+            return "Debe de seleccionar un paciente";
+
+        } else if (doctorId <= 0) {
+
+            return "Debe de seleccionar un doctor";
+
+        } else if (servicioId <= 0l) {
+
+            return "Debe de seleccionar un servicio";
+
+        } else if (fecha == null) {
+
+            return "La fecha de reserva es obligatorio";
+
+        } else if (hora == null) {
+
+            return "La hora de reserva es obligatorio";
+
+        } else if (fecha.isBefore(LocalDate.now())) {
+
+            return "La fecha de la cita no puede ser anterior a hoy";
+
+        } else if (fecha.isEqual(LocalDate.now()) && hora.isBefore(LocalTime.now())) {
+
+            return "La hora de la cita no puede ser anterior a la hora actual";
+
+        } else if (fecha.getDayOfWeek() == DayOfWeek.SUNDAY) {
+
+            return "No se pueden registrar citas los domingos";
+
+        }
+
+        Doctor d = doctorService.buscarPorId(doctorId);
+
+        if (hora.isBefore(d.getHoraAtencionInicio()) || hora.isAfter(d.getHoraAtencionFin())) {
+
+            return "La hora de la cita está fuera del horario del doctor";
+
+        }
 
         List<Cita> citasDoctor = CitaAdapter.toModelList(citaRepository.findByDoctorId(doctorId));
 

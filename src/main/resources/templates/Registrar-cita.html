@@ -57,7 +57,7 @@
                 <div class="fila-form">
                     <div>
                         <label>Servicio (Especialidad)</label>
-                        <select name="servicio">
+                        <select name="servicio" id="servicioSelect">
                             <option value="0">— Seleccione un servicio —</option>
                             <option th:each="servicio : ${servicios}" th:value="${servicio.id}"
                                 th:text="${servicio.nombre}"></option>
@@ -65,9 +65,10 @@
                     </div>
                     <div>
                         <label>Doctor Asignado</label>
-                        <select name="doctor">
+                        <select name="doctor" id="doctorSelect">
                             <option value="0">— Seleccione un doctor —</option>
-                            <option th:each="doctor : ${doctores}" th:value="${doctor.id}" th:text="${doctor.nombre}">
+                            <option th:each="doctor : ${doctores}" th:value="${doctor.id}" th:text="${doctor.nombre}"
+                                th:attr="data-servicio=${doctor.servicio != null ? doctor.servicio.id : 0}">
                             </option>
                         </select>
                     </div>
@@ -102,6 +103,7 @@
             </form>
         </div>
     </main>
+    <script src="/js/registrar-cita.js"></script>
 </body>
 
 </html>

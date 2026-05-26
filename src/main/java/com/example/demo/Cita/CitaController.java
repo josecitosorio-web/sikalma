@@ -131,6 +131,14 @@ public class CitaController {
     @GetMapping("/atender")
     public String atenderCita(@RequestParam Long id, Model model) {
 
+        Cita cita = citaService.buscarPorId(id);
+
+        if(cita != null && cita.getEstado().equalsIgnoreCase("Confirmada")){
+            
+            citaService.cambiarEstado(id, "Atendido");
+
+        }
+
         model.addAttribute("cita", citaService.buscarPorId(id));
         model.addAttribute("paginaActiva", "citas");
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
