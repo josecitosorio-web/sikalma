@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/logo-policlinico.png">
+    <title>Editar Cita - SIKALMA</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+    <div th:replace="fragments/menu :: menu"></div>
+    <main>
+        <div class="encabezado">
+            <div class="encabezado-texto">
+                <div class="retorno">
+                    <a href="/cita/g-citas">Gestión de Citas</a>
+                    <span>›</span>
+                    <span th:text="|Editar Cita #00${cita.id}|"></span>
+                </div>
+                <h1>Editar Cita</h1>
+                <p>Modifica los datos de la cita de forma rápida y precisa</p>
+            </div>
+            <span class="estado estado-pendiente" th:text="${cita.estado}"></span>
+        </div>
+
+        <div class="formulario-card">
+            <h2 th:text="|Datos del Paciente — ID Cita: #00${cita.id}|"></h2>
+
+            <div th:if="${error != null}">
+                <div
+                    style="display: flex; align-items: center; gap: 12px; background-color: #FFFFFF; color: #842029; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; border-left: 5px solid #dc3545; box-shadow: 0 2px 12px rgba(0,0,0,0.06); font-size: 0.95rem;">
+                    <span style="color: #dc3545; font-size: 1.1rem; font-weight: bold;">⚠️</span>
+                    <span style="font-weight: 500;" th:text="${error}"></span>
+                </div>
+            </div>
+
+            <form th:action="@{/cita/actualizar}" method="post">
+
+
+                <input type="hidden" name="id" th:value="${cita.id}">
+
+                <div class="campo">
+                    <label>Paciente</label>
+                    <input type="text" th:value="${cita.paciente.nombres}" readonly>
+                    <input type="hidden" name="paciente" th:value="${cita.paciente.id}">
+                </div>
+
+                <div class="fila-form">
+                    <div>
+                        <label>Servicio (Especialidad)</label>
+                        <select name="servicio">
+
+                            <option th:each="servicio : ${servicios}" th:value="${servicio.id}"
+                                th:text="${servicio.nombre}" th:selected="${servicio.id == cita.servicio.id}">
+                            </option>
+
+                        </select>
+                    </div>
+                    <div>
+                        <label>Doctor Asignado</label>
+                        <select name="doctor">
+                            <option th:each="doctor : ${doctores}" th:value="${doctor.id}" th:text="${doctor.nombre}"
+                                th:selected="${doctor.id == cita.doctor.id}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="fila-form">
+                    <div>
+                        <label>Fecha de la Cita</label>
+                        <input type="date" name="fecha" th:value="${cita.fecha}" required>
+                    </div>
+                    <div>
+                        <label>Hora de la Cita</label>
+                        <input type="time" name="hora" th:value="${cita.hora}" required>
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <label>Estado</label>
+                    <input type="text" name="estado" th:value="${cita.estado}" required readonly>
+                </div>
+
+                <div class="form-acciones">
+                    <a href="/cita/g-citas" class="btn-secundario">Cancelar</a>
+                    <button type="submit" class="btn-primario">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

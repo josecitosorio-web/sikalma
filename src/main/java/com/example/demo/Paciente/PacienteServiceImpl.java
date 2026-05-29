@@ -1,6 +1,8 @@
 package com.example.demo.Paciente;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -8,40 +10,39 @@ import java.util.List;
 @Service
 public class PacienteServiceImpl implements PacienteService {
 
-    private final PacienteDAO PacienteDAO;
+    @Autowired
+    private PacienteRepository pacienteRepository;
 
-    public PacienteServiceImpl(PacienteDAO PacienteDAO){
-        this.PacienteDAO = PacienteDAO;
-    }
-
+    
     @Override
     public void agregar(Paciente p){
-        PacienteDAO.save(p);
+
+        pacienteRepository.save(PacienteAdapter.toEntity(p));
     }
 
     @Override
     public List<Paciente> listar() {
-        return PacienteDAO.findAll();
+        return PacienteAdapter.toModelList(pacienteRepository.findAll());
     }
 
     @Override
-    public Paciente buscarPorId(int id){
-        return PacienteDAO.findById(id);
+    public Paciente buscarPorId(Long id){
+        return PacienteAdapter.toModel(pacienteRepository.findById(id).orElse(null));
+    }
+
+    @Override
+    public Paciente buscarPaciente(String dni){
+        return PacienteAdapter.toModel(pacienteRepository.findByDni(dni).orElse(null));
     }
 
     @Override
     public void actualizar(Paciente p){
-        PacienteDAO.update(p);
-    }
-
-    @Override
-    public void eliminar(int id) {
-        PacienteDAO.delete(id);
+        pacienteRepository.save(PacienteAdapter.toEntity(p));
     }
 
     @Override
     public List<Paciente> buscarPorDni(String dni){
-        return PacienteDAO.findByDni(dni);
+        return PacienteAdapter.toModelList(pacienteRepository.findAllByDni(dni)) ;
     }
 
     //validaciones 
@@ -54,7 +55,7 @@ public class PacienteServiceImpl implements PacienteService {
 
             return error;
 
-        }else if(!PacienteDAO.findByDni(paciente.getDni()).isEmpty()){
+        }else if(pacienteRepository.findByDni(paciente.getDni()).isPresent()){
 
             return "Ya existe un paciente con ese DNI";
 
@@ -109,7 +110,7 @@ public class PacienteServiceImpl implements PacienteService {
 
             return "El número de teléfono debe comenzar con 9 y debe tener 9 dígitos";
 
-        }else if(paciente.getEdad() < 0 || paciente.getEdad() > 100) {
+        }else if(paciente.getEdad() < 0 || paciente.getEdad() > 120) {
 
             return "La fecha de nacimiento no es válida";
 

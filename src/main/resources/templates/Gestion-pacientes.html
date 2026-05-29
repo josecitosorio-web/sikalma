@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/logo-policlinico.png">
+    <title>Pacientes - SIKALMA</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/gestion-pacientes.css">
+</head>
+
+<body>
+    <div th:replace="fragments/menu :: menu"></div>
+
+    <main>
+        <div class="encabezado">
+            <div class="encabezado-texto">
+                <h1>Gestión de Pacientes</h1>
+                <p>Consulta, edita o elimina los registros de los pacientes del policlínico</p>
+            </div>
+            <a href="/paciente/nuevo" class="btn-primario">+ Nuevo Paciente</a>
+        </div>
+
+        <div class="tabla-contenedor">
+            <div class="tabla-encabezado">
+                <div>
+                    <h3>Listado de Pacientes</h3>
+                    <p th:text="|Total: ${pacientes.size()} registros|"></p>
+                </div>
+            </div>
+
+            <form th:action="@{/paciente/buscar}" method="get">
+                <div class="busqueda-barra">
+                    <input type="search" name="dni" placeholder="Buscar por DNI...">
+                    <button type="submit" class="btn-primario">Buscar</button>
+                </div>
+            </form>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre completo</th>
+                        <th>DNI</th>
+                        <th>Edad</th>
+                        <th>Teléfono</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="paciente : ${pacientes}">
+                        <td th:text="|#P0${paciente.id}|"></td>
+                        <td th:text="${paciente.nombres}"></td>
+                        <td th:text="${paciente.dni}"></td>
+                        <td th:text="${paciente.edad}"></td>
+                        <td th:text="${paciente.telefono}"></td>
+                        <td class="td-acciones">
+                            <a th:href="@{/paciente/editar(id=${paciente.id})}" class="btn-editar">Editar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+
+</html>

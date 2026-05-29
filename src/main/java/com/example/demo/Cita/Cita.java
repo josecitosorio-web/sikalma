@@ -1,32 +1,27 @@
 package com.example.demo.Cita;
 
+import com.example.demo.Atencion.Atencion;
 import com.example.demo.Doctor.Doctor;
 import com.example.demo.Paciente.Paciente;
 import com.example.demo.Servicio.Servicio;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Cita {
 
-    private int id;
+    private Long id;
     private Paciente paciente;
     private Doctor doctor;
     private Servicio servicio;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Atencion atencion;
     private LocalDate fecha;
-    @DateTimeFormat(pattern = "HH:mm")
     private LocalTime hora;
     private String estado;
 
+    public Cita() {}
 
-    public Cita() {
-
-    }
-
-    // Constructor con parámetros
-    public Cita(Paciente paciente, Doctor doctor,Servicio servicio, LocalDate fecha, LocalTime hora, String estado){
+    public Cita(Paciente paciente, Doctor doctor, Servicio servicio, LocalDate fecha, LocalTime hora, String estado) {
         this.paciente = paciente;
         this.doctor = doctor;
         this.servicio = servicio;
@@ -35,62 +30,27 @@ public class Cita {
         this.estado = estado;
     }
 
-    // GETTERS
-    public int getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Paciente getPaciente() {
-        return paciente;
-    }
+    public Paciente getPaciente() { return paciente; }
+    public void setPaciente(Paciente paciente) { this.paciente = paciente; }
 
-    public Doctor getDoctor() {
-        return doctor;
-    }
+    public Doctor getDoctor() { return doctor; }
+    public void setDoctor(Doctor doctor) { this.doctor = doctor; }
 
-    public Servicio getServicio() {
-        return servicio;
-    }
+    public Servicio getServicio() { return servicio; }
+    public void setServicio(Servicio servicio) { this.servicio = servicio; }
 
-    public LocalDate getFecha() {
-        return fecha;
-    }
+    public Atencion getAtencion() { return atencion; }
+    public void setAtencion(Atencion atencion) { this.atencion = atencion; }
 
-    public LocalTime getHora() {
-        return hora;
-    }
+    public LocalDate getFecha() { return fecha; }
+    public void setFecha(LocalDate fecha) { this.fecha = fecha; }
 
-    public String getEstado() {
-        return estado;
-    }
+    public LocalTime getHora() { return hora; }
+    public void setHora(LocalTime hora) { this.hora = hora; }
 
-    // 🔥 SETTER DE ID (IMPORTANTE PARA EDITAR)
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    // SETTERS
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
-
-    public void setDoctor(Doctor doctor) {
-        this.doctor = doctor;
-    }
-
-    public void setServicio(Servicio servicio) {
-        this.servicio = servicio;
-    }
-
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
-    public void setHora(LocalTime hora) {
-        this.hora = hora;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
 }

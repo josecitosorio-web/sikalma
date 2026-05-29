@@ -1,53 +1,100 @@
 package com.example.demo.Doctor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.Servicio.ServicioEntity;
+import com.example.demo.Servicio.ServicioRepository;
+import com.example.demo.Usuario.UsuarioEntity;
+import com.example.demo.Usuario.UsuarioRepository;
+
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
 
-    private final DoctorDAO doctorDAO;
+    @Autowired
+    private DoctorRepository doctorRepository;
 
-    public DoctorServiceImpl(DoctorDAO doctorDAO){
-        this.doctorDAO = doctorDAO;
-    }
+    @Autowired
+    private ServicioRepository servicioRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @Override
     public void agregar(Doctor doctor) {
-        doctorDAO.save((doctor));
+        DoctorEntity entity = DoctorAdapter.toEntity(doctor);
+
+        if (doctor.getServicio() != null) {
+            ServicioEntity servicioGestionado = servicioRepository.findById(doctor.getServicio().getId()).orElse(null);
+            entity.setServicio(servicioGestionado);
+        }
+
+        doctorRepository.save(entity);
     }
 
     @Override
     public List<Doctor> obtenerTodos() {
-        return doctorDAO.findAll();
+        return DoctorAdapter.toModelList(doctorRepository.findAll());
     }
 
     @Override
-    public Doctor buscarPorId(int id) {
-        return doctorDAO.findById(id);
+    public Doctor buscarPorId(Long id) {
+        return DoctorAdapter.toModel(doctorRepository.findById(id).orElse(null));
+    }
+
+    @Override
+    public Doctor buscarDoctor(String dni) {
+        return DoctorAdapter.toModel(doctorRepository.findByDni(dni).orElse(null));
     }
 
     @Override
     public void actualizar(Doctor doctor) {
-        doctorDAO.update(doctor);
+
+        DoctorEntity doctorActual = doctorRepository.findById(doctor.getId()).orElse(null);
+
+        DoctorEntity entity = DoctorAdapter.toEntity(doctor);
+
+        if (doctor.getServicio() != null) {
+
+            ServicioEntity servicioGestionado = servicioRepository
+                    .findById(doctor.getServicio().getId())
+                    .orElse(null);
+
+            entity.setServicio(servicioGestionado);
+        }
+
+        if (doctorActual != null && !doctorActual.getCorreo().equals(doctor.getCorreo())) {
+
+            UsuarioEntity usuario = usuarioRepository.findByDoctorId(doctor.getId());
+
+            if (usuario != null) {
+
+                usuario.setCorreo(doctor.getCorreo());
+
+                usuarioRepository.save(usuario);
+            }
+        }
+
+        doctorRepository.save(entity);
     }
 
     @Override
-    public void eliminar(int id) {
-        doctorDAO.delete(id);
+    public void eliminar(Long id) {
+        doctorRepository.deleteById(id);
     }
 
     @Override
     public List<Doctor> buscarPorDni(String dni) {
-        
-        return doctorDAO.findByDni(dni);
+
+        return DoctorAdapter.toModelList(doctorRepository.findAllByDni(dni));
     }
 
-
     // VALIDACIONES
-
 
     @Override
     public String validarDatosRegistro(Doctor doctor) {
@@ -55,12 +102,12 @@ public class DoctorServiceImpl implements DoctorService {
 
         if (error != null) {
             return error;
-        } else if (!doctorDAO.findByDni(doctor.getDni()).isEmpty()) {
+        } else if (doctorRepository.findByDni(doctor.getDni()).isPresent()) {
 
             return "Ya existe un doctor registrado con ese DNI";
 
-        } else if (!doctorDAO.findByCorreo(doctor.getCorreo()).isEmpty()) {
-            return "Ya existe un usuario registrado con ese correo";
+        } else if (doctorRepository.findByCorreo(doctor.getCorreo()).isPresent()) {
+            return "Ya existe un doctor registrado con ese correo";
         }
 
         return null;
@@ -74,7 +121,16 @@ public class DoctorServiceImpl implements DoctorService {
 
             return error;
 
-        } 
+        } else {
+
+            Optional<DoctorEntity> doctorExistente = doctorRepository.findByCorreo(doctor.getCorreo());
+
+            if (doctorExistente.isPresent() &&
+                    !doctorExistente.get().getId().equals(doctor.getId())) {
+
+                return "Ya existe un doctor registrado con ese correo";
+            }
+        }
 
         return null;
     }
@@ -85,13 +141,33 @@ public class DoctorServiceImpl implements DoctorService {
 
             return "El nombre del doctor es obligatorio";
 
-        } else if (doctor.getEspecialidad() == null || doctor.getEspecialidad().trim().isEmpty()) {
-
-            return "La especialidad es obligatoria";
-
         } else if (doctor.getTelefono() == null || doctor.getTelefono().trim().isEmpty()) {
 
             return "El teléfono del doctor es obligatorio";
+
+        } else if (doctor.getServicio() == null || doctor.getServicio().getId() == null) {
+
+            return "La especialidad es obligatoria";
+
+        } else if (doctor.getHoraAtencionInicio() == null) {
+
+            return "El horario de inicio de atención es obligatorio";
+
+        } else if (doctor.getHoraAtencionFin() == null) {
+
+            return "El horario de fin de atención es obligatorio";
+
+        } else if (!doctor.getHoraAtencionFin().isAfter(doctor.getHoraAtencionInicio())) {
+
+            return "El horario de fin debe ser mayor al horario de inicio";
+
+        } else if (doctor.getHoraAtencionInicio().isBefore(LocalTime.of(7, 0))) {
+
+            return "El horario de inicio no puede ser antes de las 7:00 am";
+
+        } else if (doctor.getHoraAtencionFin().isAfter(LocalTime.of(20, 0))) {
+
+            return "El horario de fin no puede ser después de las 8:00 pm";
 
         } else if (doctor.getFechaNacimiento() == null) {
 
@@ -105,13 +181,17 @@ public class DoctorServiceImpl implements DoctorService {
 
             return "El teléfono solo debe contener números";
 
-        }   else if(doctor.getEdad() < 24 || doctor.getEdad() > 75 || doctor.getEdad() == 0){
+        } else if (doctor.getEdad() < 24 || doctor.getEdad() > 75 || doctor.getEdad() == 0) {
 
             return "La fecha de nacimiento no es válida";
 
-        }   else if( doctor.getFechaNacimiento().isAfter(LocalDate.now())){
+        } else if (doctor.getFechaNacimiento().isAfter(LocalDate.now())) {
 
             return "La fecha de nacimiento no debería ser futura";
+
+        } else if (doctor.getHoraAtencionInicio().plusHours(6).isAfter(doctor.getHoraAtencionFin())) {
+
+            return "El doctor debe trabajar mínimo 6 horas al día";
 
         }
 

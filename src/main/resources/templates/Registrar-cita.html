@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/logo-policlinico.png">
+    <title>Registrar Cita - SIKALMA</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+    <div th:replace="fragments/menu :: menu"></div>
+
+    <main>
+        <div class="encabezado">
+            <div class="encabezado-texto">
+                <div class="retorno">
+                    <a href="/cita/g-citas">Gestión de Citas</a>
+                    <span>›</span>
+                    <span>Registrar Cita</span>
+                </div>
+                <h1>Registrar Nueva Cita</h1>
+                <p>Complete el formulario para reservar una cita médica</p>
+            </div>
+        </div>
+
+        <div class="buscador-seccion"
+            style="margin: 20px 0; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <form th:action="@{/cita/buscar}" method="get" style="display: flex; gap: 10px; align-items: center;">
+                <input type="text" name="dni" placeholder="Ingrese DNI del paciente..."
+                    style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; width: 300px;" required>
+                <button type="submit" class="btn-primario">Buscar por DNI</button>
+            </form>
+        </div>
+
+        <div class="formulario-card">
+            <h2>Datos de la Cita</h2>
+
+            <div th:if="${error != null}">
+                <div
+                    style="display: flex; align-items: center; gap: 12px; background-color: #FFFFFF; color: #842029; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; border-left: 5px solid #dc3545; box-shadow: 0 2px 12px rgba(0,0,0,0.06); font-size: 0.95rem;">
+                    <span style="color: #dc3545; font-size: 1.1rem; font-weight: bold;">⚠️</span>
+                    <span style="font-weight: 500;" th:text="${error}"></span>
+                </div>
+            </div>
+
+            <form th:action="@{/cita/guardar}" method="post">
+                <!-- Datos del paciente -->
+                <div class="campo">
+                    <label>Paciente</label>
+                    <input type="text" th:value="${paciente != null ? paciente.nombres : ''}" readonly>
+                    <input type="hidden" name="paciente" th:value="${paciente != null ? paciente.id : 0}">
+                </div>
+
+                <!-- Servicio y especialidad -->
+                <div class="fila-form">
+                    <div>
+                        <label>Servicio (Especialidad)</label>
+                        <select name="servicio" id="servicioSelect">
+                            <option value="0">— Seleccione un servicio —</option>
+                            <option th:each="servicio : ${servicios}" th:if="${servicio.estado}" th:value="${servicio.id}"
+                                th:text="${servicio.nombre}"></option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Doctor Asignado</label>
+                        <select name="doctor" id="doctorSelect">
+                            <option value="0">— Seleccione un doctor —</option>
+                            <option th:each="doctor : ${doctores}" th:value="${doctor.id}" th:text="${doctor.nombre}"
+                                th:attr="data-servicio=${doctor.servicio != null ? doctor.servicio.id : 0}">
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Fecha y hora -->
+                <div class="fila-form">
+                    <div>
+                        <label>Fecha de la Cita</label>
+                        <input type="date" name="fecha" required>
+                    </div>
+                    <div>
+                        <label>Hora de la Cita</label>
+                        <input type="time" name="hora" required>
+                    </div>
+                </div>
+
+                <!-- Estado inicial -->
+                <div class="campo">
+                    <label>Estado Inicial</label>
+                    <input type="estado" name="estado" value="Pendiente" required readonly>
+                    <span class="indicacion">El estado puede modificarse más adelante desde Gestión de Citas.</span>
+                </div>
+
+                <div class="form-acciones">
+                    <a href="/cita/g-citas" class="btn-secundario">Cancelar</a>
+                    <button type="submit" class="btn-primario">Registrar Cita</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script src="/js/registrar-cita.js"></script>
+</body>
+
+</html>

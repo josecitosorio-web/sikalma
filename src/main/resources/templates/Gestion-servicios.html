@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/logo-policlinico.png">
+    <title>Gestión de Servicios - SIKALMA</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/gestion-servicios.css">
+</head>
+<body>
+    <div th:replace="fragments/menu :: menu"></div>
+
+    <main>
+        <div class="encabezado">
+            <div class="encabezado-texto">
+                <h1>Gestión de Servicios</h1>
+                <p>Administra los servicios médicos que ofrece el policlínico y sus costos</p>
+            </div>
+            <a href="/servicio/nuevo" class="btn-primario">+ Nuevo Servicio</a>
+        </div>
+
+        <div class="tabla-contenedor">
+            <div class="tabla-encabezado">
+                <div>
+                    <h3>Servicios disponibles</h3>
+                    <p th:text="|Total: ${servicios.size()} servicios registrados|"></p>
+                </div>
+            </div>
+
+            <form th:action="@{/servicio/buscar}" method="get">
+                <div class="busqueda-barra">
+                    <input type="search" name="nombre" placeholder="Buscar por nombre...">
+                    <button type="submit" class="btn-primario">Buscar</button>
+                </div>
+            </form>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Servicio</th>
+                        <th>Descripción</th>
+                        <th>Costo</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="servicio : ${servicios}">
+                        <td th:text="|#S0${servicio.id}|"></td>
+                        <td th:text="${servicio.nombre}"></td>
+                        <td th:text="${servicio.descripcion}"></td>
+                        <td th:text="|S/ ${servicio.costo}|"></td>
+                        <td th:text="${servicio.estado ? 'Activo' : 'Inactivo'}"></td>
+                        <td class="td-acciones">
+                                <a th:href="@{/servicio/editar(id=${servicio.id})}" class="btn-editar">Editar</a>
+                                <a th:href="@{/servicio/activar(id=${servicio.id})}" class="btn-primario">Activar</a>
+                                <a th:href="@{/servicio/desactivar(id=${servicio.id})}"  class="btn-cancelar">Desactivar</a>
+                            </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

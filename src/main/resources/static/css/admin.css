@@ -57,6 +57,41 @@ body {
   font-weight: bold;
 }
 
+/* DISEÑO DE LOS PERFILES */
+.perfil {
+  padding: 0.5em;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.perfil-admin,
+.perfil-doctor {
+  display: flex;
+  flex-direction: column;
+  padding: 1em 0.5em;
+  gap: 0.5em;
+  width: 100%;
+
+  justify-content: center;
+
+  border-radius: 0.6em;
+  font-weight: bold;
+  font-size: 0.90em;
+}
+
+.perfil-admin {
+  border: 1px solid #3498DB;
+  background-color: #EAF4FF;
+  color: #1F5F8B;
+}
+
+.perfil-doctor {
+  border: 1px solid #2ECC71;
+  background-color: #EAFBF1;
+  color: #1E7A4D;
+}
+
 /* MAIN */
 main {
   flex: 4;

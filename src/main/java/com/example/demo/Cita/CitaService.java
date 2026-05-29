@@ -8,31 +8,31 @@ public interface CitaService {
 
     List<Cita> listar();
 
-    void guardar(int pacienteId, int doctorId, int servicioId, LocalDate fecha, LocalTime hora, String estado);
+    void guardar(Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora, String estado);
 
-    Cita buscarPorId(int id);
+    Cita buscarPorId(Long id);
 
-    void eliminar(int id);
+    void eliminar(Long id);
 
-    void actualizar(int id ,int pacienteId, int doctorId, int servicioId, LocalDate fecha, LocalTime hora, String estado);
+    void actualizar(Long id ,Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora, String estado);
 
-    List<Cita> buscarCitaPorPaciente( int idPaciente);
+    List<Cita> buscarCitaPorPaciente( Long idPaciente);
 
 
     // validaciones 
-    String validarDatosRegistro(int pacienteId, int doctorId, int servicioId, LocalDate fecha, LocalTime hora);
+    String validarDatosRegistro(Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora);
 
-    String validarDatosEdicion(int id, int pacienteId, int doctorId, int servicioId, LocalDate fecha, LocalTime hora);
+    String validarDatosEdicion(Long id, Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora);
 
-    void cambiarEstado(int id, String estado);
+    void cambiarEstado(Long id, String estado);
 
-    boolean existeCitaDoctor(int doctorId, LocalDate fecha, LocalTime hora);
+    boolean existeCitaDoctor(Long doctorId, LocalDate fecha, LocalTime hora);
 
 
 
-    String validarCitasExistentesPaciente(int idPaciente);
+    String validarCitasExistentesPaciente(Long idPaciente);
 
-    String validarCitasExistentesDoctor(int idDoctor);
+    String validarCitasExistentesDoctor(Long idDoctor);
 
-    String validarCitasExistentesServicio(int idServicio);
+    String validarCitasExistentesServicio(Long idServicio);
 }

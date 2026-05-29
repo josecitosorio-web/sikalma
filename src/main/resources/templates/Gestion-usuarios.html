@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Usuarios - SIKALMA</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+    <div th:replace="fragments/menu :: menu"></div>
+    <main>
+        <div class="encabezado">
+            <div class="encabezado-texto">
+                <h1>Gestión de Usuario</h1>
+                <p>Visualice y administre la información de los usuarios registrados</p>
+            </div>
+            <a href="/usuario/nuevo" class="btn-primario">+ Crear nuevo usuario</a>
+        </div>
+
+        <div class="buscador-seccion" style="margin: 20px 0; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <form th:action="@{/usuario/buscar-usuario}" method="get" style="display: flex; gap: 10px; align-items: center;">
+                <input type="text" name="dni" placeholder="Ingrese DNI del doctor..."
+                       style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; width: 300px;" required>
+                <button type="submit" class="btn-primario">Buscar por DNI</button>
+                <a href="/usuario/gestion" class="btn-secundario" style="text-decoration: none;">Limpiar</a>
+            </form>
+        </div>
+
+        <div class="tabla-contenedor">
+            <table class="tabla-gestion">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th>Doctor</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user : ${usuarios}">
+                        <td th:text="|#U${user.id}|"></td>
+                        <td th:text="${user.correo}"></td>
+                        <td th:text="${user.rol}"></td>
+                        <td th:text="${user.doctor != null ? user.doctor.nombre : 'N/A'}"></td>
+                        <td class="acciones-celda">
+                                <a th:href="@{/usuario/editar(id=${user.id})}" class="btn-editar">Editar</a>
+                            </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>

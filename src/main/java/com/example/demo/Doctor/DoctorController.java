@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.Cita.CitaService;
 import com.example.demo.Servicio.ServicioService;
+import com.example.demo.Usuario.UsuarioService;
 
 
 @Controller
@@ -15,17 +16,20 @@ public class DoctorController {
     private final DoctorService doctorService;
     private final CitaService citaService;
     private final ServicioService servicioService;
+    private final UsuarioService usuarioService;
 
-    public DoctorController(DoctorService doctorService , CitaService citaService, ServicioService servicioService) {
+    public DoctorController(DoctorService doctorService , CitaService citaService, ServicioService servicioService, UsuarioService usuarioService) {
         this.doctorService = doctorService;
         this.citaService = citaService;
         this.servicioService = servicioService;
+        this.usuarioService = usuarioService;
     }
 
     @GetMapping("/gestion")
     public String listar(Model model) {
         model.addAttribute("paginaActiva", "personal");
         model.addAttribute("doctores", doctorService.obtenerTodos());
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         return "Gestion-doctores";
     }
 
@@ -33,6 +37,7 @@ public class DoctorController {
     public String buscar(@RequestParam String dni, Model model) {
         model.addAttribute("paginaActiva", "personal");
         model.addAttribute("doctores", doctorService.buscarPorDni(dni));
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         return "Gestion-doctores";
     }
 
@@ -40,6 +45,8 @@ public class DoctorController {
     public String formularioNuevo(Model model) {
         model.addAttribute("paginaActiva", "personal");
         model.addAttribute("servicios", servicioService.listar());
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
+        model.addAttribute("doctor", new Doctor());
         return "Registrar-doctor";
     }
 
@@ -50,8 +57,10 @@ public class DoctorController {
         String error = doctorService.validarDatosRegistro(doctor);
         if (error != null) {
             model.addAttribute("error", error);
-            model.addAttribute("doctor", doctor); // Devuelve los datos para que no se borren
+            model.addAttribute("doctor", doctor); 
             model.addAttribute("paginaActiva", "personal");
+            model.addAttribute("servicios", servicioService.listar());
+            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
             return "Registrar-doctor";
         }
 
@@ -60,10 +69,11 @@ public class DoctorController {
     }
 
     @GetMapping("/editar")
-    public String editar(@RequestParam int id, Model model) {
+    public String editar(@RequestParam Long id, Model model) {
         model.addAttribute("doctor", doctorService.buscarPorId(id));
         model.addAttribute("servicios" , servicioService.listar());
         model.addAttribute("paginaActiva", "personal");
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         return "Editar-doctor";
     }
 
@@ -74,9 +84,10 @@ public class DoctorController {
         String error = doctorService.validarDatosEdicion(doctor);
         if (error != null) {
             model.addAttribute("error", error);
-            model.addAttribute("doctor", doctor); // Devuelve los datos
+            model.addAttribute("doctor", doctor); 
             model.addAttribute("servicios" , servicioService.listar());
             model.addAttribute("paginaActiva", "personal");
+            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
             return "Editar-doctor";
         }
 
@@ -85,24 +96,25 @@ public class DoctorController {
     }
 
     @GetMapping("/advertir")
-    public String advertir(@RequestParam int id, Model model) {
+    public String advertir(@RequestParam Long id, Model model) {
 
         String error = citaService.validarCitasExistentesDoctor(id);
         if(error != null){
 
             model.addAttribute("error" , error);
+            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
             return "Eliminar-doctor-error-message";
 
         }
 
         model.addAttribute("doctor", doctorService.buscarPorId(id));
+        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         return "Eliminar-doctor";
     }
 
     @GetMapping("/eliminar")
-    public String eliminar(@RequestParam int id) {
-        // El REQ-D09 se agregará aquí cuando haya un CitaService
+    public String eliminar(@RequestParam Long id) {
         doctorService.eliminar(id);
         return "redirect:/doctor/gestion";
     }

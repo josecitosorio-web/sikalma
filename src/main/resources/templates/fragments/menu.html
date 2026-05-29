@@ -1,0 +1,57 @@
+<section class="menu" th:fragment="menu">
+    <div class="menu-img">
+        <img src="/images/logo-policlinico.png" alt="logo del policlinico">
+    </div>
+    
+    <div th:if="${usuario.rol == 'ADMIN'}">
+
+        <div class="perfil">
+
+            <div class="perfil-admin">
+
+                <p>ROL : <span>Administrador</span></p>
+
+            </div>
+
+        </div>
+
+        <ul>
+            <li><a href="/metricas/g-metricas" th:classappend="${paginaActiva == 'metricas' ? 'activo' : ''}">Métricas</a></li>
+            <li><a href="/cita/g-citas" th:classappend="${paginaActiva == 'citas' ? 'activo' : ''}">Gestión de Citas</a></li>
+            <li><a href="/cita/r-citas" th:classappend="${paginaActiva == 'r-citas' ? 'activo' : ''}">Registrar Cita</a></li>
+            <li><a href="/servicio/gestion" th:classappend="${paginaActiva == 'servicios' ? 'activo' : ''}">Servicios</a></li>
+            <li><a href="/paciente/gestion" th:classappend="${paginaActiva == 'paciente' ? 'activo' : ''}">Pacientes</a></li>
+            <li><a href="/doctor/gestion" th:classappend="${paginaActiva == 'personal' ? 'activo' : ''}">Personal</a></li>
+            <li><a href="/usuario/gestion" th:classappend="${paginaActiva == 'usuario' ? 'activo' : ''}">Usuarios</a></li>
+            <li><a href="/usuario/login">Cerrar Sesión</a></li>
+        </ul>
+
+    </div>
+
+    <div  th:if="${usuario.rol == 'DOCTOR'}">
+
+        <div class="perfil">
+
+            <div class="perfil-doctor">
+
+                <p th:text="${usuario.doctor.nombre}"></p>
+
+                <p>ROL : <span>Doctor</span></p>
+
+            </div>
+
+        </div>
+            
+        <ul>
+            <li><a href="/cita/g-citas" th:classappend="${paginaActiva == 'citas' ? 'activo' : ''}">Gestión de Citas</a></li>
+            <li><a href="/atencion/gestion" th:classappend="${paginaActiva == 'atencion' ? 'activo' : ''}">Gestión de Atenciones</a></li>
+            <li><a href="/usuario/login">Cerrar Sesión</a></li>
+        </ul>    
+
+    </div>
+
+
+
+    
+
+</section>

@@ -1,153 +1,40 @@
 package com.example.demo.Cita;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class CitaRepository implements CitaDAO {
+public interface CitaRepository extends JpaRepository<CitaEntity, Long> {
 
-    private List<Cita> listaCitas = new ArrayList<>();
-    private int contador = 1;
+    List<CitaEntity> findByPacienteId(Long idPaciente);
 
-    @Override
-    public List<Cita> listar() {
-        return listaCitas;
-    }
+    List<CitaEntity> findByDoctorId(Long idDoctor);
 
-    @Override
-    public void guardar(Cita cita) {
+    List<CitaEntity> findByServicioId(Long idServicio);
 
-        cita.setId(contador ++);
-        listaCitas.add(cita);
-    }
+    boolean existsByDoctorIdAndFechaAndHora(Long doctorId, LocalDate fecha, LocalTime hora);
 
-    @Override
-    public Cita buscarPorId(int id) {
-        return listaCitas.stream()
-                .filter(c -> c.getId() == id)
-                .findFirst()
-                .orElse(null);
-    }
-
-    @Override
-    public void eliminar(int id) {
-        listaCitas.removeIf(c -> c.getId() == id);
-    }
-
-    @Override
-    public void actualizar(Cita cita) {
-        for(int i = 0; i < listaCitas.size() ; i++) {
-            if(listaCitas.get(i).getId() == cita.getId()) {
-                listaCitas.set(i, cita);
-                return;
-            }
-        }
-    }
-
-    @Override
-    public List<Cita> buscarPorPaciente( int idPaciente) {
-
-        List<Cita> resultado = new ArrayList<>();
-
-        List<Cita> citas = listaCitas;
-
-        for(Cita c : citas){
-
-            if(c.getPaciente().getId() == idPaciente){
-
-                resultado.add(c);
-
-            }
-
-        }
-
-        return resultado;
+    @Modifying
+    @Transactional
+    @Query("UPDATE cita c SET c.estado = :estado WHERE c.id = :id")
+    void cambiarEstado(@Param("id") Long id, @Param("estado") String estado);
 
 
-    }
-
-    @Override
-    public List<Cita> buscarPorDoctor( int idDoctor) {
-
-        List<Cita> resultado = new ArrayList<>();
-
-        List<Cita> citas = listaCitas;
-
-        for(Cita d : citas){
-
-            if(d.getDoctor().getId() == idDoctor){
-
-                resultado.add(d);
-
-            }
-
-        }
-
-        return resultado;
-
-
-    }
-
-    @Override
-    public List<Cita> buscarPorServicio( int idServicio) {
-
-        List<Cita> resultado = new ArrayList<>();
-
-        List<Cita> citas = listaCitas;
-
-        for(Cita s : citas){
-
-            if(s.getDoctor().getId() == idServicio){
-
-                resultado.add(s);
-
-            }
-
-        }
-
-        return resultado;
-
-
-    }
-
-    @Override
-    public void cambiarEstado(int id, String estado) {      
-
-        for (Cita c : listaCitas) {
-            if (c.getId() == id) {
-                c.setEstado(estado);
-                return;
-            }
-        }   
-    }
-
-    @Override
-    public boolean existeCitaDoctor(int doctorId, LocalDate fecha, LocalTime hora) {
-        for (Cita c : listaCitas) {
-            if (c.getDoctor().getId() == doctorId 
-                    && c.getFecha().equals(fecha) 
-                    && c.getHora().equals(hora)
-                    ) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean existeCitaDoctorExcluyendo(int doctorId, LocalDate fecha, LocalTime hora, int citaId) {
-        for (Cita c : listaCitas) {
-            if (c.getDoctor().getId() == doctorId
-                    && c.getFecha().equals(fecha)
-                    && c.getHora().equals(hora)
-                    && c.getId() != citaId) { 
-                return true;
-            }
-        }
-        return false;
-    }
+    @Query("SELECT COUNT(c) > 0 FROM cita c WHERE c.doctor.id = :doctorId " +
+           "AND c.fecha = :fecha AND c.hora = :hora AND c.id <> :citaId")
+           
+    boolean existeCitaDoctorExcluyendo(
+        @Param("doctorId") Long doctorId,
+        @Param("fecha") LocalDate fecha,
+        @Param("hora") LocalTime hora,
+        @Param("citaId") Long citaId
+    );
 }
