@@ -133,7 +133,7 @@ public class CitaController {
 
         Cita cita = citaService.buscarPorId(id);
 
-        if(cita != null && cita.getEstado().equalsIgnoreCase("Confirmada")){
+        if(cita != null && cita.getEstado().equalsIgnoreCase("Confirmado")){
             
             citaService.cambiarEstado(id, "Atendido");
 
@@ -149,24 +149,23 @@ public class CitaController {
     @GetMapping("/cancelar")
     public String cancelar(@RequestParam Long id, Model model) {
 
-        model.addAttribute("cita", citaService.buscarPorId(id));
+        Cita cita = citaService.buscarPorId(id);
+
+        if (cita != null && cita.getEstado().equalsIgnoreCase("Pendiente") || cita.getEstado().equalsIgnoreCase("Pendiente")) {
+            citaService.cambiarEstado(id, "Cancelado");
+            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
+        }
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
-        return "Cancelar-cita";
-    }
-
-    @GetMapping("/eliminar")
-    public String eliminar(@RequestParam Long id, Model model) {
-        citaService.eliminar(id);
-        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         return "redirect:/cita/g-citas";
     }
+
 
     @GetMapping("/no-asistio")
     public String marcarNoAsistio(@RequestParam Long id, Model model) {
         Cita cita = citaService.buscarPorId(id);
 
-        if (cita != null && cita.getEstado().equalsIgnoreCase("Confirmada")) {
+        if (cita != null && cita.getEstado().equalsIgnoreCase("Confirmado")) {
             citaService.cambiarEstado(id, "No asistió");
             model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         }

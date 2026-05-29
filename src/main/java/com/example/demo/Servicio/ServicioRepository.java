@@ -10,5 +10,7 @@ public interface ServicioRepository extends JpaRepository<ServicioEntity, Long> 
 
     List<ServicioEntity> findByNombreContainingIgnoreCase(String nombre);
 
+    
+
 
 }

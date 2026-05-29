@@ -14,6 +14,7 @@ public class ServicioAdapter {
         model.setNombre(entity.getNombre());
         model.setDescripcion(entity.getDescripcion());
         model.setCosto(entity.getCosto());
+        model.setEstado(entity.getEstado());
 
         return model;
     }
@@ -27,6 +28,7 @@ public class ServicioAdapter {
         entity.setNombre(model.getNombre());
         entity.setDescripcion(model.getDescripcion());
         entity.setCosto(model.getCosto());
+        entity.setEstado(model.getEstado());
 
         return entity;
     }

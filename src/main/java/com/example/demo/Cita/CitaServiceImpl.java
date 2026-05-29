@@ -202,9 +202,32 @@ public class CitaServiceImpl implements CitaService {
 
         } else {
 
+            List<Cita> citasPaciente = CitaAdapter.toModelList(citaRepository.findByPacienteId(pacienteId));
+
+            for (Cita c : citasPaciente) {
+
+                if (c.getFecha().isEqual(fecha)) {
+
+                    LocalTime inicioExistente = c.getHora();
+                    LocalTime finExistente = c.getHora().plusHours(1);
+                    LocalTime inicioNueva = hora;
+                    LocalTime finNueva = hora.plusHours(1);
+
+                    boolean hayCruce = inicioNueva.isBefore(finExistente) && finNueva.isAfter(inicioExistente);
+
+                    if (hayCruce) {
+
+                        return "El paciente ya tiene una cita reservada, cada cita dura 1 hora";
+
+                    }
+
+                }
+
+            }
+
             Doctor d = doctorService.buscarPorId(doctorId);
 
-            if (hora.isBefore(d.getHoraAtencionInicio()) || hora.isAfter(d.getHoraAtencionFin())) {
+            if (hora.isBefore(d.getHoraAtencionInicio()) || hora.isAfter(d.getHoraAtencionFin()) || hora.equals(d.getHoraAtencionFin())) {
 
                 return "La hora de la cita está fuera del horario del doctor";
 
@@ -216,13 +239,16 @@ public class CitaServiceImpl implements CitaService {
 
                 if (c.getFecha().isEqual(fecha)) {
 
-                    LocalTime inicio = c.getHora();
-                    LocalTime fin = c.getHora().plusHours(1);
+                    LocalTime inicioExistente = c.getHora();
+                    LocalTime finExistente = c.getHora().plusHours(1);
+                    LocalTime inicioNueva = hora;
+                    LocalTime finNueva = hora.plusHours(1);
 
-                    if (hora.isAfter(inicio.minusMinutes(1)) && hora.isBefore(fin)) {
+                    boolean hayCruce = inicioNueva.isBefore(finExistente) && finNueva.isAfter(inicioExistente);
 
-                        return "El doctor ya tiene una cita en ese horario, cada cita dura 1 hora";
+                    if (hayCruce) {
 
+                        return "El doctor ya tiene una cita en ese horario";
                     }
                 }
 
@@ -269,34 +295,65 @@ public class CitaServiceImpl implements CitaService {
 
             return "No se pueden registrar citas los domingos";
 
-        }
+        } else {
 
-        Doctor d = doctorService.buscarPorId(doctorId);
+            Doctor d = doctorService.buscarPorId(doctorId);
 
-        if (hora.isBefore(d.getHoraAtencionInicio()) || hora.isAfter(d.getHoraAtencionFin())) {
+            if (hora.isBefore(d.getHoraAtencionInicio()) || hora.isAfter(d.getHoraAtencionFin())) {
 
-            return "La hora de la cita está fuera del horario del doctor";
+                return "La hora de la cita está fuera del horario del doctor";
 
-        }
-
-        List<Cita> citasDoctor = CitaAdapter.toModelList(citaRepository.findByDoctorId(doctorId));
-
-        for (Cita c : citasDoctor) {
-
-            if (c.getId().equals(id)) {
-                continue;
             }
 
-            if (c.getFecha().isEqual(fecha)) {
+            List<Cita> citasDoctor = CitaAdapter.toModelList(citaRepository.findByDoctorId(doctorId));
 
-                LocalTime inicio = c.getHora();
-                LocalTime fin = c.getHora().plusHours(1);
+            for (Cita c : citasDoctor) {
 
-                if (hora.isAfter(inicio.minusMinutes(1)) && hora.isBefore(fin)) {
+                if (c.getId().equals(id)) {
+                    continue;
+                }
 
-                    return "El doctor ya tiene una cita en ese horario";
+                if (c.getFecha().isEqual(fecha)) {
+
+                    LocalTime inicioExistente = c.getHora();
+                    LocalTime finExistente = c.getHora().plusHours(1);
+                    LocalTime inicioNueva = hora;
+                    LocalTime finNueva = hora.plusHours(1);
+
+                    boolean hayCruce = inicioNueva.isBefore(finExistente) && finNueva.isAfter(inicioExistente);
+
+                    if (hayCruce) {
+
+                        return "El doctor ya tiene una cita en ese horario";
+                    }
                 }
             }
+
+            List<Cita> citasPaciente = CitaAdapter.toModelList(citaRepository.findByPacienteId(pacienteId));
+
+            for (Cita c : citasPaciente) {
+
+                if (c.getId().equals(id)) {
+                    continue;
+                }
+
+                if (c.getFecha().isEqual(fecha)) {
+
+                    LocalTime inicioExistente = c.getHora();
+                    LocalTime finExistente = c.getHora().plusHours(1);
+                    LocalTime inicioNueva = hora;
+                    LocalTime finNueva = hora.plusHours(1);
+
+                    boolean hayCruce = inicioNueva.isBefore(finExistente) && finNueva.isAfter(inicioExistente);
+
+                    if (hayCruce) {
+
+                        return "El paciente ya tiene una cita reservada, cada cita dura 1 hora";
+
+                    }
+                }
+            }
+
         }
 
         return null;

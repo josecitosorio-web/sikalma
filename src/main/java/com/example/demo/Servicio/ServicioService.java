@@ -16,6 +16,8 @@ public interface ServicioService {
 
     List<Servicio> buscarPorNombre(String nombre);
 
+    void cambiarEstado(Long id, Boolean estado);
+
     //validaciones
 
     String validarDatosRegistro(Servicio servicio);

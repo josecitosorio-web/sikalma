@@ -26,6 +26,8 @@ public class ServicioEntity {
     private String descripcion;
     @Column(name = "costo_servi")
     private double costo;
+    @Column(name = "estado_servi")
+    private Boolean estado; 
     @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL)
     private List<CitaEntity> citas = new ArrayList<>();
     @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL)
@@ -33,10 +35,11 @@ public class ServicioEntity {
 
     public ServicioEntity () {}
 
-    public ServicioEntity(String nombre, String descripcion, double costo) {
+    public ServicioEntity(String nombre, String descripcion, double costo, Boolean estado) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.costo = costo;
+        this.estado = estado;
     }
 
     public Long getId() {
@@ -63,6 +66,10 @@ public class ServicioEntity {
         return doctores;
     }
 
+    public Boolean getEstado () {
+        return estado;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -85,5 +92,9 @@ public class ServicioEntity {
 
     public void setDoctores(List<DoctorEntity> doctores){
         this.doctores = doctores;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
     }
 }

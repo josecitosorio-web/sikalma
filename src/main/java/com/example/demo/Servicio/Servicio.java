@@ -6,13 +6,15 @@ public class Servicio {
     private String nombre;
     private String descripcion;
     private double costo;
+    private Boolean estado;
 
     public Servicio() {}
 
-    public Servicio(String nombre, String descripcion, double costo) {
+    public Servicio(String nombre, String descripcion, double costo, Boolean estado) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.costo = costo;
+        this.estado = estado;
     }
 
     public Long getId() { return id; }
@@ -26,4 +28,7 @@ public class Servicio {
 
     public double getCosto() { return costo; }
     public void setCosto(double costo) { this.costo = costo; }
+
+    public Boolean getEstado() { return estado;}
+    public void setEstado(Boolean estado) { this.estado = estado;}
 }

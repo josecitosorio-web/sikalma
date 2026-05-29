@@ -44,7 +44,7 @@
                         <label>Especialidad</label>
                         <select name="servicio.id">
                         <option value="">— Seleccione un servicio —</option>
-                        <option th:each="servicio : ${servicios}" th:value="${servicio.id}" th:text="${servicio.nombre}"></option>
+                        <option th:each="servicio : ${servicios}" th:if="${servicio.estado}" th:value="${servicio.id}" th:text="${servicio.nombre}"></option>
                         </select>
 
                     </div>

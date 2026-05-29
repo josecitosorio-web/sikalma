@@ -59,7 +59,7 @@
                         <label>Servicio (Especialidad)</label>
                         <select name="servicio" id="servicioSelect">
                             <option value="0">— Seleccione un servicio —</option>
-                            <option th:each="servicio : ${servicios}" th:value="${servicio.id}"
+                            <option th:each="servicio : ${servicios}" th:if="${servicio.estado}" th:value="${servicio.id}"
                                 th:text="${servicio.nombre}"></option>
                         </select>
                     </div>
@@ -91,7 +91,7 @@
                     <label>Estado Inicial</label>
                     <select name="estado">
                         <option>Pendiente</option>
-                        <option>Confirmada</option>
+                        <option>Confirmado</option>
                     </select>
                     <span class="indicacion">El estado puede modificarse más adelante desde Gestión de Citas.</span>
                 </div>
