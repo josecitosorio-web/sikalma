@@ -12,8 +12,6 @@ public interface ServicioService {
 
     void actualizar(Servicio servicio);
 
-    void eliminar(Long id);
-
     List<Servicio> buscarPorNombre(String nombre);
 
     void cambiarEstado(Long id, Boolean estado);

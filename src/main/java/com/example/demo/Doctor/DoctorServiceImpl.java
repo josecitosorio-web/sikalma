@@ -5,10 +5,13 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.Servicio.ServicioEntity;
 import com.example.demo.Servicio.ServicioRepository;
+import com.example.demo.Usuario.UsuarioEntity;
+import com.example.demo.Usuario.UsuarioRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DoctorServiceImpl implements DoctorService {
@@ -18,6 +21,9 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Autowired
     private ServicioRepository servicioRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @Override
     public void agregar(Doctor doctor) {
@@ -48,11 +54,30 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public void actualizar(Doctor doctor) {
+
+        DoctorEntity doctorActual = doctorRepository.findById(doctor.getId()).orElse(null);
+
         DoctorEntity entity = DoctorAdapter.toEntity(doctor);
 
         if (doctor.getServicio() != null) {
-            ServicioEntity servicioGestionado = servicioRepository.findById(doctor.getServicio().getId()).orElse(null);
+
+            ServicioEntity servicioGestionado = servicioRepository
+                    .findById(doctor.getServicio().getId())
+                    .orElse(null);
+
             entity.setServicio(servicioGestionado);
+        }
+
+        if (doctorActual != null && !doctorActual.getCorreo().equals(doctor.getCorreo())) {
+
+            UsuarioEntity usuario = usuarioRepository.findByDoctorId(doctor.getId());
+
+            if (usuario != null) {
+
+                usuario.setCorreo(doctor.getCorreo());
+
+                usuarioRepository.save(usuario);
+            }
         }
 
         doctorRepository.save(entity);
@@ -96,6 +121,15 @@ public class DoctorServiceImpl implements DoctorService {
 
             return error;
 
+        } else {
+
+            Optional<DoctorEntity> doctorExistente = doctorRepository.findByCorreo(doctor.getCorreo());
+
+            if (doctorExistente.isPresent() &&
+                    !doctorExistente.get().getId().equals(doctor.getId())) {
+
+                return "Ya existe un doctor registrado con ese correo";
+            }
         }
 
         return null;
@@ -158,7 +192,7 @@ public class DoctorServiceImpl implements DoctorService {
         } else if (doctor.getHoraAtencionInicio().plusHours(6).isAfter(doctor.getHoraAtencionFin())) {
 
             return "El doctor debe trabajar mínimo 6 horas al día";
-            
+
         }
 
         return null;

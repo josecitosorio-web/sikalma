@@ -31,11 +31,6 @@ public class ServicioServiceImpl implements ServicioService {
     }
 
     @Override
-    public void eliminar(Long id) {
-        servicioRepository.deleteById(id);
-    }
-
-    @Override
     public List<Servicio> buscarPorNombre(String nombre) {
         return ServicioAdapter.toModelList(servicioRepository.findByNombreContainingIgnoreCase(nombre));
     }

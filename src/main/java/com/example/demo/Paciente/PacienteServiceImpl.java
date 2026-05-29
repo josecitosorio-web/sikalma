@@ -41,11 +41,6 @@ public class PacienteServiceImpl implements PacienteService {
     }
 
     @Override
-    public void eliminar(Long id) {
-        pacienteRepository.deleteById(id);
-    }
-
-    @Override
     public List<Paciente> buscarPorDni(String dni){
         return PacienteAdapter.toModelList(pacienteRepository.findAllByDni(dni)) ;
     }
@@ -115,7 +110,7 @@ public class PacienteServiceImpl implements PacienteService {
 
             return "El número de teléfono debe comenzar con 9 y debe tener 9 dígitos";
 
-        }else if(paciente.getEdad() < 0 || paciente.getEdad() > 100) {
+        }else if(paciente.getEdad() < 0 || paciente.getEdad() > 120) {
 
             return "La fecha de nacimiento no es válida";
 

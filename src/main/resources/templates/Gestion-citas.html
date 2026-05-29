@@ -46,7 +46,7 @@
                 <img src="/images/check.png" alt="atendidos">
                 <div>
                     <h2>15</h2>
-                    <p>Confirmadas</p>
+                    <p>Confirmados</p>
                 </div>
             </div>
         </div>
@@ -82,10 +82,11 @@
                         <td th:text="${cita.hora}"></td>
                         <td><span class="estado estado-confirmado" th:text="${cita.estado}"></span></td>
                         <td class="td-acciones">
-                            <a th:if="${usuario.rol == 'ADMIN' && cita.estado == 'Pendiente' || cita.estado == 'Confirmado'}" th:href="@{/cita/editar(id=${cita.id})}" class="btn-editar">Editar</a>
-                            <a th:if="${usuario.rol == 'ADMIN' && cita.estado == 'Pendiente' || cita.estado == 'Confirmado'}" th:href="@{/cita/cancelar(id=${cita.id})}" class="btn-cancelar">Cancelar</a>
+                            <a th:if="${usuario.rol == 'ADMIN' && cita.estado == 'Pendiente'}" th:href="@{/cita/editar(id=${cita.id})}" class="btn-editar">Editar</a>
+                            <a th:if="${usuario.rol == 'ADMIN' && cita.estado == 'Pendiente'}" th:href="@{/cita/confirmar(id=${cita.id})}" class="btn-editar">Confirmar</a>
+                            <a th:if="${usuario.rol == 'ADMIN' && cita.estado == 'Pendiente'}" th:href="@{/cita/cancelar(id=${cita.id})}" class="btn-cancelar">Cancelar</a>
                             <a th:if="${usuario.rol == 'DOCTOR' && cita.estado == 'Confirmado'}" th:href="@{/cita/atender(id=${cita.id})}" class="btn-primario">Atender</a>
-                            <a th:if="${usuario.rol == 'ADMIN' && cita.estado == 'Confirmado'}" th:href="@{/cita/no-asistio(id=${cita.id})}" 
+                            <a th:if="${usuario.rol == 'ADMIN' && cita.estado == 'Pendiente'}" th:href="@{/cita/no-asistio(id=${cita.id})}" 
                                     style="padding: 0.35em 1em;
                                         text-decoration: none;
                                         color: white;

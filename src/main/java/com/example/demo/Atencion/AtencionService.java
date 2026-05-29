@@ -13,8 +13,6 @@ public interface AtencionService {
     Atencion buscarPorId(Long id);
 
     void actualizar(Long id , Long citaId , LocalTime horaInicio, LocalTime horaFin , String diagnostico, String tratamiento , String estado);
-    
-    void eliminar(Long id);
 
     //validaciones
 

@@ -14,8 +14,6 @@ public interface PacienteService {
 
     void actualizar(Paciente paciente);
 
-    void eliminar(Long id);
-
     List<Paciente> buscarPorDni(String dni);
 
     //validaciones

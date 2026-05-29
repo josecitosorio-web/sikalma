@@ -57,7 +57,7 @@ public class DoctorController {
         String error = doctorService.validarDatosRegistro(doctor);
         if (error != null) {
             model.addAttribute("error", error);
-            model.addAttribute("doctor", doctor); // Devuelve los datos para que no se borren
+            model.addAttribute("doctor", doctor); 
             model.addAttribute("paginaActiva", "personal");
             model.addAttribute("servicios", servicioService.listar());
             model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
@@ -84,7 +84,7 @@ public class DoctorController {
         String error = doctorService.validarDatosEdicion(doctor);
         if (error != null) {
             model.addAttribute("error", error);
-            model.addAttribute("doctor", doctor); // Devuelve los datos
+            model.addAttribute("doctor", doctor); 
             model.addAttribute("servicios" , servicioService.listar());
             model.addAttribute("paginaActiva", "personal");
             model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());

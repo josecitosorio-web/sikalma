@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.Cita.CitaService;
 import com.example.demo.Usuario.UsuarioService;
 
 import java.util.List;
@@ -15,12 +14,10 @@ import java.util.List;
 public class PacienteController {
 
     private final PacienteService pacienteService;
-    private final CitaService citaService;
     private final UsuarioService usuarioService;
 
-    public PacienteController(PacienteService pacienteService, CitaService citaService, UsuarioService usuarioService){
+    public PacienteController(PacienteService pacienteService, UsuarioService usuarioService){
         this.pacienteService = pacienteService;
-        this.citaService = citaService;
         this.usuarioService = usuarioService;
     }
 
@@ -94,32 +91,6 @@ public class PacienteController {
         return "redirect:/paciente/gestion";
     }
     
-    @GetMapping("/advertir")
-    public String advertir(@RequestParam Long id, Model model){
-
-        String error = citaService.validarCitasExistentesPaciente(id);
-        if(error != null){
-
-            model.addAttribute("error" ,error);
-            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
-            
-            return "Eliminar-paciente-error-message";
-        }
-
-        model.addAttribute("paciente" , pacienteService.buscarPorId(id));
-        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
-
-        return "Eliminar-paciente";
-    }
-
-    @GetMapping("/eliminar")
-    public String eliminarPaciente(@RequestParam Long id){
-
-        pacienteService.eliminar(id);
-
-        return "redirect:/paciente/gestion";
-    }
-
     @GetMapping("/buscar")
     public String buscarPaciente(@RequestParam String dni,Model model){
 

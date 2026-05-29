@@ -151,11 +151,24 @@ public class CitaController {
 
         Cita cita = citaService.buscarPorId(id);
 
-        if (cita != null && cita.getEstado().equalsIgnoreCase("Pendiente") || cita.getEstado().equalsIgnoreCase("Pendiente")) {
+        if (cita != null && cita.getEstado().equalsIgnoreCase("Pendiente")) {
             citaService.cambiarEstado(id, "Cancelado");
             model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         }
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
+
+        return "redirect:/cita/g-citas";
+    }
+
+    @GetMapping("/confirmar")
+    public String confirmarCita(@RequestParam Long id, Model model) {
+
+        Cita cita = citaService.buscarPorId(id);
+
+        if(cita != null && cita.getEstado().equalsIgnoreCase("Pendiente")) {
+            citaService.cambiarEstado(id, "Confirmado");
+            model.addAttribute("usuario",usuarioService.obtenerUsuarioActual());
+        }
 
         return "redirect:/cita/g-citas";
     }

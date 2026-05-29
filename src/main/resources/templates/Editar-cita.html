@@ -81,13 +81,7 @@
 
                 <div class="campo">
                     <label>Estado</label>
-                    <select name="estado">
-                        <option th:value="Confirmado" th:text="Confirmado" th:selected="${cita.estado == 'Confirmada'}">
-                        </option>
-
-                        <option th:value="Cancelada" th:text="Cancelada" th:selected="${cita.estado == 'Cancelada'}">
-                        </option>
-                    </select>
+                    <input type="text" name="estado" th:value="${cita.estado}" required readonly>
                 </div>
 
                 <div class="form-acciones">

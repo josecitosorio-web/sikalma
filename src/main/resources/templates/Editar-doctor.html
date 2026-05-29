@@ -47,9 +47,9 @@
                     </div>
                     <div class="campo">
                         <label>Especialidad</label>
-                        <select name="especialidad">
-                            <option th:each="servicio : ${servicios}" th:value="${servicio.nombre}"
-                                th:text="${servicio.nombre}" th:selected="${servicio.nombre == doctor.especialidad}">
+                        <select name="servicio.id">
+                            <option th:each="servicio : ${servicios}" th:value="${servicio.id}"
+                                th:text="${servicio.nombre}" th:selected="${servicio.id == doctor.servicio.id}">
                             </option>
                         </select>
 
