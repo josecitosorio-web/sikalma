@@ -2,6 +2,8 @@ package com.example.demo.Cita;
 
 import com.example.demo.Doctor.Doctor;
 import com.example.demo.Doctor.DoctorService;
+import com.example.demo.HistorialCita.HistorialCita;
+import com.example.demo.HistorialCita.HistorialCitaService;
 import com.example.demo.Paciente.Paciente;
 import com.example.demo.Paciente.PacienteService;
 import com.example.demo.Servicio.Servicio;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -34,6 +37,9 @@ public class CitaServiceImpl implements CitaService {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private HistorialCitaService historialCitaService;
 
     @Override
     public List<Cita> listar() {
@@ -75,6 +81,31 @@ public class CitaServiceImpl implements CitaService {
     @Override
     public void actualizar(Long id, Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora,
             String estado) {
+
+        Cita citaAnterior = buscarPorId(id);
+        Doctor doctor = doctorService.buscarPorId(doctorId);
+
+        if (!citaAnterior.getHora().equals(hora) || !citaAnterior.getFecha().equals(fecha)) {
+
+            HistorialCita historialNuevo = new HistorialCita(citaAnterior, citaAnterior.getFecha(),
+                    fecha, citaAnterior.getHora(), hora, citaAnterior.getDoctor().getNombre(),
+                    doctor.getNombre(), citaAnterior.getEstado(),
+                    estado, LocalDateTime.now(), "Administrador", "REAGENDAMIENTO");
+
+            historialCitaService.registrarHistorial(historialNuevo);
+
+        }
+
+        if (!citaAnterior.getDoctor().getId().equals(doctorId)) {
+
+            HistorialCita historialNuevo = new HistorialCita(citaAnterior, citaAnterior.getFecha(),
+                    fecha, citaAnterior.getHora(), hora, citaAnterior.getDoctor().getNombre(),
+                    doctor.getNombre(), citaAnterior.getEstado(),
+                    estado, LocalDateTime.now(), "Administrador", "CAMBIO DE DOCTOR");
+
+            historialCitaService.registrarHistorial(historialNuevo);
+
+        }
 
         Paciente p = pacienteService.buscarPorId(pacienteId);
         Doctor d = doctorService.buscarPorId(doctorId);
@@ -154,6 +185,32 @@ public class CitaServiceImpl implements CitaService {
     @Override
     public void cambiarEstado(Long id, String estado) {
 
+        Cita citaAnterior = CitaAdapter.toModel(citaRepository.findById(id).orElse(null));
+
+        if (!citaAnterior.getEstado().equals(estado)) {
+
+            if (estado == "Atendido") {
+
+                HistorialCita historialNuevo = new HistorialCita(citaAnterior, citaAnterior.getFecha(),
+                        null, citaAnterior.getHora(), null, citaAnterior.getDoctor().getNombre(),
+                        null, citaAnterior.getEstado(),
+                        estado, LocalDateTime.now(), citaAnterior.getDoctor().getNombre(), "CAMBIO DE ESTADO");
+
+                historialCitaService.registrarHistorial(historialNuevo);
+
+            } else {
+
+                HistorialCita historialNuevo = new HistorialCita(citaAnterior, citaAnterior.getFecha(),
+                        null, citaAnterior.getHora(), null, citaAnterior.getDoctor().getNombre(),
+                        null, citaAnterior.getEstado(),
+                        estado, LocalDateTime.now(), "Administrador", "CAMBIO DE ESTADO");
+
+                historialCitaService.registrarHistorial(historialNuevo);
+
+            }
+
+        }
+
         citaRepository.cambiarEstado(id, estado);
 
     }
@@ -227,9 +284,16 @@ public class CitaServiceImpl implements CitaService {
 
             Doctor d = doctorService.buscarPorId(doctorId);
 
-            if (hora.isBefore(d.getHoraAtencionInicio()) || hora.isAfter(d.getHoraAtencionFin()) || hora.equals(d.getHoraAtencionFin())) {
+            if (hora.isBefore(d.getHoraAtencionInicio()) || hora.isAfter(d.getHoraAtencionFin())
+                    || hora.equals(d.getHoraAtencionFin())) {
 
                 return "La hora de la cita está fuera del horario del doctor";
+
+            }
+
+            if (!d.getServicio().getId().equals(servicioId)) {
+
+                return "El doctor seleccionado no pertenece a este servicio";
 
             }
 
@@ -302,6 +366,12 @@ public class CitaServiceImpl implements CitaService {
             if (hora.isBefore(d.getHoraAtencionInicio()) || hora.isAfter(d.getHoraAtencionFin())) {
 
                 return "La hora de la cita está fuera del horario del doctor";
+
+            }
+
+            if (!d.getServicio().getId().equals(servicioId)) {
+
+                return "El doctor seleccionado no pertenece a este servicio";
 
             }
 

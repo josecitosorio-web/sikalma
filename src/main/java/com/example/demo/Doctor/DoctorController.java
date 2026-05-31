@@ -3,8 +3,6 @@ package com.example.demo.Doctor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import com.example.demo.Cita.CitaService;
 import com.example.demo.Servicio.ServicioService;
 import com.example.demo.Usuario.UsuarioService;
 
@@ -14,13 +12,11 @@ import com.example.demo.Usuario.UsuarioService;
 public class DoctorController {
 
     private final DoctorService doctorService;
-    private final CitaService citaService;
     private final ServicioService servicioService;
     private final UsuarioService usuarioService;
 
-    public DoctorController(DoctorService doctorService , CitaService citaService, ServicioService servicioService, UsuarioService usuarioService) {
+    public DoctorController(DoctorService doctorService , ServicioService servicioService, UsuarioService usuarioService) {
         this.doctorService = doctorService;
-        this.citaService = citaService;
         this.servicioService = servicioService;
         this.usuarioService = usuarioService;
     }
@@ -64,6 +60,8 @@ public class DoctorController {
             return "Registrar-doctor";
         }
 
+        doctor.setEstado(true);
+
         doctorService.agregar(doctor);
         return "redirect:/doctor/gestion";
     }
@@ -95,27 +93,33 @@ public class DoctorController {
         return "redirect:/doctor/gestion";
     }
 
-    @GetMapping("/advertir")
-    public String advertir(@RequestParam Long id, Model model) {
+    @GetMapping("/activar")
+    public String activarDoctor(@RequestParam Long id, Model model){
 
-        String error = citaService.validarCitasExistentesDoctor(id);
-        if(error != null){
+        Doctor doctor = doctorService.buscarPorId(id);
 
-            model.addAttribute("error" , error);
-            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
+        if(doctor != null && !doctor.getEstado()) {
 
-            return "Eliminar-doctor-error-message";
+            doctorService.cambiarEstado(id, true);
 
         }
 
-        model.addAttribute("doctor", doctorService.buscarPorId(id));
-        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
-        return "Eliminar-doctor";
+        return  "redirect:/doctor/gestion";
+
     }
 
-    @GetMapping("/eliminar")
-    public String eliminar(@RequestParam Long id) {
-        doctorService.eliminar(id);
-        return "redirect:/doctor/gestion";
+    @GetMapping("/desactivar")
+    public String desactivarDoctor(@RequestParam Long id, Model model){
+
+        Doctor doctor = doctorService.buscarPorId(id);
+
+        if(doctor != null && doctor.getEstado()) {
+
+            doctorService.cambiarEstado(id, false);
+
+        }
+
+        return  "redirect:/doctor/gestion";
+
     }
 }

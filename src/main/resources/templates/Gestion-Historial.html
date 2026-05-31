@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/images/logo-policlinico.png">
+    <title>Historial de Cambios</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/gestion-pacientes.css">
+</head>
+
+<body>
+
+    <div th:replace="fragments/menu :: menu"></div>
+
+    <main>
+
+        <div class="encabezado">
+            <div class="encabezado-texto">
+                <h1>Historial de Cambios</h1>
+            </div>
+        </div>
+
+        <div class="tabla-contenedor">
+            <div class="tabla-encabezado">
+                <div>
+                    <h3>Historial de Cambios</h3>
+                    <p th:text="|Total: ${cambios.size()} cambios|"></p>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>ID Cita</th>
+                        <th>Responsable</th>
+                        <th>Tipo de Cambio</th>
+                        <th>Fecha de Cambio</th>
+                        <th>Valor Anterior</th>
+                        <th>Valor Nuevo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cambio : ${cambios}">
+                        <td th:text="|#0${cambio.id}|"></td>
+                        <td th:text="|#C0${cambio.cita.id}|"></td>
+                        <td th:text="${cambio.usuarioResponsable}"></td>
+                        <td th:text="${cambio.tipoCambio}"></td>
+                        <td th:text="${#temporals.format(cambio.fechaRegistro, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                        <td th:if="${cambio.tipoCambio == 'REAGENDAMIENTO'}"  th:text="|${cambio.fechaAnterior} ${cambio.horaAnterior}|"></td>
+                        <td th:if="${cambio.tipoCambio == 'REAGENDAMIENTO'}"  th:text="|${cambio.fechaNueva} ${cambio.horaNueva}|"></td>
+                        <td th:if="${cambio.tipoCambio == 'CAMBIO DE DOCTOR'}" th:text="${cambio.doctorAnterior}"></td>
+                        <td th:if="${cambio.tipoCambio == 'CAMBIO DE DOCTOR'}" th:text="${cambio.doctorNuevo}"></td>
+                        <td th:if="${cambio.tipoCambio == 'CAMBIO DE ESTADO'}" th:text="${cambio.estadoAnterior}"></td>
+                        <td th:if="${cambio.tipoCambio == 'CAMBIO DE ESTADO'}" th:text="${cambio.estadoNuevo}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </main>
+
+</body>
+
+</html>

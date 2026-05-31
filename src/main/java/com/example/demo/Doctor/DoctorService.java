@@ -10,7 +10,7 @@ public interface DoctorService {
     void actualizar(Doctor doctor);
     void eliminar(Long id);
     List<Doctor> buscarPorDni(String dni);
-
+    void cambiarEstado(Long id, Boolean estado);
 
     String validarDatosRegistro(Doctor doctor);
     String validarDatosEdicion(Doctor doctor);

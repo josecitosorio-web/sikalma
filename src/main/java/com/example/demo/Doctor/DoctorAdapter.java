@@ -21,6 +21,7 @@ public class DoctorAdapter {
         model.setHoraAtencionInicio(entity.getHoraAtencionInicio());
         model.setHoraAtencionFin(entity.getHoraAtencionFin());
         model.setServicio(ServicioAdapter.toModel(entity.getServicio()));
+        model.setEstado(entity.getEstado());
 
         return model;
     }
@@ -39,6 +40,7 @@ public class DoctorAdapter {
         entity.setHoraAtencionInicio(model.getHoraAtencionInicio());
         entity.setHoraAtencionFin(model.getHoraAtencionFin());
         entity.setServicio(ServicioAdapter.toEntity(model.getServicio()));
+        entity.setEstado(model.getEstado());
 
         return entity;
     }

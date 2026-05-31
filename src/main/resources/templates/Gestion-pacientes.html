@@ -32,7 +32,7 @@
 
             <form th:action="@{/paciente/buscar}" method="get">
                 <div class="busqueda-barra">
-                    <input type="search" name="dni" placeholder="Buscar por DNI...">
+                    <input type="search" name="numeroDocumento" placeholder="Buscar por numero de documento...">
                     <button type="submit" class="btn-primario">Buscar</button>
                 </div>
             </form>
@@ -42,7 +42,8 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombre completo</th>
-                        <th>DNI</th>
+                        <th>Tipo de Documento</th>
+                        <th>Numero de Documento</th>
                         <th>Edad</th>
                         <th>Teléfono</th>
                         <th>Acciones</th>
@@ -52,7 +53,8 @@
                     <tr th:each="paciente : ${pacientes}">
                         <td th:text="|#P0${paciente.id}|"></td>
                         <td th:text="${paciente.nombres}"></td>
-                        <td th:text="${paciente.dni}"></td>
+                        <td th:text="${paciente.tipoDocumento}"></td>
+                        <td th:text="${paciente.numeroDocumento}"></td>
                         <td th:text="${paciente.edad}"></td>
                         <td th:text="${paciente.telefono}"></td>
                         <td class="td-acciones">

@@ -82,9 +82,9 @@ public class CitaController {
     }
 
     @GetMapping("/buscar")
-    public String buscarPac(@RequestParam String dni, Model model){
+    public String buscarPac(@RequestParam String numeroDocumento, Model model){
 
-        model.addAttribute("paciente" , pacienteService.buscarPaciente(dni));
+        model.addAttribute("paciente" , pacienteService.buscarPaciente(numeroDocumento));
         model.addAttribute("paginaActiva" , "r-citas");
         model.addAttribute("doctores", doctorService.obtenerTodos());
         model.addAttribute("servicios", servicioService.listar());
