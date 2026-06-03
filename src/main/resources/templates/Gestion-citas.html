@@ -17,35 +17,35 @@
                 <h1>Gestión de Citas</h1>
                 <p>Administra, organiza y controla las citas médicas del policlínico</p>
             </div>
-            <a href="/cita/r-citas" class="btn-primario">+ Nueva Cita</a>
+            <a th:if="${usuario.rol == 'ADMIN'}" href="/cita/r-citas" class="btn-primario">+ Nueva Cita</a>
         </div>
 
         <div class="estadisticas">
             <div class="estadistica">
                 <img src="/images/usuarios.png" alt="pacientes">
                 <div>
-                    <h2>7</h2>
+                    <h2 th:text="${pacientes.size()}"></h2>
                     <p>Pacientes</p>
                 </div>
             </div>
             <div class="estadistica">
                 <img src="/images/calendario.png" alt="citas hoy">
                 <div>
-                    <h2>6</h2>
+                    <h2 th:text="${citasHoy.size()}"></h2>
                     <p>Citas para hoy</p>
                 </div>
             </div>
             <div class="estadistica">
                 <img src="/images/reloj.png" alt="pendientes">
                 <div>
-                    <h2>4</h2>
+                    <h2 th:text="${citasPendientes}"></h2>
                     <p>Pendientes</p>
                 </div>
             </div>
             <div class="estadistica">
                 <img src="/images/check.png" alt="atendidos">
                 <div>
-                    <h2>15</h2>
+                    <h2 th:text="${citasConfirmados}"></h2>
                     <p>Confirmados</p>
                 </div>
             </div>

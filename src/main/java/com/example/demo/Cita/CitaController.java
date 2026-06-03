@@ -38,6 +38,10 @@ public class CitaController {
         model.addAttribute("paginaActiva", "citas");
         model.addAttribute("citas", citaService.listar());
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
+        model.addAttribute("pacientes", pacienteService.listar());
+        model.addAttribute("citasPendientes", citaService.contarPorEstado("Pendiente"));
+        model.addAttribute("citasConfirmados", citaService.contarPorEstado("Confirmado"));
+        model.addAttribute("citasHoy", citaService.buscarCitasHoy(LocalDate.now()));
         return "Gestion-citas";
 
     }
@@ -46,7 +50,7 @@ public class CitaController {
     public String registrarCita(Model model) {
         model.addAttribute("paginaActiva", "r-citas");
         model.addAttribute("pacientes", null);
-        model.addAttribute("doctores", doctorService.obtenerTodos());
+        model.addAttribute("doctores", doctorService.buscarPorEstado(true));
         model.addAttribute("servicios", servicioService.listar());
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
@@ -131,14 +135,6 @@ public class CitaController {
     @GetMapping("/atender")
     public String atenderCita(@RequestParam Long id, Model model) {
 
-        Cita cita = citaService.buscarPorId(id);
-
-        if(cita != null && cita.getEstado().equalsIgnoreCase("Confirmado")){
-            
-            citaService.cambiarEstado(id, "Atendido");
-
-        }
-
         model.addAttribute("cita", citaService.buscarPorId(id));
         model.addAttribute("paginaActiva", "citas");
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
@@ -178,7 +174,7 @@ public class CitaController {
     public String marcarNoAsistio(@RequestParam Long id, Model model) {
         Cita cita = citaService.buscarPorId(id);
 
-        if (cita != null && cita.getEstado().equalsIgnoreCase("Confirmado")) {
+        if (cita != null && cita.getEstado().equalsIgnoreCase("Pendiente")) {
             citaService.cambiarEstado(id, "No asistió");
             model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         }

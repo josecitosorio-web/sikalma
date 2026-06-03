@@ -18,6 +18,10 @@ public interface CitaService {
 
     List<Cita> buscarCitaPorPaciente( Long idPaciente);
 
+    List<Cita> buscarCitasHoy(LocalDate fecha);
+
+    long contarPorEstado(String estado);
+
 
     // validaciones 
     String validarDatosRegistro(Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora);
@@ -35,4 +39,21 @@ public interface CitaService {
     String validarCitasExistentesDoctor(Long idDoctor);
 
     String validarCitasExistentesServicio(Long idServicio);
+
+    // METRICAS
+
+    List<String> obtenerCitasPorFecha();
+    List<Long> obtenerCantidadPorFecha();
+
+    List<String> obtenerEstadoPorCantidad();
+    List<Long> obtenerCantidadPorEstado();
+
+    List<String> obtenerIngresosPorFecha();
+    List<Double> obtenerSumaDeIngresos();
+
+    List<String> obtenerServicioPorCantidad();
+    List<Long> obtenerCantidadPorServicio();
+
+    List<String> obtenerDiaPorCantidad();
+    List<Long> obtenerCantidadPorDia();
 }

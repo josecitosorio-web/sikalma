@@ -109,6 +109,13 @@ public class DoctorServiceImpl implements DoctorService {
         doctorRepository.save(DoctorAdapter.toEntity(doctor));
     }
 
+    @Override
+    public List<Doctor> buscarPorEstado(Boolean estado) {
+
+        return DoctorAdapter.toModelList(doctorRepository.findByEstado(estado));
+
+    }
+
     // VALIDACIONES
 
     @Override

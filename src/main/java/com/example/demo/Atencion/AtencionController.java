@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.demo.Cita.Cita;
 import com.example.demo.Cita.CitaService;
 import com.example.demo.Usuario.UsuarioService;
 
@@ -55,6 +56,14 @@ public class AtencionController {
         }
 
         atencionService.agregar(citaId,horaInicio,horaFin,diagnostico,tratamiento,estado);
+
+        Cita cita = citaService.buscarPorId(citaId);
+
+        if(cita != null && cita.getEstado().equalsIgnoreCase("Confirmado")){
+            
+            citaService.cambiarEstado(citaId, "Atendido");
+
+        }
 
         return "redirect:/atencion/gestion";
     }

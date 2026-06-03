@@ -18,6 +18,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -122,6 +123,18 @@ public class CitaServiceImpl implements CitaService {
         return CitaAdapter.toModelList(citaRepository.findByPacienteId(idPaciente));
     }
 
+    @Override
+    public List<Cita> buscarCitasHoy(LocalDate fecha) {
+        return CitaAdapter.toModelList(citaRepository.findByFecha(fecha));
+    }
+
+    @Override
+    public long contarPorEstado(String estado){
+
+        return citaRepository.countByEstado(estado);
+
+    }
+
     // validaciones
     @Override
     public String validarDatosRegistro(Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha,
@@ -219,6 +232,172 @@ public class CitaServiceImpl implements CitaService {
     public boolean existeCitaDoctor(Long doctorId, LocalDate fecha, LocalTime hora) {
 
         return citaRepository.existsByDoctorIdAndFechaAndHora(doctorId, fecha, hora);
+
+    }
+
+
+    // METRICAS
+
+    @Override
+    public List<String> obtenerCitasPorFecha() {
+
+        List<Object[]> resultados = citaRepository.obtenerCitasPorFecha();
+        List<String> fechas = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            fechas.add(fila[0].toString());
+
+        }
+
+        return fechas;
+
+    }
+
+    @Override
+    public List<Long> obtenerCantidadPorFecha() {
+
+        List<Object[]> resultados = citaRepository.obtenerCitasPorFecha();
+        List<Long> cantidades = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            cantidades.add((Long) fila[1]);
+
+        }
+
+        return cantidades;
+
+    }
+
+    @Override
+    public List<String> obtenerEstadoPorCantidad(){
+
+        List<Object[]> resultados = citaRepository.contarPorEstado();
+        List<String> servicios = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            servicios.add(fila[0].toString());
+
+        }
+
+        return servicios;
+
+    }
+
+    @Override
+    public List<Long> obtenerCantidadPorEstado() {
+
+        List<Object[]> resultados = citaRepository.contarPorEstado();
+        List<Long> cantidad = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            cantidad.add((Long) fila[1]);
+
+        }
+
+        return cantidad;
+
+    }
+
+    @Override
+    public List<String> obtenerIngresosPorFecha() {
+
+        List<Object[]> resultados = citaRepository.ingresosPorDia();
+        List<String> fechas = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            fechas.add(fila[0].toString());
+
+        }
+
+        return fechas;
+    }
+
+    @Override
+    public List<Double> obtenerSumaDeIngresos() {
+
+        List<Object[]> resultados = citaRepository.ingresosPorDia();
+        List<Double> ingresos = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            ingresos.add((Double) fila[1]);
+
+        }
+
+        return ingresos;
+
+
+    }
+
+    @Override
+    public List<String> obtenerServicioPorCantidad() {
+
+
+        List<Object[]> resultados = citaRepository.contarPorServicio();
+        List<String> servicios = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            servicios.add(fila[0].toString());
+        }
+
+        return servicios;
+
+    }
+
+    @Override
+    public List<Long> obtenerCantidadPorServicio() {
+
+        List<Object[]> resultados = citaRepository.contarPorServicio();
+        List<Long> cantidad = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            cantidad.add((Long) fila[1]);
+
+        }
+
+        return cantidad;
+
+
+    }
+
+    @Override
+    public List<String> obtenerDiaPorCantidad() {
+
+        List<Object[]> resultados = citaRepository.contarPorDiaSemana();
+        List<String> dias = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            dias.add(fila[0].toString());
+
+        }
+
+        return dias;
+
+    }
+
+    @Override
+    public List<Long> obtenerCantidadPorDia() {
+
+
+        List<Object[]> resultados = citaRepository.contarPorDiaSemana();
+        List<Long> cantidad = new ArrayList<>();
+        
+        for(Object[] fila : resultados) {
+
+            cantidad.add((Long) fila[1]);
+
+        }
+
+
+        return cantidad;
 
     }
 

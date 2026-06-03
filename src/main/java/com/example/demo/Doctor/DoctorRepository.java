@@ -15,4 +15,6 @@ public interface DoctorRepository extends JpaRepository<DoctorEntity, Long> {
     Optional<DoctorEntity> findByCorreo(String correo);
 
     List<DoctorEntity> findAllByDni(String dni);
+
+    List<DoctorEntity> findByEstado(Boolean estado);
 }

@@ -11,6 +11,7 @@ public interface DoctorService {
     void eliminar(Long id);
     List<Doctor> buscarPorDni(String dni);
     void cambiarEstado(Long id, Boolean estado);
+    List<Doctor> buscarPorEstado(Boolean estado);
 
     String validarDatosRegistro(Doctor doctor);
     String validarDatosEdicion(Doctor doctor);
