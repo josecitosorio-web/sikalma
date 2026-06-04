@@ -74,7 +74,7 @@ public class CitaController {
             model.addAttribute("error", error);
             model.addAttribute("paginaActiva", "r-citas");
             model.addAttribute("pacientes", pacienteService.listar());
-            model.addAttribute("doctores", doctorService.obtenerTodos());
+            model.addAttribute("doctores", doctorService.buscarPorEstado(true));
             model.addAttribute("servicios", servicioService.listar());
             model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
             return "Registrar-cita";
@@ -90,7 +90,7 @@ public class CitaController {
 
         model.addAttribute("paciente" , pacienteService.buscarPaciente(numeroDocumento));
         model.addAttribute("paginaActiva" , "r-citas");
-        model.addAttribute("doctores", doctorService.obtenerTodos());
+        model.addAttribute("doctores", doctorService.buscarPorEstado(true));
         model.addAttribute("servicios", servicioService.listar());
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
@@ -102,7 +102,7 @@ public class CitaController {
 
         model.addAttribute("cita", citaService.buscarPorId(id));
         model.addAttribute("servicios", servicioService.listar());
-        model.addAttribute("doctores", doctorService.obtenerTodos());
+        model.addAttribute("doctores", doctorService.buscarPorEstado(true));
         model.addAttribute("paginaActiva", "r-citas");
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
@@ -119,7 +119,7 @@ public class CitaController {
 
             model.addAttribute("error", error);
             model.addAttribute("servicios", servicioService.listar());
-            model.addAttribute("doctores", doctorService.obtenerTodos());
+            model.addAttribute("doctores", doctorService.buscarPorEstado(true));
             model.addAttribute("paginaActiva", "citas");
             model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
             model.addAttribute("cita", citaService.buscarPorId(id));

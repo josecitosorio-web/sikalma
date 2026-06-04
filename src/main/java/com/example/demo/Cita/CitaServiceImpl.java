@@ -75,11 +75,6 @@ public class CitaServiceImpl implements CitaService {
     }
 
     @Override
-    public void eliminar(Long id) {
-        citaRepository.deleteById(id);
-    }
-
-    @Override
     public void actualizar(Long id, Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora,
             String estado) {
 
@@ -202,25 +197,24 @@ public class CitaServiceImpl implements CitaService {
 
         if (!citaAnterior.getEstado().equals(estado)) {
 
-            if (estado == "Atendido") {
+            String responsable;
 
-                HistorialCita historialNuevo = new HistorialCita(citaAnterior, citaAnterior.getFecha(),
-                        null, citaAnterior.getHora(), null, citaAnterior.getDoctor().getNombre(),
-                        null, citaAnterior.getEstado(),
-                        estado, LocalDateTime.now(), citaAnterior.getDoctor().getNombre(), "CAMBIO DE ESTADO");
+            if (estado.equals("Atendido")) {
 
-                historialCitaService.registrarHistorial(historialNuevo);
+                responsable = citaAnterior.getDoctor().getNombre();
 
             } else {
 
-                HistorialCita historialNuevo = new HistorialCita(citaAnterior, citaAnterior.getFecha(),
-                        null, citaAnterior.getHora(), null, citaAnterior.getDoctor().getNombre(),
-                        null, citaAnterior.getEstado(),
-                        estado, LocalDateTime.now(), "Administrador", "CAMBIO DE ESTADO");
-
-                historialCitaService.registrarHistorial(historialNuevo);
+                responsable = "Administrador";
 
             }
+
+            HistorialCita historialNuevo = new HistorialCita(citaAnterior, citaAnterior.getFecha(),
+                    null, citaAnterior.getHora(), null, citaAnterior.getDoctor().getNombre(),
+                    null, citaAnterior.getEstado(),
+                    estado, LocalDateTime.now(), responsable, "CAMBIO DE ESTADO");
+
+            historialCitaService.registrarHistorial(historialNuevo);
 
         }
 

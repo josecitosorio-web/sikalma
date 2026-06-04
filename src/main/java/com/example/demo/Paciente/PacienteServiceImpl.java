@@ -53,6 +53,10 @@ public class PacienteServiceImpl implements PacienteService {
 
             return error;
 
+        } else if (pacienteRepository.existsByNumeroDocumento(paciente.getNumeroDocumento())) {
+
+            return "Ya hay un paciente con el mismo número de documento";
+
         }
 
         
@@ -64,12 +68,17 @@ public class PacienteServiceImpl implements PacienteService {
     public String validarDatosEdicion(Paciente paciente) {
 
         String error = validacionesGenerales(paciente);
+        Paciente pacEncontrado = PacienteAdapter.toModel(pacienteRepository.findByNumeroDocumento(paciente.getNumeroDocumento()).orElse(null)); 
 
         if (error != null) {
 
             return error;
 
-        }
+        } else if (pacEncontrado!= null && !pacEncontrado.getId().equals(paciente.getId())){
+
+            return "Ya hay un paciente con el mismo número de documento";
+
+        } 
 
         return null;
     }
@@ -136,7 +145,6 @@ public class PacienteServiceImpl implements PacienteService {
                 return "CE Inválido : debe tener entre 6 y 9 carateres";
 
             }
-
 
         } else if (paciente.getFechaNacimiento() == null) {
 

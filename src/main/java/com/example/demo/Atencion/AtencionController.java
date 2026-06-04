@@ -26,41 +26,43 @@ public class AtencionController {
         this.usuarioService = usuarioService;
     }
 
-    
     @GetMapping("/gestion")
     public String listar(Model model) {
         List<Atencion> atenciones = atencionService.obtenerTodos();
         model.addAttribute("atenciones", atenciones);
         model.addAttribute("paginaActiva", "atencion");
-        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
+        model.addAttribute("usuario", usuarioService.obtenerUsuarioActual());
         return "Gestion-atenciones";
     }
 
     @PostMapping("/nuevo")
     public String registrarAtencion(@RequestParam Long citaId,
-        @RequestParam @DateTimeFormat(pattern = "HH:mm") LocalTime horaInicio,
-        @RequestParam @DateTimeFormat(pattern = "HH:mm") LocalTime horaFin,
-        @RequestParam String diagnostico,
-        @RequestParam String tratamiento,
-        @RequestParam String estado,
-        Model model) {
-
-        Atencion atencion = new Atencion(null, horaInicio, horaFin, diagnostico, tratamiento, estado);
-
-        String error = atencionService.validarDatosRegistro(atencion);
-        if (error != null) {
-            model.addAttribute("error", error);
-            model.addAttribute("cita", citaService.buscarPorId(citaId)); 
-            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
-            return "Registrar-atencion";
-        }
-
-        atencionService.agregar(citaId,horaInicio,horaFin,diagnostico,tratamiento,estado);
+            @RequestParam @DateTimeFormat(pattern = "HH:mm") LocalTime horaInicio,
+            @RequestParam @DateTimeFormat(pattern = "HH:mm") LocalTime horaFin,
+            @RequestParam String diagnostico,
+            @RequestParam String tratamiento,
+            @RequestParam String estado,
+            Model model) {
 
         Cita cita = citaService.buscarPorId(citaId);
 
-        if(cita != null && cita.getEstado().equalsIgnoreCase("Confirmado")){
-            
+        if (cita != null && cita.getEstado().equalsIgnoreCase("Confirmado")) {
+
+            Atencion atencion = new Atencion(null, horaInicio, horaFin, diagnostico, tratamiento, estado);
+
+            String error = atencionService.validarDatosRegistro(atencion);
+
+            if (error != null) {
+
+                model.addAttribute("error", error);
+                model.addAttribute("cita", cita);
+                model.addAttribute("usuario", usuarioService.obtenerUsuarioActual());
+                return "Registrar-atencion";
+
+            }
+
+            atencionService.agregar(citaId, horaInicio, horaFin, diagnostico, tratamiento, estado);
+
             citaService.cambiarEstado(citaId, "Atendido");
 
         }
@@ -68,34 +70,31 @@ public class AtencionController {
         return "redirect:/atencion/gestion";
     }
 
-
     @GetMapping("/ver")
     public String ver(@RequestParam Long id, Model model) {
         model.addAttribute("atencion", atencionService.buscarPorId(id));
         model.addAttribute("paginaActiva", "atencion");
-        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
+        model.addAttribute("usuario", usuarioService.obtenerUsuarioActual());
         return "Ver-atencion";
     }
 
-    
     @GetMapping("/editar")
     public String editar(@RequestParam Long id, Model model) {
         model.addAttribute("atencion", atencionService.buscarPorId(id));
         model.addAttribute("paginaActiva", "atencion");
-        model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
+        model.addAttribute("usuario", usuarioService.obtenerUsuarioActual());
         return "Editar-atencion";
     }
 
-    
     @PostMapping("/actualizar")
     public String actualizar(@RequestParam Long id,
-        @RequestParam Long citaId,
-        @RequestParam @DateTimeFormat(pattern = "HH:mm") LocalTime horaInicio,
-        @RequestParam @DateTimeFormat(pattern = "HH:mm") LocalTime horaFin,
-        @RequestParam String diagnostico,
-        @RequestParam String tratamiento,
-        @RequestParam String estado,
-        Model model) {
+            @RequestParam Long citaId,
+            @RequestParam @DateTimeFormat(pattern = "HH:mm") LocalTime horaInicio,
+            @RequestParam @DateTimeFormat(pattern = "HH:mm") LocalTime horaFin,
+            @RequestParam String diagnostico,
+            @RequestParam String tratamiento,
+            @RequestParam String estado,
+            Model model) {
 
         Atencion atencion = new Atencion(null, horaInicio, horaFin, diagnostico, tratamiento, estado);
 
@@ -103,13 +102,12 @@ public class AtencionController {
         if (error != null) {
             model.addAttribute("error", error);
             model.addAttribute("atencion", atencionService.buscarPorId(id));
-            model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
+            model.addAttribute("usuario", usuarioService.obtenerUsuarioActual());
             return "Editar-atencion";
         }
 
         atencionService.actualizar(id, citaId, horaInicio, horaFin, diagnostico, tratamiento, estado);
         return "redirect:/atencion/gestion";
-        }
+    }
 
-    
 }

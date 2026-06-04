@@ -13,7 +13,8 @@ public interface PacienteRepository extends JpaRepository<PacienteEntity, Long> 
 
     List<PacienteEntity> findAllByNumeroDocumento(String numeroDocumento);
 
+    boolean existsByNumeroDocumento(String numeroDocumento);
+
 }
 
 
-// TIENESSSS Q CAMBIAR EL REPOSITORY AHORA POR LA BUSQUEDA DE NUMERO DE IDENTIFICACIONES

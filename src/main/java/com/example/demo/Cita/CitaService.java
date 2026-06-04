@@ -12,8 +12,6 @@ public interface CitaService {
 
     Cita buscarPorId(Long id);
 
-    void eliminar(Long id);
-
     void actualizar(Long id ,Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora, String estado);
 
     List<Cita> buscarCitaPorPaciente( Long idPaciente);
