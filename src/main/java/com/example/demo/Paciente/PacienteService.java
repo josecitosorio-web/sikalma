@@ -10,11 +10,11 @@ public interface PacienteService {
 
     Paciente buscarPorId(Long id);
 
-    Paciente buscarPaciente(String dni);
+    Paciente buscarPaciente(String numeroDocumento);
 
     void actualizar(Paciente paciente);
 
-    List<Paciente> buscarPorDni(String dni);
+    List<Paciente> buscarPorNumeroDocumento(String numeroDocumento);
 
     //validaciones
 

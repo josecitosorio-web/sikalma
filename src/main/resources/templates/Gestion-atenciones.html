@@ -45,7 +45,7 @@
                         <td th:text="|#A${atencion.id}|"></td>
                         <td th:text="|#${atencion.cita.id}|"></td>
                         <td th:text="${atencion.cita.paciente.nombres}"></td>
-                        <td th:text="${atencion.cita.servicio.nombre}"></td>
+                        <td th:text="${atencion.cita.doctor.servicio.nombre}"></td>
                         <td th:text="${atencion.cita.doctor.nombre}"></td>
                         <td th:text="${atencion.cita.fecha}"></td>
                         <td th:text="${atencion.diagnostico}"></td>

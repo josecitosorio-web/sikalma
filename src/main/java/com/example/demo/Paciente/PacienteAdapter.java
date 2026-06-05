@@ -12,7 +12,8 @@ public class PacienteAdapter {
         Paciente model = new Paciente();
         model.setId(entity.getId());
         model.setNombres(entity.getNombres());
-        model.setDni(entity.getDni());
+        model.setTipoDocumento(entity.getTipoDocumento());
+        model.setNumeroDocumento(entity.getNumeroDocumento());
         model.setTelefono(entity.getTelefono());
         model.setFechaNacimiento(entity.getFechaNacimiento());
 
@@ -26,7 +27,8 @@ public class PacienteAdapter {
         PacienteEntity entity = new PacienteEntity();
         entity.setId(model.getId());
         entity.setNombres(model.getNombres());
-        entity.setDni(model.getDni());
+        entity.setTipoDocumento(model.getTipoDocumento());
+        entity.setNumeroDocumento(model.getNumeroDocumento());
         entity.setTelefono(model.getTelefono());
         entity.setFechaNacimiento(model.getFechaNacimiento());
 

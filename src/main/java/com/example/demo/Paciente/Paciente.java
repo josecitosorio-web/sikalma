@@ -9,19 +9,24 @@ public class Paciente {
 
     private Long id;
     private String nombres;
-    private String dni;
+    private String tipoDocumento;
+    private String numeroDocumento;
     private String telefono;
     private LocalDate fechaNacimiento;
     private List<Paciente> citas = new ArrayList<>();
 
     public Paciente() {}
 
-    public Paciente(String nombres, String dni, String telefono, LocalDate fechaNacimiento) {
+    public Paciente(String nombres, String tipoDocumento, String numeroDocumento, String telefono, LocalDate fechaNacimiento){
+
         this.nombres = nombres;
-        this.dni = dni;
+        this.tipoDocumento = tipoDocumento;
+        this.numeroDocumento = numeroDocumento;
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
+
     }
+
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -29,8 +34,11 @@ public class Paciente {
     public String getNombres() { return nombres; }
     public void setNombres(String nombres) { this.nombres = nombres; }
 
-    public String getDni() { return dni; }
-    public void setDni(String dni) { this.dni = dni; }
+    public String getTipoDocumento() { return tipoDocumento; }
+    public void setTipoDocumento(String tipoDocumento) { this.tipoDocumento = tipoDocumento;}
+
+    public String getNumeroDocumento() {return numeroDocumento;}
+    public void setNumeroDocumento(String numeroDocumento) { this.numeroDocumento = numeroDocumento;}
 
     public String getTelefono() { return telefono; }
     public void setTelefono(String telefono) { this.telefono = telefono; }

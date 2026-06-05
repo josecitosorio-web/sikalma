@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,10 +13,12 @@
             flex-direction: column;
             gap: 1.5em;
         }
+
         .metricas-fila {
             display: flex;
             gap: 1.5em;
         }
+
         .metrica-card {
             flex: 1;
             background-color: white;
@@ -23,6 +26,7 @@
             border-radius: 0.8em;
             padding: 1.2em;
         }
+
         .metrica-card h3 {
             font-size: 0.88em;
             color: #5a4e4e;
@@ -30,16 +34,19 @@
             padding-bottom: 0.6em;
             border-bottom: 1px solid #f0e9e8;
         }
+
         .metrica-card img {
             width: 100%;
             height: auto;
             border-radius: 0.4em;
         }
+
         .metrica-unica {
             max-width: calc(50% - 0.75em);
         }
     </style>
 </head>
+
 <body>
 
     <div th:replace="fragments/menu :: menu"></div>
@@ -55,31 +62,164 @@
         <div class="metricas-grid">
             <div class="metricas-fila">
                 <div class="metrica-card">
-                    <h3>Citas registradas por día</h3>
-                    <img src="/images/metrica-cita-registrada.png" alt="gráfico de citas registradas por día">
+                    <h3>Citas programadas por día</h3>
+                    <canvas id="graficoCitas"></canvas>
                 </div>
                 <div class="metrica-card">
-                    <h3>Citas atendidas por día</h3>
-                    <img src="/images/metrica-cita-atendida.png" alt="gráfico de citas atendidas por día">
+                    <h3>Distribución de estados por citas</h3>
+                    <canvas id="graficoEstados"></canvas>
                 </div>
             </div>
             <div class="metricas-fila">
                 <div class="metrica-card">
-                    <h3>Citas canceladas por día</h3>
-                    <img src="/images/metrica-cita-cancelada.png" alt="gráfico de citas canceladas por día">
+                    <h3>Ingresos por día</h3>
+                    <canvas id="graficoIngresos"></canvas>
                 </div>
                 <div class="metrica-card">
-                    <h3>Tiempo promedio de espera por día</h3>
-                    <img src="/images/metrica-tiempo-espera.png" alt="gráfico de tiempo promedio de espera">
+                    <h3>Citas por servicio</h3>
+                    <canvas id="graficoServicios"></canvas>
                 </div>
             </div>
             <div class="metricas-fila">
                 <div class="metrica-card metrica-unica">
-                    <h3>Ingresos por citas por día</h3>
-                    <img src="/images/metrica-ingresos-dia.png" alt="gráfico de ingresos por citas">
+                    <h3>Citas por día de la semana</h3>
+                    <canvas id="graficosDias"></canvas>
                 </div>
             </div>
         </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script th:inline="javascript">
+
+        const fechas = [[${ fechas }]];
+        const cantidades = [[${ cantidades }]];
+
+        console.log("Fechas:", fechas);
+        console.log("Cantidades:", cantidades);
+
+        const ctx = document.getElementById('graficoCitas');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: fechas,
+                datasets: [{
+                    label: 'Cantidad de citas',
+                    data: cantidades,
+                    backgroundColor: [
+                        '#3b82f6',
+                        '#22c55e',
+                        '#f59e0b',
+                        '#ef4444',
+                        '#a855f7',
+                        '#14b8a6',
+                        '#f97316'
+                    ]
+                }]
+            }
+        });
+
+        const ctxEstados = document.getElementById('graficoEstados');
+
+        const estados = [[${ estados }]];
+        const cantidadesEstados = [[${ cantidadEstado }]];
+
+        new Chart(ctxEstados, {
+            type: 'doughnut',
+            data: {
+                labels: estados,
+                datasets: [{
+                    data: cantidadesEstados,
+                    backgroundColor: [
+                        '#3b82f6',
+                        '#22c55e',
+                        '#f59e0b',
+                        '#ef4444',
+                        '#a855f7',
+                        '#14b8a6',
+                        '#f97316'
+                    ]
+                }]
+            }
+        });
+
+        const ctxIngresos = document.getElementById('graficoIngresos');
+
+        const fechasIngreso = [[${ fechasIngresos }]];
+        const ingresos = [[${ ingresos }]];
+
+        new Chart(ctxIngresos, {
+            type: 'line',
+            data: {
+                labels: fechasIngreso,
+                datasets: [{
+                    data: ingresos,
+                    label: 'Ingresos por fechas',
+                    fill: false,
+                    tension: 0.3,
+                    backgroundColor: 'rgba(59,130,246,0.2)'
+                }]
+            }
+        });
+
+        const ctxServicios = document.getElementById('graficoServicios');
+
+        const servicios = [[${ servicios }]];
+        const cantidadServicio = [[${ cantidadServicio }]];
+
+        new Chart(ctxServicios, {
+            type: 'bar',
+            data: {
+                labels: servicios,
+                datasets: [{
+                    data: cantidadServicio,
+                    label: 'Citas por servicio',
+                    backgroundColor: [
+                        '#3b82f6',
+                        '#22c55e',
+                        '#f59e0b',
+                        '#ef4444',
+                        '#a855f7',
+                        '#14b8a6',
+                        '#f97316'
+                    ]
+                }]
+            },
+            options: {
+                indexAxis: 'y'
+            }
+        });
+
+        const ctxCitasDIas = document.getElementById('graficosDias');
+
+        const dias = [[${ diasCitas }]];
+        const cantidadDia = [[${ cantidadCitas }]];
+
+        new Chart(ctxCitasDIas, {
+            type: 'bar',
+            data: {
+                labels: dias,
+                datasets: [{
+                    data: cantidadDia,
+                    label: 'Citas por dias',
+                    backgroundColor: [
+                        '#3b82f6',
+                        '#22c55e',
+                        '#f59e0b',
+                        '#ef4444',
+                        '#a855f7',
+                        '#14b8a6',
+                        '#f97316'
+                    ]
+                }]
+            }
+        })
+
+
+
+
+    </script>
 </body>
+
 </html>

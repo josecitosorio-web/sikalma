@@ -42,6 +42,8 @@ public class DoctorEntity {
     private LocalTime hora_atencion_inicio;
     @Column(name = "hora_atencion_fin")
     private LocalTime hora_atencion_fin;
+    @Column(name = "estado_doc")
+    private Boolean estado;
     @OneToMany(mappedBy = "doctor" , cascade = CascadeType.ALL)
     private List<CitaEntity> citas = new ArrayList<>();
     @ManyToOne
@@ -52,7 +54,7 @@ public class DoctorEntity {
     public DoctorEntity() {
     }
 
-    public DoctorEntity(String nombre, String dni,String telefono, String correo, LocalDate fechaNacimiento , LocalTime hora_atencion_inicio, LocalTime hora_atencion_fin) {
+    public DoctorEntity(String nombre, String dni,String telefono, String correo, LocalDate fechaNacimiento , LocalTime hora_atencion_inicio, LocalTime hora_atencion_fin, Boolean estado) {
         this.nombre = nombre;
         this.dni = dni;
         this.telefono = telefono;
@@ -60,6 +62,7 @@ public class DoctorEntity {
         this.fechaNacimiento = fechaNacimiento;
         this.hora_atencion_inicio = hora_atencion_inicio;
         this.hora_atencion_fin = hora_atencion_fin;
+        this.estado = estado;
     }
 
     // --- GETTERS Y SETTERS ---
@@ -94,4 +97,8 @@ public class DoctorEntity {
 
     public ServicioEntity getServicio () { return servicio;}
     public void setServicio (ServicioEntity servicio) { this.servicio = servicio ;}
+
+    public Boolean getEstado () {return estado;}
+
+    public void setEstado ( Boolean estado) {this.estado = estado;}
 }

@@ -3,7 +3,6 @@ package com.example.demo.Cita;
 import com.example.demo.Atencion.AtencionEntity;
 import com.example.demo.Doctor.DoctorEntity;
 import com.example.demo.Paciente.PacienteEntity;
-import com.example.demo.Servicio.ServicioEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,10 +33,6 @@ public class CitaEntity {
     @JoinColumn(name = "doctor_id")
     private DoctorEntity doctor;
 
-    @ManyToOne
-    @JoinColumn(name = "servicio_id")
-    private ServicioEntity servicio;
-
     @OneToOne(mappedBy = "cita")
     private AtencionEntity atencion;
 
@@ -59,10 +54,9 @@ public class CitaEntity {
     }
 
     // Constructor con parámetros
-    public CitaEntity(PacienteEntity paciente, DoctorEntity doctor,ServicioEntity servicio, LocalDate fecha, LocalTime hora, String estado){
+    public CitaEntity(PacienteEntity paciente, DoctorEntity doctor, LocalDate fecha, LocalTime hora, String estado){
         this.paciente = paciente;
         this.doctor = doctor;
-        this.servicio = servicio;
         this.fecha = fecha;
         this.hora = hora;
         this.estado = estado;
@@ -79,10 +73,6 @@ public class CitaEntity {
 
     public DoctorEntity getDoctor() {
         return doctor;
-    }
-
-    public ServicioEntity getServicio() {
-        return servicio;
     }
 
     public LocalDate getFecha() {
@@ -112,10 +102,6 @@ public class CitaEntity {
 
     public void setDoctor(DoctorEntity doctor) {
         this.doctor = doctor;
-    }
-
-    public void setServicio(ServicioEntity servicio) {
-        this.servicio = servicio;
     }
 
     public void setFecha(LocalDate fecha) {

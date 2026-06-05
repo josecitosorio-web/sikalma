@@ -8,21 +8,23 @@ public interface CitaService {
 
     List<Cita> listar();
 
-    void guardar(Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora, String estado);
+    void guardar(Long pacienteId, Long doctorId, LocalDate fecha, LocalTime hora, String estado);
 
     Cita buscarPorId(Long id);
 
-    void eliminar(Long id);
-
-    void actualizar(Long id ,Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora, String estado);
+    void actualizar(Long id ,Long pacienteId, Long doctorId, LocalDate fecha, LocalTime hora, String estado);
 
     List<Cita> buscarCitaPorPaciente( Long idPaciente);
 
+    List<Cita> buscarCitasHoy(LocalDate fecha);
+
+    long contarPorEstado(String estado);
+
 
     // validaciones 
-    String validarDatosRegistro(Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora);
+    String validarDatosRegistro(Long pacienteId, Long doctorId,Long servicioId, LocalDate fecha, LocalTime hora);
 
-    String validarDatosEdicion(Long id, Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora);
+    String validarDatosEdicion(Long id, Long pacienteId, Long doctorId,Long servicioId, LocalDate fecha, LocalTime hora);
 
     void cambiarEstado(Long id, String estado);
 
@@ -34,5 +36,21 @@ public interface CitaService {
 
     String validarCitasExistentesDoctor(Long idDoctor);
 
-    String validarCitasExistentesServicio(Long idServicio);
+
+    // METRICAS
+
+    List<String> obtenerCitasPorFecha();
+    List<Long> obtenerCantidadPorFecha();
+
+    List<String> obtenerEstadoPorCantidad();
+    List<Long> obtenerCantidadPorEstado();
+
+    List<String> obtenerIngresosPorFecha();
+    List<Double> obtenerSumaDeIngresos();
+
+    List<String> obtenerServicioPorCantidad();
+    List<Long> obtenerCantidadPorServicio();
+
+    List<String> obtenerDiaPorCantidad();
+    List<Long> obtenerCantidadPorDia();
 }

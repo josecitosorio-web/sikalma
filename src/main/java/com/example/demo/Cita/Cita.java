@@ -3,7 +3,6 @@ package com.example.demo.Cita;
 import com.example.demo.Atencion.Atencion;
 import com.example.demo.Doctor.Doctor;
 import com.example.demo.Paciente.Paciente;
-import com.example.demo.Servicio.Servicio;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -13,7 +12,6 @@ public class Cita {
     private Long id;
     private Paciente paciente;
     private Doctor doctor;
-    private Servicio servicio;
     private Atencion atencion;
     private LocalDate fecha;
     private LocalTime hora;
@@ -21,10 +19,9 @@ public class Cita {
 
     public Cita() {}
 
-    public Cita(Paciente paciente, Doctor doctor, Servicio servicio, LocalDate fecha, LocalTime hora, String estado) {
+    public Cita(Paciente paciente, Doctor doctor, LocalDate fecha, LocalTime hora, String estado) {
         this.paciente = paciente;
         this.doctor = doctor;
-        this.servicio = servicio;
         this.fecha = fecha;
         this.hora = hora;
         this.estado = estado;
@@ -38,9 +35,6 @@ public class Cita {
 
     public Doctor getDoctor() { return doctor; }
     public void setDoctor(Doctor doctor) { this.doctor = doctor; }
-
-    public Servicio getServicio() { return servicio; }
-    public void setServicio(Servicio servicio) { this.servicio = servicio; }
 
     public Atencion getAtencion() { return atencion; }
     public void setAtencion(Atencion atencion) { this.atencion = atencion; }

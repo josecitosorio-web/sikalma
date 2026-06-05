@@ -92,9 +92,9 @@ public class PacienteController {
     }
     
     @GetMapping("/buscar")
-    public String buscarPaciente(@RequestParam String dni,Model model){
+    public String buscarPaciente(@RequestParam String numeroDocumento,Model model){
 
-        model.addAttribute("pacientes" , pacienteService.buscarPorDni(dni));
+        model.addAttribute("pacientes" , pacienteService.buscarPorNumeroDocumento(numeroDocumento));
         model.addAttribute("paginaActiva" , "paciente");
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 

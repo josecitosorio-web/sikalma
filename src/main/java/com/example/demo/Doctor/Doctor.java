@@ -17,12 +17,13 @@ public class Doctor {
     private LocalTime hora_atencion_inicio;
     private LocalTime hora_atencion_fin;
     private Servicio servicio;
+    private Boolean estado;
 
     public Doctor() {
     }
 
     public Doctor(String nombre, String dni, String telefono, String correo,
-            LocalDate fechaNacimiento, LocalTime hora_atencion_inicio, LocalTime hora_atencion_fin, Servicio servicio) {
+            LocalDate fechaNacimiento, LocalTime hora_atencion_inicio, LocalTime hora_atencion_fin, Servicio servicio, Boolean estado) {
         this.nombre = nombre;
         this.dni = dni;
         this.telefono = telefono;
@@ -31,6 +32,7 @@ public class Doctor {
         this.hora_atencion_inicio = hora_atencion_inicio;
         this.hora_atencion_fin = hora_atencion_fin;
         this.servicio = servicio;
+        this.estado = estado;
     }
 
     public Long getId() {
@@ -107,5 +109,13 @@ public class Doctor {
 
     public void setServicio ( Servicio servicio) {
         this.servicio = servicio;
+    }
+
+    public Boolean getEstado () {
+        return estado;
+    }
+
+    public void setEstado ( Boolean estado) {
+        this.estado = estado;
     }
 }

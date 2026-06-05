@@ -9,8 +9,12 @@ import java.util.Optional;
 public interface PacienteRepository extends JpaRepository<PacienteEntity, Long> {
 
    
-    Optional<PacienteEntity> findByDni(String dni);
+    Optional<PacienteEntity> findByNumeroDocumento(String numeroDocumento);
 
-    List<PacienteEntity> findAllByDni(String dni);
+    List<PacienteEntity> findAllByNumeroDocumento(String numeroDocumento);
+
+    boolean existsByNumeroDocumento(String numeroDocumento);
 
 }
+
+

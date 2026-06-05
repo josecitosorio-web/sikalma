@@ -39,10 +39,23 @@
                     <input type="text" placeholder="Ej: María García López" name="nombres" th:value="${paciente.nombres}" required>
                 </div>
 
-                <div class="campo">
+                <!-- <div class="campo">
                     <label>DNI</label>
                     <input type="text" placeholder="12345678" maxlength="8" name="dni" pattern="\d{8}" inputmode="numeric" th:value="${paciente.dni}" required>
                     <span class="indicacion">Debe contener exactamente 8 dígitos.</span>
+                </div> -->
+
+                <div class="campo">
+                    <label>Tipo de Documento</label>
+                    <select name="tipoDocumento">
+                        <option value="DNI">DNI</option>
+                        <option value="CE">Carnet de Extranjería</option>
+                        <option value="PASAPORTE">Pasaporte</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <input type="text" name="numeroDocumento" required>
                 </div>
 
                 <div class="fila-form">

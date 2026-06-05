@@ -94,6 +94,28 @@ public class DoctorServiceImpl implements DoctorService {
         return DoctorAdapter.toModelList(doctorRepository.findAllByDni(dni));
     }
 
+    @Override
+    public void cambiarEstado(Long id, Boolean estado){
+
+        Doctor doctor = DoctorAdapter.toModel(doctorRepository.findById(id).orElse(null));
+
+        if(doctor == null) {
+
+            return;
+        }
+
+        doctor.setEstado(estado);
+
+        doctorRepository.save(DoctorAdapter.toEntity(doctor));
+    }
+
+    @Override
+    public List<Doctor> buscarPorEstado(Boolean estado) {
+
+        return DoctorAdapter.toModelList(doctorRepository.findByEstado(estado));
+
+    }
+
     // VALIDACIONES
 
     @Override

@@ -26,8 +26,10 @@ public class PacienteEntity {
 
     @Column(name = "nombre_pac")
     private String nombres;
-    @Column(name = "dni_pac")
-    private String dni;
+    @Column(name = "tipo_documento")
+    private String tipoDocumento;
+    @Column(name = "numero_documento")
+    private String numeroDocumento;
     @Column(name = "telefono_pac")
     private String telefono;
     @Column(name = "fecha_pac")
@@ -38,10 +40,11 @@ public class PacienteEntity {
 
     public PacienteEntity () {}
 
-    public PacienteEntity (String nombres, String dni, String telefono, LocalDate fechaNacimiento){
+    public PacienteEntity (String nombres, String tipoDocumento, String numeroDocumento, String telefono, LocalDate fechaNacimiento){
 
         this.nombres = nombres;
-        this.dni = dni;
+        this.tipoDocumento = tipoDocumento;
+        this.numeroDocumento = numeroDocumento;
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
 
@@ -55,8 +58,12 @@ public class PacienteEntity {
         return this.nombres;
     }
 
-    public String getDni(){
-        return this.dni;
+    public String getTipoDocumento() {
+        return this.tipoDocumento;
+    }
+
+    public String getNumeroDocumento() {
+        return this.numeroDocumento;
     }
 
     public String getTelefono(){
@@ -85,8 +92,12 @@ public class PacienteEntity {
         this.nombres = nombres;
     }
 
-    public void setDni(String dni) {
-        this.dni = dni;
+    public void setTipoDocumento(String tipoDocumento) {
+        this.tipoDocumento = tipoDocumento;
+    }
+
+    public void setNumeroDocumento(String numeroDocumento) {
+        this.numeroDocumento = numeroDocumento;
     }
 
     public void setTelefono(String telefono) {

@@ -17,35 +17,35 @@
                 <h1>Gestión de Citas</h1>
                 <p>Administra, organiza y controla las citas médicas del policlínico</p>
             </div>
-            <a href="/cita/r-citas" class="btn-primario">+ Nueva Cita</a>
+            <a th:if="${usuario.rol == 'ADMIN'}" href="/cita/r-citas" class="btn-primario">+ Nueva Cita</a>
         </div>
 
         <div class="estadisticas">
             <div class="estadistica">
                 <img src="/images/usuarios.png" alt="pacientes">
                 <div>
-                    <h2>7</h2>
+                    <h2 th:text="${pacientes.size()}"></h2>
                     <p>Pacientes</p>
                 </div>
             </div>
             <div class="estadistica">
                 <img src="/images/calendario.png" alt="citas hoy">
                 <div>
-                    <h2>6</h2>
+                    <h2 th:text="${citasHoy.size()}"></h2>
                     <p>Citas para hoy</p>
                 </div>
             </div>
             <div class="estadistica">
                 <img src="/images/reloj.png" alt="pendientes">
                 <div>
-                    <h2>4</h2>
+                    <h2 th:text="${citasPendientes}"></h2>
                     <p>Pendientes</p>
                 </div>
             </div>
             <div class="estadistica">
                 <img src="/images/check.png" alt="atendidos">
                 <div>
-                    <h2>15</h2>
+                    <h2 th:text="${citasConfirmados}"></h2>
                     <p>Confirmados</p>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                     <tr th:each="cita : ${citas}">
                         <td th:text="|#00${cita.id}|"></td>
                         <td th:text="${cita.paciente.nombres}"></td>
-                        <td th:text="${cita.servicio.nombre}"></td>
+                        <td th:text="${cita.doctor.servicio.nombre}"></td>
                         <td th:text="${cita.doctor.nombre}"></td>
                         <td th:text="${cita.fecha}"></td>
                         <td th:text="${cita.hora}"></td>
@@ -86,6 +86,7 @@
                             <a th:if="${usuario.rol == 'ADMIN' && cita.estado == 'Pendiente'}" th:href="@{/cita/confirmar(id=${cita.id})}" class="btn-editar">Confirmar</a>
                             <a th:if="${usuario.rol == 'ADMIN' && cita.estado == 'Pendiente'}" th:href="@{/cita/cancelar(id=${cita.id})}" class="btn-cancelar">Cancelar</a>
                             <a th:if="${usuario.rol == 'DOCTOR' && cita.estado == 'Confirmado'}" th:href="@{/cita/atender(id=${cita.id})}" class="btn-primario">Atender</a>
+                            <a th:if="${usuario.rol == 'ADMIN'}" th:href="@{/historial/g-historial(id=${cita.id})}">Ver Historial</a>
                             <a th:if="${usuario.rol == 'ADMIN' && cita.estado == 'Pendiente'}" th:href="@{/cita/no-asistio(id=${cita.id})}" 
                                     style="padding: 0.35em 1em;
                                         text-decoration: none;

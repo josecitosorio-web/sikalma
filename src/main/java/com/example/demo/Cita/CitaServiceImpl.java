@@ -2,10 +2,10 @@ package com.example.demo.Cita;
 
 import com.example.demo.Doctor.Doctor;
 import com.example.demo.Doctor.DoctorService;
+import com.example.demo.HistorialCita.HistorialCita;
+import com.example.demo.HistorialCita.HistorialCitaService;
 import com.example.demo.Paciente.Paciente;
 import com.example.demo.Paciente.PacienteService;
-import com.example.demo.Servicio.Servicio;
-import com.example.demo.Servicio.ServicioService;
 import com.example.demo.Usuario.Usuario;
 import com.example.demo.Usuario.UsuarioService;
 
@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,11 +31,12 @@ public class CitaServiceImpl implements CitaService {
     @Autowired
     private DoctorService doctorService;
 
-    @Autowired
-    private ServicioService servicioService;
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private HistorialCitaService historialCitaService;
 
     @Override
     public List<Cita> listar() {
@@ -50,14 +53,13 @@ public class CitaServiceImpl implements CitaService {
     }
 
     @Override
-    public void guardar(Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora,
+    public void guardar(Long pacienteId, Long doctorId, LocalDate fecha, LocalTime hora,
             String estado) {
 
         Paciente p = pacienteService.buscarPorId(pacienteId);
         Doctor d = doctorService.buscarPorId(doctorId);
-        Servicio s = servicioService.buscarPorId(servicioId);
 
-        Cita c = new Cita(p, d, s, fecha, hora, estado);
+        Cita c = new Cita(p, d, fecha, hora, estado);
 
         citaRepository.save(CitaAdapter.toEntity(c));
     }
@@ -68,19 +70,38 @@ public class CitaServiceImpl implements CitaService {
     }
 
     @Override
-    public void eliminar(Long id) {
-        citaRepository.deleteById(id);
-    }
-
-    @Override
-    public void actualizar(Long id, Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora,
+    public void actualizar(Long id, Long pacienteId, Long doctorId, LocalDate fecha, LocalTime hora,
             String estado) {
+
+        Cita citaAnterior = buscarPorId(id);
+        Doctor doctor = doctorService.buscarPorId(doctorId);
+
+        if (!citaAnterior.getHora().equals(hora) || !citaAnterior.getFecha().equals(fecha)) {
+
+            HistorialCita historialNuevo = new HistorialCita(citaAnterior, citaAnterior.getFecha(),
+                    fecha, citaAnterior.getHora(), hora, citaAnterior.getDoctor().getNombre(),
+                    doctor.getNombre(), citaAnterior.getEstado(),
+                    estado, LocalDateTime.now(), "Administrador", "REAGENDAMIENTO");
+
+            historialCitaService.registrarHistorial(historialNuevo);
+
+        }
+
+        if (!citaAnterior.getDoctor().getId().equals(doctorId)) {
+
+            HistorialCita historialNuevo = new HistorialCita(citaAnterior, citaAnterior.getFecha(),
+                    fecha, citaAnterior.getHora(), hora, citaAnterior.getDoctor().getNombre(),
+                    doctor.getNombre(), citaAnterior.getEstado(),
+                    estado, LocalDateTime.now(), "Administrador", "CAMBIO DE DOCTOR");
+
+            historialCitaService.registrarHistorial(historialNuevo);
+
+        }
 
         Paciente p = pacienteService.buscarPorId(pacienteId);
         Doctor d = doctorService.buscarPorId(doctorId);
-        Servicio s = servicioService.buscarPorId(servicioId);
 
-        Cita c = new Cita(p, d, s, fecha, hora, estado);
+        Cita c = new Cita(p, d, fecha, hora, estado);
         c.setId(id);
 
         citaRepository.save(CitaAdapter.toEntity(c));
@@ -89,6 +110,18 @@ public class CitaServiceImpl implements CitaService {
     @Override
     public List<Cita> buscarCitaPorPaciente(Long idPaciente) {
         return CitaAdapter.toModelList(citaRepository.findByPacienteId(idPaciente));
+    }
+
+    @Override
+    public List<Cita> buscarCitasHoy(LocalDate fecha) {
+        return CitaAdapter.toModelList(citaRepository.findByFecha(fecha));
+    }
+
+    @Override
+    public long contarPorEstado(String estado){
+
+        return citaRepository.countByEstado(estado);
+
     }
 
     // validaciones
@@ -154,6 +187,31 @@ public class CitaServiceImpl implements CitaService {
     @Override
     public void cambiarEstado(Long id, String estado) {
 
+        Cita citaAnterior = CitaAdapter.toModel(citaRepository.findById(id).orElse(null));
+
+        if (!citaAnterior.getEstado().equals(estado)) {
+
+            String responsable;
+
+            if (estado.equals("Atendido")) {
+
+                responsable = citaAnterior.getDoctor().getNombre();
+
+            } else {
+
+                responsable = "Administrador";
+
+            }
+
+            HistorialCita historialNuevo = new HistorialCita(citaAnterior, citaAnterior.getFecha(),
+                    null, citaAnterior.getHora(), null, citaAnterior.getDoctor().getNombre(),
+                    null, citaAnterior.getEstado(),
+                    estado, LocalDateTime.now(), responsable, "CAMBIO DE ESTADO");
+
+            historialCitaService.registrarHistorial(historialNuevo);
+
+        }
+
         citaRepository.cambiarEstado(id, estado);
 
     }
@@ -162,6 +220,172 @@ public class CitaServiceImpl implements CitaService {
     public boolean existeCitaDoctor(Long doctorId, LocalDate fecha, LocalTime hora) {
 
         return citaRepository.existsByDoctorIdAndFechaAndHora(doctorId, fecha, hora);
+
+    }
+
+
+    // METRICAS
+
+    @Override
+    public List<String> obtenerCitasPorFecha() {
+
+        List<Object[]> resultados = citaRepository.obtenerCitasPorFecha();
+        List<String> fechas = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            fechas.add(fila[0].toString());
+
+        }
+
+        return fechas;
+
+    }
+
+    @Override
+    public List<Long> obtenerCantidadPorFecha() {
+
+        List<Object[]> resultados = citaRepository.obtenerCitasPorFecha();
+        List<Long> cantidades = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            cantidades.add((Long) fila[1]);
+
+        }
+
+        return cantidades;
+
+    }
+
+    @Override
+    public List<String> obtenerEstadoPorCantidad(){
+
+        List<Object[]> resultados = citaRepository.contarPorEstado();
+        List<String> servicios = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            servicios.add(fila[0].toString());
+
+        }
+
+        return servicios;
+
+    }
+
+    @Override
+    public List<Long> obtenerCantidadPorEstado() {
+
+        List<Object[]> resultados = citaRepository.contarPorEstado();
+        List<Long> cantidad = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            cantidad.add((Long) fila[1]);
+
+        }
+
+        return cantidad;
+
+    }
+
+    @Override
+    public List<String> obtenerIngresosPorFecha() {
+
+        List<Object[]> resultados = citaRepository.ingresosPorDia();
+        List<String> fechas = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            fechas.add(fila[0].toString());
+
+        }
+
+        return fechas;
+    }
+
+    @Override
+    public List<Double> obtenerSumaDeIngresos() {
+
+        List<Object[]> resultados = citaRepository.ingresosPorDia();
+        List<Double> ingresos = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            ingresos.add((Double) fila[1]);
+
+        }
+
+        return ingresos;
+
+
+    }
+
+    @Override
+    public List<String> obtenerServicioPorCantidad() {
+
+
+        List<Object[]> resultados = citaRepository.contarPorServicio();
+        List<String> servicios = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            servicios.add(fila[0].toString());
+        }
+
+        return servicios;
+
+    }
+
+    @Override
+    public List<Long> obtenerCantidadPorServicio() {
+
+        List<Object[]> resultados = citaRepository.contarPorServicio();
+        List<Long> cantidad = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            cantidad.add((Long) fila[1]);
+
+        }
+
+        return cantidad;
+
+
+    }
+
+    @Override
+    public List<String> obtenerDiaPorCantidad() {
+
+        List<Object[]> resultados = citaRepository.contarPorDiaSemana();
+        List<String> dias = new ArrayList<>();
+
+        for(Object[] fila : resultados) {
+
+            dias.add(fila[0].toString());
+
+        }
+
+        return dias;
+
+    }
+
+    @Override
+    public List<Long> obtenerCantidadPorDia() {
+
+
+        List<Object[]> resultados = citaRepository.contarPorDiaSemana();
+        List<Long> cantidad = new ArrayList<>();
+        
+        for(Object[] fila : resultados) {
+
+            cantidad.add((Long) fila[1]);
+
+        }
+
+
+        return cantidad;
 
     }
 
@@ -197,6 +421,7 @@ public class CitaServiceImpl implements CitaService {
             return "La hora de la cita no puede ser anterior a la hora actual";
 
         } else if (fecha.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            
 
             return "No se pueden registrar citas los domingos";
 
@@ -227,9 +452,16 @@ public class CitaServiceImpl implements CitaService {
 
             Doctor d = doctorService.buscarPorId(doctorId);
 
-            if (hora.isBefore(d.getHoraAtencionInicio()) || hora.isAfter(d.getHoraAtencionFin()) || hora.equals(d.getHoraAtencionFin())) {
+            if (hora.isBefore(d.getHoraAtencionInicio()) || hora.isAfter(d.getHoraAtencionFin())
+                    || hora.equals(d.getHoraAtencionFin())) {
 
                 return "La hora de la cita está fuera del horario del doctor";
+
+            }
+
+            if (!d.getServicio().getId().equals(servicioId)) {
+
+                return "El doctor seleccionado no pertenece a este servicio";
 
             }
 
@@ -305,6 +537,12 @@ public class CitaServiceImpl implements CitaService {
 
             }
 
+            if (!d.getServicio().getId().equals(servicioId)) {
+
+                return "El doctor seleccionado no pertenece a este servicio";
+
+            }
+
             List<Cita> citasDoctor = CitaAdapter.toModelList(citaRepository.findByDoctorId(doctorId));
 
             for (Cita c : citasDoctor) {
@@ -360,17 +598,6 @@ public class CitaServiceImpl implements CitaService {
 
     }
 
-    @Override
-    public String validarCitasExistentesServicio(Long idServicio) {
-
-        if (!citaRepository.findByServicioId(idServicio).isEmpty()) {
-
-            return "El servicio tiene citas registradas";
-
-        }
-
-        return null;
-
-    }
+    
 
 }

@@ -53,7 +53,7 @@
                         <select name="servicio">
 
                             <option th:each="servicio : ${servicios}" th:value="${servicio.id}"
-                                th:text="${servicio.nombre}" th:selected="${servicio.id == cita.servicio.id}">
+                                th:text="${servicio.nombre}" th:selected="${servicio.id == cita.doctor.servicio.id}">
                             </option>
 
                         </select>

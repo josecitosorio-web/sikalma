@@ -38,6 +38,10 @@ public class CitaController {
         model.addAttribute("paginaActiva", "citas");
         model.addAttribute("citas", citaService.listar());
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
+        model.addAttribute("pacientes", pacienteService.listar());
+        model.addAttribute("citasPendientes", citaService.contarPorEstado("Pendiente"));
+        model.addAttribute("citasConfirmados", citaService.contarPorEstado("Confirmado"));
+        model.addAttribute("citasHoy", citaService.buscarCitasHoy(LocalDate.now()));
         return "Gestion-citas";
 
     }
@@ -46,7 +50,7 @@ public class CitaController {
     public String registrarCita(Model model) {
         model.addAttribute("paginaActiva", "r-citas");
         model.addAttribute("pacientes", null);
-        model.addAttribute("doctores", doctorService.obtenerTodos());
+        model.addAttribute("doctores", doctorService.buscarPorEstado(true));
         model.addAttribute("servicios", servicioService.listar());
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
@@ -70,23 +74,23 @@ public class CitaController {
             model.addAttribute("error", error);
             model.addAttribute("paginaActiva", "r-citas");
             model.addAttribute("pacientes", pacienteService.listar());
-            model.addAttribute("doctores", doctorService.obtenerTodos());
+            model.addAttribute("doctores", doctorService.buscarPorEstado(true));
             model.addAttribute("servicios", servicioService.listar());
             model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
             return "Registrar-cita";
 
         }
 
-        citaService.guardar(paciente, doctor, servicio, fecha, hora, estado);
+        citaService.guardar(paciente, doctor, fecha, hora, estado);
         return "redirect:/cita/g-citas";
     }
 
     @GetMapping("/buscar")
-    public String buscarPac(@RequestParam String dni, Model model){
+    public String buscarPac(@RequestParam String numeroDocumento, Model model){
 
-        model.addAttribute("paciente" , pacienteService.buscarPaciente(dni));
+        model.addAttribute("paciente" , pacienteService.buscarPaciente(numeroDocumento));
         model.addAttribute("paginaActiva" , "r-citas");
-        model.addAttribute("doctores", doctorService.obtenerTodos());
+        model.addAttribute("doctores", doctorService.buscarPorEstado(true));
         model.addAttribute("servicios", servicioService.listar());
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
@@ -98,7 +102,7 @@ public class CitaController {
 
         model.addAttribute("cita", citaService.buscarPorId(id));
         model.addAttribute("servicios", servicioService.listar());
-        model.addAttribute("doctores", doctorService.obtenerTodos());
+        model.addAttribute("doctores", doctorService.buscarPorEstado(true));
         model.addAttribute("paginaActiva", "r-citas");
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
@@ -115,7 +119,7 @@ public class CitaController {
 
             model.addAttribute("error", error);
             model.addAttribute("servicios", servicioService.listar());
-            model.addAttribute("doctores", doctorService.obtenerTodos());
+            model.addAttribute("doctores", doctorService.buscarPorEstado(true));
             model.addAttribute("paginaActiva", "citas");
             model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
             model.addAttribute("cita", citaService.buscarPorId(id));
@@ -123,7 +127,7 @@ public class CitaController {
 
         }
 
-        citaService.actualizar(id, paciente, doctor, servicio, fecha, hora, estado);
+        citaService.actualizar(id, paciente, doctor, fecha, hora, estado);
         return "redirect:/cita/g-citas";
 
     }
@@ -133,13 +137,10 @@ public class CitaController {
 
         Cita cita = citaService.buscarPorId(id);
 
-        if(cita != null && cita.getEstado().equalsIgnoreCase("Confirmado")){
-            
-            citaService.cambiarEstado(id, "Atendido");
+        LocalTime horafin = cita.getHora().plusHours(1);
 
-        }
-
-        model.addAttribute("cita", citaService.buscarPorId(id));
+        model.addAttribute("cita", cita);
+        model.addAttribute("horafin",horafin);
         model.addAttribute("paginaActiva", "citas");
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 
@@ -178,7 +179,7 @@ public class CitaController {
     public String marcarNoAsistio(@RequestParam Long id, Model model) {
         Cita cita = citaService.buscarPorId(id);
 
-        if (cita != null && cita.getEstado().equalsIgnoreCase("Confirmado")) {
+        if (cita != null && cita.getEstado().equalsIgnoreCase("Pendiente")) {
             citaService.cambiarEstado(id, "No asistió");
             model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
         }

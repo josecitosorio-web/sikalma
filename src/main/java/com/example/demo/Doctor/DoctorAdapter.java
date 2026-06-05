@@ -7,7 +7,7 @@ import com.example.demo.Servicio.ServicioAdapter;
 
 public class DoctorAdapter {
 
-    // Entity → Model
+
     public static Doctor toModel(DoctorEntity entity) {
         if (entity == null) return null;
 
@@ -21,11 +21,12 @@ public class DoctorAdapter {
         model.setHoraAtencionInicio(entity.getHoraAtencionInicio());
         model.setHoraAtencionFin(entity.getHoraAtencionFin());
         model.setServicio(ServicioAdapter.toModel(entity.getServicio()));
+        model.setEstado(entity.getEstado());
 
         return model;
     }
 
-    // Model → Entity
+
     public static DoctorEntity toEntity(Doctor model) {
         if (model == null) return null;
 
@@ -39,11 +40,12 @@ public class DoctorAdapter {
         entity.setHoraAtencionInicio(model.getHoraAtencionInicio());
         entity.setHoraAtencionFin(model.getHoraAtencionFin());
         entity.setServicio(ServicioAdapter.toEntity(model.getServicio()));
+        entity.setEstado(model.getEstado());
 
         return entity;
     }
 
-    // Lista Entity → Lista Model
+ 
     public static List<Doctor> toModelList(List<DoctorEntity> entities) {
         return entities.stream()
                 .map(DoctorAdapter::toModel)
