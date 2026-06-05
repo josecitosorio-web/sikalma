@@ -26,12 +26,12 @@
             </div>
         </div>
 
-        <!-- Cita de origen (datos pre-cargados) -->
+        
         <div class="cita-origen">
             <h3 th:text="|CITA DE ORIGEN — #00${cita.id}|"></h3>
             <div class="cita-origen-datos">
                 <span><strong>Paciente:</strong><span th:text="${cita.paciente.nombres}"></span></span>
-                <span><strong>Servicio:</strong><span th:text="${cita.servicio.nombre}"></span></span>
+                <span><strong>Servicio:</strong><span th:text="${cita.doctor.servicio.nombre}"></span></span>
                 <span><strong>Doctor:</strong><span th:text="${cita.doctor.nombre}"></span></span>
                 <span><strong>Fecha:</strong><span th:text="${cita.fecha}"></span></span>
                 <span><strong>Hora:</strong><span th:text="${cita.hora}"></span></span>
@@ -68,7 +68,7 @@
                 <div class="fila-form">
                     <div>
                         <label>Servicio</label>
-                        <input type="text" th:value="${cita.servicio.nombre}" readonly style="background-color:#f5f0f0; color:#9a8a88;">
+                        <input type="text" th:value="${cita.doctor.servicio.nombre}" readonly style="background-color:#f5f0f0; color:#9a8a88;">
                     </div>
                     <div>
                         <label>Fecha de atención</label>
@@ -80,11 +80,11 @@
                 <div class="fila-form">
                     <div>
                         <label>Hora de inicio</label>
-                        <input type="time" name="horaInicio" th:value="${cita.hora}">
+                        <input type="time" name="horaInicio" th:value="${cita.hora}" required readonly>
                     </div>
                     <div>
                         <label>Hora de fin</label>
-                        <input type="time" name="horaFin" required>
+                        <input type="time" name="horaFin" th:value="${horafin}" required readonly>
                     </div>
                 </div>
 
@@ -101,7 +101,7 @@
                 <div class="fila-form">
                     <div>
                         <label>Costo del servicio (S/)</label>
-                        <input type="text" th:value="${cita.servicio.costo}" name="costo" readonly>
+                        <input type="text" th:value="${cita.doctor.servicio.costo}" name="costo" readonly>
                     </div>
                     <div>
                         <label>Estado de la atención</label>

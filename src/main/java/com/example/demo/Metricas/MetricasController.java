@@ -25,14 +25,19 @@ public class MetricasController {
 
         model.addAttribute("paginaActiva" , "metricas");
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
+
         model.addAttribute("cantidades", citaService.obtenerCantidadPorFecha());
         model.addAttribute("fechas", citaService.obtenerCitasPorFecha());
+
         model.addAttribute("estados",citaService.obtenerEstadoPorCantidad());
         model.addAttribute("cantidadEstado", citaService.obtenerCantidadPorEstado());
+
         model.addAttribute("fechasIngresos" , citaService.obtenerCitasPorFecha());
         model.addAttribute("ingresos", citaService.obtenerSumaDeIngresos());
+
         model.addAttribute("servicios", citaService.obtenerServicioPorCantidad());
         model.addAttribute("cantidadServicio", citaService.obtenerCantidadPorServicio());
+        
         model.addAttribute("diasCitas" , citaService.obtenerDiaPorCantidad());
         model.addAttribute("cantidadCitas", citaService.obtenerCantidadPorDia());
         

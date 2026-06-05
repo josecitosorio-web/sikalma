@@ -18,8 +18,6 @@ public interface CitaRepository extends JpaRepository<CitaEntity, Long> {
 
         List<CitaEntity> findByDoctorId(Long idDoctor);
 
-        List<CitaEntity> findByServicioId(Long idServicio);
-
         List<CitaEntity> findByFecha(LocalDate fecha);
 
         long countByEstado(String estado);

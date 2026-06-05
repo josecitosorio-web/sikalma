@@ -3,7 +3,6 @@ package com.example.demo.Cita;
 
 import com.example.demo.Doctor.DoctorAdapter;
 import com.example.demo.Paciente.PacienteAdapter;
-import com.example.demo.Servicio.ServicioAdapter;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +21,6 @@ public class CitaAdapter {
 
         model.setPaciente(PacienteAdapter.toModel(entity.getPaciente()));
         model.setDoctor(DoctorAdapter.toModel(entity.getDoctor()));
-        model.setServicio(ServicioAdapter.toModel(entity.getServicio()));
 
         return model;
     }
@@ -39,7 +37,6 @@ public class CitaAdapter {
 
         entity.setPaciente(PacienteAdapter.toEntity(model.getPaciente()));
         entity.setDoctor(DoctorAdapter.toEntity(model.getDoctor()));
-        entity.setServicio(ServicioAdapter.toEntity(model.getServicio()));
 
         return entity;
     }

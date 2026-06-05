@@ -29,8 +29,6 @@ public class ServicioEntity {
     @Column(name = "estado_servi")
     private Boolean estado; 
     @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL)
-    private List<CitaEntity> citas = new ArrayList<>();
-    @OneToMany(mappedBy = "servicio", cascade = CascadeType.ALL)
     private List<DoctorEntity> doctores = new ArrayList<>();
 
     public ServicioEntity () {}
@@ -58,10 +56,6 @@ public class ServicioEntity {
         return costo;
     }
 
-    public List<CitaEntity> getCitas() {
-        return citas;
-    }
-
     public List<DoctorEntity> getDoctores(){
         return doctores;
     }
@@ -84,10 +78,6 @@ public class ServicioEntity {
 
     public void setCosto(double costo) {
         this.costo = costo;
-    }
-
-    public void setCitas(List<CitaEntity> citas) {
-        this.citas = citas;
     }
 
     public void setDoctores(List<DoctorEntity> doctores){

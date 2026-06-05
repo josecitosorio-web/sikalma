@@ -81,7 +81,7 @@ public class CitaController {
 
         }
 
-        citaService.guardar(paciente, doctor, servicio, fecha, hora, estado);
+        citaService.guardar(paciente, doctor, fecha, hora, estado);
         return "redirect:/cita/g-citas";
     }
 
@@ -127,7 +127,7 @@ public class CitaController {
 
         }
 
-        citaService.actualizar(id, paciente, doctor, servicio, fecha, hora, estado);
+        citaService.actualizar(id, paciente, doctor, fecha, hora, estado);
         return "redirect:/cita/g-citas";
 
     }
@@ -135,7 +135,12 @@ public class CitaController {
     @GetMapping("/atender")
     public String atenderCita(@RequestParam Long id, Model model) {
 
-        model.addAttribute("cita", citaService.buscarPorId(id));
+        Cita cita = citaService.buscarPorId(id);
+
+        LocalTime horafin = cita.getHora().plusHours(1);
+
+        model.addAttribute("cita", cita);
+        model.addAttribute("horafin",horafin);
         model.addAttribute("paginaActiva", "citas");
         model.addAttribute("usuario" , usuarioService.obtenerUsuarioActual());
 

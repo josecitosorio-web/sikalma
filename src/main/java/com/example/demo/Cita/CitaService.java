@@ -8,11 +8,11 @@ public interface CitaService {
 
     List<Cita> listar();
 
-    void guardar(Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora, String estado);
+    void guardar(Long pacienteId, Long doctorId, LocalDate fecha, LocalTime hora, String estado);
 
     Cita buscarPorId(Long id);
 
-    void actualizar(Long id ,Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora, String estado);
+    void actualizar(Long id ,Long pacienteId, Long doctorId, LocalDate fecha, LocalTime hora, String estado);
 
     List<Cita> buscarCitaPorPaciente( Long idPaciente);
 
@@ -22,9 +22,9 @@ public interface CitaService {
 
 
     // validaciones 
-    String validarDatosRegistro(Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora);
+    String validarDatosRegistro(Long pacienteId, Long doctorId,Long servicioId, LocalDate fecha, LocalTime hora);
 
-    String validarDatosEdicion(Long id, Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora);
+    String validarDatosEdicion(Long id, Long pacienteId, Long doctorId,Long servicioId, LocalDate fecha, LocalTime hora);
 
     void cambiarEstado(Long id, String estado);
 
@@ -36,7 +36,6 @@ public interface CitaService {
 
     String validarCitasExistentesDoctor(Long idDoctor);
 
-    String validarCitasExistentesServicio(Long idServicio);
 
     // METRICAS
 

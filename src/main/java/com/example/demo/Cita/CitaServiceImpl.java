@@ -6,8 +6,6 @@ import com.example.demo.HistorialCita.HistorialCita;
 import com.example.demo.HistorialCita.HistorialCitaService;
 import com.example.demo.Paciente.Paciente;
 import com.example.demo.Paciente.PacienteService;
-import com.example.demo.Servicio.Servicio;
-import com.example.demo.Servicio.ServicioService;
 import com.example.demo.Usuario.Usuario;
 import com.example.demo.Usuario.UsuarioService;
 
@@ -33,8 +31,6 @@ public class CitaServiceImpl implements CitaService {
     @Autowired
     private DoctorService doctorService;
 
-    @Autowired
-    private ServicioService servicioService;
 
     @Autowired
     private UsuarioService usuarioService;
@@ -57,14 +53,13 @@ public class CitaServiceImpl implements CitaService {
     }
 
     @Override
-    public void guardar(Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora,
+    public void guardar(Long pacienteId, Long doctorId, LocalDate fecha, LocalTime hora,
             String estado) {
 
         Paciente p = pacienteService.buscarPorId(pacienteId);
         Doctor d = doctorService.buscarPorId(doctorId);
-        Servicio s = servicioService.buscarPorId(servicioId);
 
-        Cita c = new Cita(p, d, s, fecha, hora, estado);
+        Cita c = new Cita(p, d, fecha, hora, estado);
 
         citaRepository.save(CitaAdapter.toEntity(c));
     }
@@ -75,7 +70,7 @@ public class CitaServiceImpl implements CitaService {
     }
 
     @Override
-    public void actualizar(Long id, Long pacienteId, Long doctorId, Long servicioId, LocalDate fecha, LocalTime hora,
+    public void actualizar(Long id, Long pacienteId, Long doctorId, LocalDate fecha, LocalTime hora,
             String estado) {
 
         Cita citaAnterior = buscarPorId(id);
@@ -105,9 +100,8 @@ public class CitaServiceImpl implements CitaService {
 
         Paciente p = pacienteService.buscarPorId(pacienteId);
         Doctor d = doctorService.buscarPorId(doctorId);
-        Servicio s = servicioService.buscarPorId(servicioId);
 
-        Cita c = new Cita(p, d, s, fecha, hora, estado);
+        Cita c = new Cita(p, d, fecha, hora, estado);
         c.setId(id);
 
         citaRepository.save(CitaAdapter.toEntity(c));
@@ -427,6 +421,7 @@ public class CitaServiceImpl implements CitaService {
             return "La hora de la cita no puede ser anterior a la hora actual";
 
         } else if (fecha.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            
 
             return "No se pueden registrar citas los domingos";
 
@@ -603,17 +598,6 @@ public class CitaServiceImpl implements CitaService {
 
     }
 
-    @Override
-    public String validarCitasExistentesServicio(Long idServicio) {
-
-        if (!citaRepository.findByServicioId(idServicio).isEmpty()) {
-
-            return "El servicio tiene citas registradas";
-
-        }
-
-        return null;
-
-    }
+    
 
 }

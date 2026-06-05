@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class UsuarioAdapter {
 
-    // Entity → Model
+ 
     public static Usuario toModel(UsuarioEntity entity) {
         if (entity == null) return null;
 
@@ -21,7 +21,7 @@ public class UsuarioAdapter {
         return model;
     }
 
-    // Model → Entity
+
     public static UsuarioEntity toEntity(Usuario model) {
         if (model == null) return null;
 
@@ -35,7 +35,7 @@ public class UsuarioAdapter {
         return entity;
     }
 
-    // Lista Entity → Lista Model
+  
     public static List<Usuario> toModelList(List<UsuarioEntity> entities) {
         return entities.stream()
                 .map(UsuarioAdapter::toModel)

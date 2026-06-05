@@ -7,7 +7,7 @@ import com.example.demo.Servicio.ServicioAdapter;
 
 public class DoctorAdapter {
 
-    // Entity → Model
+
     public static Doctor toModel(DoctorEntity entity) {
         if (entity == null) return null;
 
@@ -26,7 +26,7 @@ public class DoctorAdapter {
         return model;
     }
 
-    // Model → Entity
+
     public static DoctorEntity toEntity(Doctor model) {
         if (model == null) return null;
 
@@ -45,7 +45,7 @@ public class DoctorAdapter {
         return entity;
     }
 
-    // Lista Entity → Lista Model
+ 
     public static List<Doctor> toModelList(List<DoctorEntity> entities) {
         return entities.stream()
                 .map(DoctorAdapter::toModel)

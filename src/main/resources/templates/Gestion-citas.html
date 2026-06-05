@@ -76,7 +76,7 @@
                     <tr th:each="cita : ${citas}">
                         <td th:text="|#00${cita.id}|"></td>
                         <td th:text="${cita.paciente.nombres}"></td>
-                        <td th:text="${cita.servicio.nombre}"></td>
+                        <td th:text="${cita.doctor.servicio.nombre}"></td>
                         <td th:text="${cita.doctor.nombre}"></td>
                         <td th:text="${cita.fecha}"></td>
                         <td th:text="${cita.hora}"></td>
