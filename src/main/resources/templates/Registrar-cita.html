@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/images/logo-policlinico.png">
     <title>Registrar Cita - SIKALMA</title>
     <link rel="stylesheet" href="/css/admin.css">
@@ -25,11 +24,10 @@
             </div>
         </div>
 
-        <div class="buscador-seccion"
-            style="margin: 20px 0; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-            <form th:action="@{/cita/buscar}" method="get" style="display: flex; gap: 10px; align-items: center;">
+        <div class="buscador-seccion">
+            <form th:action="@{/cita/buscar}" method="get" class="buscador-form">
                 <input type="text" name="numeroDocumento" placeholder="Ingrese el número de documento del paciente..."
-                    style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; width: 300px;" required>
+                    class="buscador-input" required>
                 <button type="submit" class="btn-primario">Buscar Paciente</button>
             </form>
         </div>
@@ -38,10 +36,9 @@
             <h2>Datos de la Cita</h2>
 
             <div th:if="${error != null}">
-                <div
-                    style="display: flex; align-items: center; gap: 12px; background-color: #FFFFFF; color: #842029; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; border-left: 5px solid #dc3545; box-shadow: 0 2px 12px rgba(0,0,0,0.06); font-size: 0.95rem;">
-                    <span style="color: #dc3545; font-size: 1.1rem; font-weight: bold;">⚠️</span>
-                    <span style="font-weight: 500;" th:text="${error}"></span>
+                <div class="error-alert">
+                    <span class="error-icon">⚠️</span>
+                    <span class="error-message" th:text="${error}"></span>
                 </div>
             </div>
 
@@ -49,7 +46,7 @@
                 <!-- Datos del paciente -->
                 <div class="campo">
                     <label>Paciente</label>
-                    <input type="text" th:value="${paciente != null ? paciente.nombres : ''}" readonly>
+                    <input type="text" th:value="${paciente != null ? paciente.nombres : ''}" class="solo-lectura" readonly>
                     <input type="hidden" name="paciente" th:value="${paciente != null ? paciente.id : 0}">
                 </div>
 
@@ -89,12 +86,12 @@
                 <!-- Estado inicial -->
                 <div class="campo">
                     <label>Estado Inicial</label>
-                    <input type="estado" name="estado" value="Pendiente" required readonly>
+                    <input type="estado" name="estado" value="Pendiente" class="solo-lectura" required readonly>
                     <span class="indicacion">El estado puede modificarse más adelante desde Gestión de Citas.</span>
                 </div>
 
                 <div class="form-acciones">
-                    <a href="/cita/g-citas" class="btn-secundario">Cancelar</a>
+                    <a href="/cita/g-citas" class="btn-cancelar">Cancelar</a>
                     <button type="submit" class="btn-primario">Registrar Cita</button>
                 </div>
             </form>

@@ -19,20 +19,18 @@
         <div class="formulario-card" style="position: relative;">
 
 
-            <div class="buscador-seccion" style="margin: 20px 0; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                <form th:action="@{/usuario/buscar}" method="get" style="display: flex; gap: 10px; align-items: center;">
-                    <input type="text" name="dni" placeholder="Ingrese DNI del doctor..."
-                        style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; width: 300px;" required>
+            <div class="buscador-seccion">
+                <form th:action="@{/usuario/buscar}" method="get" class="buscador-input">
+                    <input type="text" name="dni" placeholder="Ingrese DNI del doctor..." class="buscador-input" required>
                     <button type="submit" class="btn-primario">Buscar por DNI</button>
-                    <a href="/usuario/gestion" class="btn-secundario" style="text-decoration: none;">Limpiar</a>
+                    <a href="/usuario/gestion" class="btn-secundario buscador-limpiar">Limpiar</a>
                 </form>
             </div>
 
             <div th:if="${error != null}">
-                <div
-                    style="display: flex; align-items: center; gap: 12px; background-color: #FFFFFF; color: #842029; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; border-left: 5px solid #dc3545; box-shadow: 0 2px 12px rgba(0,0,0,0.06); font-size: 0.95rem;">
-                    <span style="color: #dc3545; font-size: 1.1rem; font-weight: bold;">⚠️</span>
-                    <span style="font-weight: 500;" th:text="${error}"></span>
+                <div class="error-alert">
+                    <span class="error-icon">⚠️</span>
+                    <span class="error-message" th:text="${error}"></span>
                 </div>
             </div>
             <form th:action="@{/usuario/registrar}" method="post">
@@ -57,9 +55,9 @@
                 <input type="hidden" name="rol" value="DOCTOR">
                 <input type="hidden" name="idDoctor" th:value="${doctor != null ? doctor.id : 0}"> 
 
-                <div class="form-acciones" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
-                    <a href="/doctor/gestion" class="btn-secundario">Cancelar</a>
-                    <button type="submit" class="btn-primario" style="background-color: #007bff; border: none; padding: 10px 20px; border-radius: 6px;">Registrar Usuario</button>
+                <div class="form-acciones">
+                    <a href="/doctor/gestion" class="btn-cancelar">Cancelar</a>
+                    <button type="submit" class="btn-primario">Registrar Usuario</button>
                 </div>
             </form>
         </div>

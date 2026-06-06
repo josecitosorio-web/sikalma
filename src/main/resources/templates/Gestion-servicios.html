@@ -2,7 +2,6 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/images/logo-policlinico.png">
     <title>Gestión de Servicios - SIKALMA</title>
     <link rel="stylesheet" href="/css/admin.css">
@@ -52,11 +51,11 @@
                         <td th:text="${servicio.nombre}"></td>
                         <td th:text="${servicio.descripcion}"></td>
                         <td th:text="|S/ ${servicio.costo}|"></td>
-                        <td th:text="${servicio.estado ? 'Activo' : 'Inactivo'}"></td>
+                        <td th:text="${servicio.estado != null && servicio.estado ? 'Activo' : 'Inactivo'}"></td>
                         <td class="td-acciones">
                                 <a th:href="@{/servicio/editar(id=${servicio.id})}" class="btn-editar">Editar</a>
-                                <a th:href="@{/servicio/activar(id=${servicio.id})}" class="btn-primario">Activar</a>
-                                <a th:href="@{/servicio/desactivar(id=${servicio.id})}"  class="btn-cancelar">Desactivar</a>
+                                <a th:href="@{/servicio/activar(id=${servicio.id})}" class="btn-activar">Activar</a>
+                                <a th:href="@{/servicio/desactivar(id=${servicio.id})}"  class="btn-desactivar">Desactivar</a>
                             </td>
                     </tr>
                 </tbody>

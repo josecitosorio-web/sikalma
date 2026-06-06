@@ -20,10 +20,9 @@
         <div class="formulario-card" style="position: relative;">
 
             <div th:if="${error != null}">
-                <div
-                    style="display: flex; align-items: center; gap: 12px; background-color: #FFFFFF; color: #842029; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; border-left: 5px solid #dc3545; box-shadow: 0 2px 12px rgba(0,0,0,0.06); font-size: 0.95rem;">
-                    <span style="color: #dc3545; font-size: 1.1rem; font-weight: bold;">⚠️</span>
-                    <span style="font-weight: 500;" th:text="${error}"></span>
+                <div class="error-alert">
+                    <span class="error-icon">⚠️</span>
+                    <span class="error-message" th:text="${error}"></span>
                 </div>
             </div>
             
@@ -49,11 +48,9 @@
                     </div>
 
                 </div>
-                <div class="form-acciones" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+                <div class="form-acciones">
                     <a href="/usuario/gestion" class="btn-secundario">Cancelar</a>
-                    <button type="submit" class="btn-primario"
-                        style="background-color: #007bff; border: none; padding: 10px 20px; border-radius: 6px;">Actualizar
-                        Usuario</button>
+                    <button type="submit" class="btn-primario">Actualizar Usuario</button>
                 </div>
             </form>
         </div>

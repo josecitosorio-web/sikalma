@@ -133,7 +133,7 @@ main {
 .tabla-encabezado {
   display: flex;
   flex-direction: column;
-  
+
   padding: 1em 1.5em;
   border-bottom: 1px solid #f0e9e8;
 }
@@ -209,7 +209,11 @@ td {
 .btn-cancelar,
 .btn-atender,
 .btn-eliminar,
-.btn-ver {
+.btn-ver,
+.btn-activar,
+.btn-desactivar,
+.btn-verHistorial,
+.btn-noAsistio {
   padding: 0.35em 1em;
   text-decoration: none;
   color: white;
@@ -219,11 +223,41 @@ td {
   cursor: pointer;
 }
 
-.btn-editar   { background-color: #95abb4; }
-.btn-cancelar { background-color: #cb8881; }
-.btn-atender  { background-color: #7bab8b; }
-.btn-eliminar { background-color: #cb8881; }
-.btn-ver      { background-color: #004085; }
+.btn-editar {
+  background-color: #95abb4;
+}
+
+.btn-cancelar {
+  background-color: #cb8881;
+}
+
+.btn-atender {
+  background-color: #7bab8b;
+}
+
+.btn-eliminar {
+  background-color: #cb8881;
+}
+
+.btn-ver {
+  background-color: #004085;
+}
+
+.btn-activar {
+  background-color: #22c55e;
+}
+
+.btn-desactivar {
+  background-color: #ef4444;
+}
+
+.btn-verHistorial {
+  background-color: #6366f1;
+}
+
+.btn-noAsistio {
+  background-color: #f59e0b;
+}
 
 /* ── DISEÑO DE ESTADO DE LAS CITAS ── */
 .estado {
@@ -233,10 +267,30 @@ td {
   font-weight: bold;
 }
 
-.estado-pendiente  { background-color: #fef3cd; color: #856404; }
-.estado-atendido   { background-color: #d1eddb; color: #155724; }
-.estado-cancelado  { background-color: #f8d7da; color: #721c24; }
-.estado-confirmado { background-color: #cce5ff; color: #004085; }
+.estado-pendiente {
+  background-color: #fef3cd;
+  color: #856404;
+}
+
+.estado-atendido {
+  background-color: #d1eddb;
+  color: #155724;
+}
+
+.estado-cancelado {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.estado-confirmado {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.estado-no-asistio {
+  background-color: #ffedd5;
+  color: #c2410c;
+}
 
 /* ── DISEÑO DE ENLACES ── */
 .retorno {
@@ -278,7 +332,7 @@ td {
   margin-bottom: 1.2em;
 }
 
-.fila-form  div,
+.fila-form div,
 .campo {
   flex: 1;
   display: flex;
@@ -325,8 +379,111 @@ textarea {
   padding: 0.5em;
   text-align: center;
   background-color: red;
-  color: white; 
-  font-weight: bold; 
+  color: white;
+  font-weight: bold;
   border-radius: 1em;
 }
 
+/* DISEÑO DEL MENSAJE DE ERROR */
+
+.error-alert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #FFFFFF;
+  color: #842029;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  border-left: 5px solid #dc3545;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  font-size: 0.95rem;
+}
+
+.error-icon {
+  color: #dc3545;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.error-message {
+  font-weight: 500;
+}
+
+/* DISEÑO DE LOS BUSCADORES */
+
+.buscador-seccion {
+  margin: 20px 0;
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.buscador-form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.buscador-input {
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.buscador-limpiar {
+  text-decoration: none;
+}
+
+/* DISEÑO DE LA MÉTRICAS */
+
+.metricas-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+}
+
+.metricas-fila {
+  display: flex;
+  gap: 1.5em;
+}
+
+.metrica-card {
+  flex: 1;
+  background-color: white;
+  border: 1px solid #f0e9e8;
+  border-radius: 0.8em;
+  padding: 1.2em;
+}
+
+.metrica-card h3 {
+  font-size: 0.88em;
+  color: #5a4e4e;
+  margin-bottom: 0.8em;
+  padding-bottom: 0.6em;
+  border-bottom: 1px solid #f0e9e8;
+}
+
+.metrica-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.4em;
+}
+
+.metrica-unica {
+  max-width: calc(50% - 0.75em);
+}
+
+.chart-container {
+  position: relative;
+  height: 300px;
+}
+
+/* DISEÑO DE LOS INPUTS */
+
+.solo-lectura {
+  background-color: #f5f0f0;
+  color: #9a8a88;
+}

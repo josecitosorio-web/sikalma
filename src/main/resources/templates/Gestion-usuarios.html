@@ -16,12 +16,12 @@
             <a href="/usuario/nuevo" class="btn-primario">+ Crear nuevo usuario</a>
         </div>
 
-        <div class="buscador-seccion" style="margin: 20px 0; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-            <form th:action="@{/usuario/buscar-usuario}" method="get" style="display: flex; gap: 10px; align-items: center;">
+        <div class="buscador-seccion">
+            <form th:action="@{/usuario/buscar-usuario}" method="get" class="buscardor-form">
                 <input type="text" name="dni" placeholder="Ingrese DNI del doctor..."
-                       style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; width: 300px;" required>
+                       class="buscador-input" required>
                 <button type="submit" class="btn-primario">Buscar por DNI</button>
-                <a href="/usuario/gestion" class="btn-secundario" style="text-decoration: none;">Limpiar</a>
+                <a href="/usuario/gestion" class="btn-secundario buscador-limpiar">Limpiar</a>
             </form>
         </div>
 
