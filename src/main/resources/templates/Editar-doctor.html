@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <title>Editar Doctor - SIKALMA</title>
     <link rel="stylesheet" href="/css/admin.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
@@ -21,14 +20,14 @@
         <div class="formulario-card" style="position: relative;">
 
             <div th:if="${error != null}">
-                <div
-                    style="display: flex; align-items: center; gap: 12px; background-color: #FFFFFF; color: #842029; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; border-left: 5px solid #dc3545; box-shadow: 0 2px 12px rgba(0,0,0,0.06); font-size: 0.95rem;">
-                    <span style="color: #dc3545; font-size: 1.1rem; font-weight: bold;">⚠️</span>
-                    <span style="font-weight: 500;" th:text="${error}"></span>
+                <div class="error-alert">
+                    <span class="error-icon">⚠️</span>
+                    <span class="error-message" th:text="${error}"></span>
                 </div>
             </div>
             <form th:action="@{/doctor/actualizar}" method="post">
                 <input type="hidden" name="id" th:value="${doctor.id}">
+                <input type="hidden" name="estado" th:value="${doctor.estado}">
 
                 <div class="campo">
                     <label>Nombre Completo</label>
@@ -75,11 +74,9 @@
                         <input type="time" name="horaAtencionFin" th:value="${doctor.horaAtencionFin}" required>
                     </div>
                 </div>
-                <div class="form-acciones" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+                <div class="form-acciones">
                     <a href="/doctor/gestion" class="btn-secundario">Cancelar</a>
-                    <button type="submit" class="btn-primario"
-                        style="background-color: #007bff; border: none; padding: 10px 20px; border-radius: 6px;">Actualizar
-                        Doctor</button>
+                    <button type="submit" class="btn-primario">Actualizar Doctor</button>
                 </div>
             </form>
         </div>

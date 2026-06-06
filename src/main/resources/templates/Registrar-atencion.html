@@ -2,7 +2,6 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../images/logo-policlinico.png">
     <title>Registrar Atención - SIKALMA</title>
     <link rel="stylesheet" href="/css/admin.css">
@@ -42,37 +41,37 @@
         <div class="formulario-card">
 
             <div th:if="${error != null}">
-                <div style="display: flex; align-items: center; gap: 12px; background-color: #FFFFFF; color: #842029; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; border-left: 5px solid #dc3545; box-shadow: 0 2px 12px rgba(0,0,0,0.06); font-size: 0.95rem;">
-                    <span style="color: #dc3545; font-size: 1.1rem; font-weight: bold;">⚠️</span>
-                    <span style="font-weight: 500;" th:text="${error}"></span>
+                <div class="error-alert">
+                    <span class="error-icon">⚠️</span>
+                    <span class="error-message" th:text="${error}"></span>
                 </div>
             </div>
 
             <h2>Datos de la Atención</h2>
 
             <form th:action="@{/atencion/nuevo}" method="post">
-                <!-- Datos heredados de la cita (bloqueados) -->
+                
                 <input type="hidden" name="citaId" th:value="${cita.id}">
 
                 <div class="fila-form">
                     <div>
                         <label>Paciente</label>
-                        <input type="text" th:value="${cita.paciente.nombres}" readonly style="background-color:#f5f0f0; color:#9a8a88;">
+                        <input type="text" th:value="${cita.paciente.nombres}" readonly class="solo-lectura">
                     </div>
                     <div>
                         <label>Doctor que atiende</label>
-                        <input type="text" th:value="${cita.doctor.nombre}" readonly style="background-color:#f5f0f0; color:#9a8a88;">
+                        <input type="text" th:value="${cita.doctor.nombre}" readonly class="solo-lectura">
                     </div>
                 </div>
 
                 <div class="fila-form">
                     <div>
                         <label>Servicio</label>
-                        <input type="text" th:value="${cita.doctor.servicio.nombre}" readonly style="background-color:#f5f0f0; color:#9a8a88;">
+                        <input type="text" th:value="${cita.doctor.servicio.nombre}" readonly class="solo-lectura">
                     </div>
                     <div>
                         <label>Fecha de atención</label>
-                        <input type="date" name="fecha" th:value="${cita.fecha}" readonly style="background-color:#f5f0f0; color:#9a8a88;">
+                        <input type="date" name="fecha" th:value="${cita.fecha}" readonly class="solo-lectura">
                     </div>
                 </div>
 
@@ -80,11 +79,11 @@
                 <div class="fila-form">
                     <div>
                         <label>Hora de inicio</label>
-                        <input type="time" name="horaInicio" th:value="${cita.hora}" required readonly>
+                        <input type="time" name="horaInicio" th:value="${cita.hora}" required class="solo-lectura" readonly>
                     </div>
                     <div>
                         <label>Hora de fin</label>
-                        <input type="time" name="horaFin" th:value="${horafin}" required readonly>
+                        <input type="time" name="horaFin" th:value="${horafin}" required class="solo-lectura" readonly>
                     </div>
                 </div>
 
@@ -101,7 +100,7 @@
                 <div class="fila-form">
                     <div>
                         <label>Costo del servicio (S/)</label>
-                        <input type="text" th:value="${cita.doctor.servicio.costo}" name="costo" readonly>
+                        <input type="text" th:value="${cita.doctor.servicio.costo}" name="costo" class="solo-lectura" readonly>
                     </div>
                     <div>
                         <label>Estado de la atención</label>
@@ -113,7 +112,7 @@
                 </div>
 
                 <div class="form-acciones">
-                    <a href="/atencion/gestion" class="btn-secundario">Cancelar</a>
+                    <a href="/atencion/gestion" class="btn-cancelar">Cancelar</a>
                     <button type="submit" class="btn-primario">Registrar Atención</button>
                 </div>
             </form>

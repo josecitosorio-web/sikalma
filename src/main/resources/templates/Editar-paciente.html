@@ -2,7 +2,6 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/images/logo-policlinico.png">
     <title>Editar Paciente - SIKALMA</title>
     <link rel="stylesheet" href="/css/admin.css">
@@ -27,16 +26,16 @@
             <h2 th:text="|Datos del Paciente — ID: #P0${paciente.id}|"></h2>
 
             <div th:if="${error != null}">
-                <div
-                    style="display: flex; align-items: center; gap: 12px; background-color: #FFFFFF; color: #842029; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; border-left: 5px solid #dc3545; box-shadow: 0 2px 12px rgba(0,0,0,0.06); font-size: 0.95rem;">
-                    <span style="color: #dc3545; font-size: 1.1rem; font-weight: bold;">⚠️</span>
-                    <span style="font-weight: 500;" th:text="${error}"></span>
+                <div class="error-alert">
+                    <span class="error-icon">⚠️</span>
+                    <span class="error-message" th:text="${error}"></span>
                 </div>
             </div>
 
             <form th:action="@{/paciente/editar}" method="post" >
 
                 <input type="hidden" name="id" th:value="${paciente.id}">
+                <input type="hidden" name="tipoDocumento" th:value="${paciente.tipoDocumento}">
 
                 <div class="campo">
                     <label>Nombre completo</label>
@@ -44,9 +43,8 @@
                 </div>
 
                 <div class="campo">
-                    <label>DNI</label>
-                    <input type="text" th:value="${paciente.dni}" name="dni"  maxlength="8" pattern="\d{8}" inputmode="numeric" required >
-                    <span class="indicacion">Debe contener exactamente 8 dígitos.</span>
+                    <label>Numero de documento</label>
+                    <input type="text" th:value="${paciente.numeroDocumento}" name="numeroDocumento" required >
                 </div>
 
                 <div class="fila-form">

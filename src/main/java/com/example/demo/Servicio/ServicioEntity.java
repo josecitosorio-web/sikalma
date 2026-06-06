@@ -1,6 +1,5 @@
 package com.example.demo.Servicio;
 
-import com.example.demo.Cita.CitaEntity;
 import com.example.demo.Doctor.DoctorEntity;
 
 import jakarta.persistence.CascadeType;

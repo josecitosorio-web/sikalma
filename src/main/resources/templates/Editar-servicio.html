@@ -2,7 +2,6 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/images/logo-policlinico.png">
     <title>Editar Servicio - SIKALMA</title>
     <link rel="stylesheet" href="/css/admin.css">
@@ -26,10 +25,9 @@
     <div class="formulario-card">
 
         <div th:if="${error != null}">
-                <div
-                    style="display: flex; align-items: center; gap: 12px; background-color: #FFFFFF; color: #842029; padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; border-left: 5px solid #dc3545; box-shadow: 0 2px 12px rgba(0,0,0,0.06); font-size: 0.95rem;">
-                    <span style="color: #dc3545; font-size: 1.1rem; font-weight: bold;">⚠️</span>
-                    <span style="font-weight: 500;" th:text="${error}"></span>
+                <div class="error-alert">
+                    <span class="error-icon">⚠️</span>
+                    <span class="error-message" th:text="${error}"></span>
                 </div>
         </div>
 
@@ -38,6 +36,7 @@
         <form th:action="@{/servicio/editar}" method="post">
 
             <input type="hidden" name="id" th:value="${servicio.id}">
+            <input type="hidden" name="estado" th:value="${servicio.estado}">
 
             <div class="campo">
                 <label>Nombre del servicio</label>

@@ -18,13 +18,17 @@
             <a href="/doctor/nuevo" class="btn-primario">+ Registrar Doctor</a>
         </div>
 
-        <div class="buscador-seccion"
-            style="margin: 20px 0; background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-            <form th:action="@{/doctor/buscar}" method="get" style="display: flex; gap: 10px; align-items: center;">
-                <input type="text" name="dni" placeholder="Ingrese DNI del doctor..."
-                    style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; width: 300px;" required>
-                <button type="submit" class="btn-primario">Buscar por DNI</button>
-                <a href="/doctor/gestion" class="btn-secundario" style="text-decoration: none;">Limpiar</a>
+        <div class="buscador-seccion">
+            <form th:action="@{/doctor/buscar}" method="get" class="buscador-form">
+                <input type="text" name="dni" placeholder="Ingrese DNI del doctor..." class="buscador-input" required>
+
+                <button type="submit" class="btn-primario">
+                    Buscar por DNI
+                </button>
+
+                <a href="/doctor/gestion" class="btn-secundario buscador-limpiar">
+                    Limpiar
+                </a>
             </form>
         </div>
 
@@ -53,8 +57,8 @@
                         <td th:text="${doc.estado ? 'Activo' : 'Inactivo'}"></td>
                         <td class="acciones-celda">
                             <a th:href="@{/doctor/editar(id=${doc.id})}" class="btn-editar">Editar</a>
-                            <a th:href="@{/doctor/activar(id=${doc.id})}" class="btn-primario">Activar</a>
-                            <a th:href="@{/doctor/desactivar(id=${doc.id})}" class="btn-cancelar">Desactivar</a>
+                            <a th:href="@{/doctor/activar(id=${doc.id})}" class="btn-activar">Activar</a>
+                            <a th:href="@{/doctor/desactivar(id=${doc.id})}" class="btn-desactivar">Desactivar</a>
 
                         </td>
                     </tr>
