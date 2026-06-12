@@ -59,8 +59,6 @@ public class PacienteServiceImpl implements PacienteService {
 
         }
 
-        
-
         return null;
     }
 
@@ -68,17 +66,18 @@ public class PacienteServiceImpl implements PacienteService {
     public String validarDatosEdicion(Paciente paciente) {
 
         String error = validacionesGenerales(paciente);
-        Paciente pacEncontrado = PacienteAdapter.toModel(pacienteRepository.findByNumeroDocumento(paciente.getNumeroDocumento()).orElse(null)); 
+        Paciente pacEncontrado = PacienteAdapter
+                .toModel(pacienteRepository.findByNumeroDocumento(paciente.getNumeroDocumento()).orElse(null));
 
         if (error != null) {
 
             return error;
 
-        } else if (pacEncontrado!= null && !pacEncontrado.getId().equals(paciente.getId())){
+        } else if (pacEncontrado != null && !pacEncontrado.getId().equals(paciente.getId())) {
 
             return "Ya hay un paciente con el mismo número de documento";
 
-        } 
+        }
 
         return null;
     }
@@ -92,59 +91,6 @@ public class PacienteServiceImpl implements PacienteService {
         } else if (paciente.getTelefono() == null || paciente.getTelefono().trim().isEmpty()) {
 
             return "El telefono del paciente es obligatorio";
-
-        } else if(paciente.getTipoDocumento().equals("DNI")) {
-
-            String dni = paciente.getNumeroDocumento();
-
-            if (dni == null || dni.length() != 8) {
-
-                return "DNI Inválido : debe tener solo 8 dígitos";
-
-            } else if (!dni.matches("\\d{8}")) {
-
-                return "DNI Inválido : solo debe tener número permitidos";
-
-            } else if (dni.equals("00000000")) {
-
-                return "DNI Inválido : no puede ser 00000000";
-
-            }
-        } else if(paciente.getTipoDocumento().equals("CE")) {
-
-            String ce = paciente.getNumeroDocumento();
-
-            if (ce == null || ce.isBlank()) {
-
-                return "CE Inválido : no puede estar vacío";
-
-            }else if(!ce.matches("[a-zA-Z0-9]+")) {
-
-                return "CE Inálido : solo caracteres alfanuméricos";
-
-            } else if(ce.length() < 9 || ce.length() > 12) {
-
-                return "CE Inválido : debe tener entre 9 y 12 carateres";
-
-            }
-
-        }else if(paciente.getTipoDocumento().equals("PASAPORTE")) {
-
-            String P = paciente.getNumeroDocumento();
-
-            if (P == null || P.isBlank()) {
-
-                return "CE Inválido : no puede estar vacío";
-
-            }else if(!P.matches("[a-zA-Z0-9]+")) {
-
-                return "CE Inálido : solo caracteres alfanuméricos";
-
-            } else if(P.length() < 6 || P.length() > 9) {
-
-                return "CE Inválido : debe tener entre 6 y 9 carateres";
-
-            }
 
         } else if (paciente.getFechaNacimiento() == null) {
 
@@ -161,6 +107,59 @@ public class PacienteServiceImpl implements PacienteService {
         } else if (paciente.getFechaNacimiento().isAfter(LocalDate.now())) {
 
             return "La fecha de nacimiento no debería ser futura";
+
+        } else if (paciente.getTipoDocumento().equals("DNI")) {
+
+            String dni = paciente.getNumeroDocumento();
+
+            if (dni == null || dni.length() != 8) {
+
+                return "DNI Inválido : debe tener solo 8 dígitos";
+
+            } else if (!dni.matches("\\d{8}")) {
+
+                return "DNI Inválido : solo debe tener número permitidos";
+
+            } else if (dni.equals("00000000")) {
+
+                return "DNI Inválido : no puede ser 00000000";
+
+            }
+        } else if (paciente.getTipoDocumento().equals("CE")) {
+
+            String ce = paciente.getNumeroDocumento();
+
+            if (ce == null || ce.isBlank()) {
+
+                return "CE Inválido : no puede estar vacío";
+
+            } else if (!ce.matches("[a-zA-Z0-9]+")) {
+
+                return "CE Inválido : solo caracteres alfanuméricos";
+
+            } else if (ce.length() < 9 || ce.length() > 12) {
+
+                return "CE Inválido : debe tener entre 9 y 12 carateres";
+
+            }
+
+        } else if (paciente.getTipoDocumento().equals("PASAPORTE")) {
+
+            String P = paciente.getNumeroDocumento();
+
+            if (P == null || P.isBlank()) {
+
+                return "CE Inválido : no puede estar vacío";
+
+            } else if (!P.matches("[a-zA-Z0-9]+")) {
+
+                return "CE Inálido : solo caracteres alfanuméricos";
+
+            } else if (P.length() < 6 || P.length() > 9) {
+
+                return "CE Inválido : debe tener entre 6 y 9 carateres";
+
+            }
 
         }
 

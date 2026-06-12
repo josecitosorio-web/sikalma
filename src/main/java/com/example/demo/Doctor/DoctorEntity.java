@@ -1,6 +1,7 @@
 package com.example.demo.Doctor;
 
 import com.example.demo.Cita.CitaEntity;
+import com.example.demo.DoctorDIa.DoctorDiaEntity;
 import com.example.demo.Servicio.ServicioEntity;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -49,6 +50,9 @@ public class DoctorEntity {
     @ManyToOne
     @JoinColumn(name = "servicio_id")
     private ServicioEntity servicio;
+    @OneToMany(mappedBy = "doctor" , cascade = CascadeType.ALL)
+    private List<DoctorDiaEntity> diasLaborales = new ArrayList<>();
+
 
 
     public DoctorEntity() {
@@ -99,6 +103,8 @@ public class DoctorEntity {
     public void setServicio (ServicioEntity servicio) { this.servicio = servicio ;}
 
     public Boolean getEstado () {return estado;}
-
     public void setEstado ( Boolean estado) {this.estado = estado;}
+
+    public List<DoctorDiaEntity> getDoctorDia() {return diasLaborales;}
+    public void setDoctorDia(List<DoctorDiaEntity> diasLaborales) {this.diasLaborales = diasLaborales;}
 }
