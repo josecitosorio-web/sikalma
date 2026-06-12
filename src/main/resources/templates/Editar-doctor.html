@@ -64,6 +64,60 @@
                         <input type="date" name="fechaNacimiento" th:value="${doctor.fechaNacimiento}" required>
                     </div>
                 </div>
+
+                <div class="fila-form">
+
+                    <div class="campo">
+
+                        <label>Día de atención</label>
+
+                        <div class="checkbox-group">
+
+                            <label>
+                                <input type="checkbox" name="diasLaborales" value="MONDAY"
+                                    th:checked="${diasSeleccionados.contains(T(java.time.DayOfWeek).MONDAY)}">
+                                Lunes
+                            </label>
+
+                            <label>
+                                <input type="checkbox" name="diasLaborales" value="TUESDAY"
+                                    th:checked="${diasSeleccionados.contains(T(java.time.DayOfWeek).TUESDAY)}">
+                                Martes
+                            </label>
+
+                            <label>
+                                <input type="checkbox" name="diasLaborales" value="WEDNESDAY"
+                                    th:checked="${diasSeleccionados.contains(T(java.time.DayOfWeek).WEDNESDAY)}">
+                                Miercoles
+                            </label>
+
+                            <label>
+                                <input type="checkbox" name="diasLaborales" value="THURSDAY"
+                                    th:checked="${diasSeleccionados.contains(T(java.time.DayOfWeek).THURSDAY)}">
+                                Jueves
+                            </label>
+
+                            <label>
+                                <input type="checkbox" name="diasLaborales" value="FRIDAY"
+                                    th:checked="${diasSeleccionados.contains(T(java.time.DayOfWeek).FRIDAY)}">
+                                Viernes
+                            </label>
+
+                            <label>
+                                <input type="checkbox" name="diasLaborales" value="SATURDAY"
+                                    th:checked="${diasSeleccionados.contains(T(java.time.DayOfWeek).SATURDAY)}">
+                                Sábado
+                            </label>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
                 <div class="fila-form">
                     <div class="campo">
                         <label>Horario de inicio</label>

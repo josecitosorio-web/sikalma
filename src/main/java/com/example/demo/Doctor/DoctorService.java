@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface DoctorService {
     List<Doctor> obtenerTodos();
-    void agregar(Doctor doctor);
+    Long agregar(Doctor doctor);
     Doctor buscarPorId(Long id);
     Doctor buscarDoctor(String dni);
     void actualizar(Doctor doctor);

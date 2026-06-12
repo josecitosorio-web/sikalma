@@ -26,7 +26,7 @@ public class DoctorServiceImpl implements DoctorService {
     private UsuarioRepository usuarioRepository;
 
     @Override
-    public void agregar(Doctor doctor) {
+    public Long agregar(Doctor doctor) {
         DoctorEntity entity = DoctorAdapter.toEntity(doctor);
 
         if (doctor.getServicio() != null) {
@@ -34,7 +34,9 @@ public class DoctorServiceImpl implements DoctorService {
             entity.setServicio(servicioGestionado);
         }
 
-        doctorRepository.save(entity);
+        entity = doctorRepository.save(entity);
+
+        return entity.getId();
     }
 
     @Override

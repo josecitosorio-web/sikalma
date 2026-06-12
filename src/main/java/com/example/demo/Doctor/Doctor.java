@@ -3,7 +3,6 @@ package com.example.demo.Doctor;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Period;
-
 import com.example.demo.Servicio.Servicio;
 
 public class Doctor {
@@ -33,6 +32,7 @@ public class Doctor {
         this.hora_atencion_fin = hora_atencion_fin;
         this.servicio = servicio;
         this.estado = estado;
+
     }
 
     public Long getId() {

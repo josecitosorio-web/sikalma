@@ -2,6 +2,7 @@ package com.example.demo.Cita;
 
 import com.example.demo.Doctor.Doctor;
 import com.example.demo.Doctor.DoctorService;
+import com.example.demo.DoctorDIa.DoctorDiaService;
 import com.example.demo.HistorialCita.HistorialCita;
 import com.example.demo.HistorialCita.HistorialCitaService;
 import com.example.demo.Paciente.Paciente;
@@ -37,6 +38,9 @@ public class CitaServiceImpl implements CitaService {
 
     @Autowired
     private HistorialCitaService historialCitaService;
+
+    @Autowired
+    private DoctorDiaService doctorDiaService;
 
     @Override
     public List<Cita> listar() {
@@ -486,6 +490,13 @@ public class CitaServiceImpl implements CitaService {
 
             }
 
+            List<DayOfWeek> diasDoctor = doctorDiaService.obtenerDiasPorDoctor(doctorId);
+            if(!diasDoctor.contains(fecha.getDayOfWeek())) {
+
+                return "El doctor no atiende esos dias, escoga otro día";
+
+            }
+
         }
 
         return null;
@@ -565,6 +576,13 @@ public class CitaServiceImpl implements CitaService {
                         return "El doctor ya tiene una cita en ese horario";
                     }
                 }
+            }
+
+            List<DayOfWeek> diasDoctor = doctorDiaService.obtenerDiasPorDoctor(doctorId);
+            if(!diasDoctor.contains(fecha.getDayOfWeek())) {
+
+                return "El doctor no atiende esos dias, escoga otro día";
+
             }
 
             List<Cita> citasPaciente = CitaAdapter.toModelList(citaRepository.findByPacienteId(pacienteId));
