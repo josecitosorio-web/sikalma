@@ -227,6 +227,29 @@ public class CitaServiceImpl implements CitaService {
 
     }
 
+    @Override
+    public String validarDatosHorario(Long idPaciente, Long idServicio, Long idDoctor) {
+
+        if(idPaciente == null || idPaciente == 0) {
+
+            return "Debe seleccionar un paciente";
+
+        }else if (idServicio == null || idServicio == 0) {
+
+            return "Debe seleccionar un servicio";
+
+        } else if (idDoctor == null || idDoctor == 0){
+
+            return "Debe seleccionar un doctor";
+
+        }
+
+        
+
+        return null;
+
+    }
+
 
     // METRICAS
 

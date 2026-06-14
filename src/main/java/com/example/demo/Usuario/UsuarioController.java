@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.Cita.CitaService;
 import com.example.demo.Doctor.DoctorService;
 
 
@@ -21,10 +22,12 @@ public class UsuarioController {
     
     private final UsuarioService usuarioService;
     private final DoctorService doctorService;
+    private final CitaService citaService;
 
-    public UsuarioController(UsuarioService usuarioService, DoctorService doctorService) {
+    public UsuarioController(UsuarioService usuarioService, DoctorService doctorService, CitaService citaService) {
         this.usuarioService = usuarioService;
         this.doctorService = doctorService;
+        this.citaService = citaService;
     }
 
     @GetMapping("/gestion")
@@ -123,12 +126,6 @@ public class UsuarioController {
 
     }
 
-
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
-
     @GetMapping("/cerrar-sesion")
     public String cerrarLogin(){
         usuarioService.cerrarSesion();
@@ -150,6 +147,22 @@ public class UsuarioController {
 
         usuarioService.guardarUsuarioActual(usuario);
         model.addAttribute("usuario", usuario);
+        model.addAttribute("paginaActiva","metricas");
+
+        model.addAttribute("cantidades", citaService.obtenerCantidadPorFecha());
+        model.addAttribute("fechas", citaService.obtenerCitasPorFecha());
+
+        model.addAttribute("estados",citaService.obtenerEstadoPorCantidad());
+        model.addAttribute("cantidadEstado", citaService.obtenerCantidadPorEstado());
+
+        model.addAttribute("fechasIngresos" , citaService.obtenerCitasPorFecha());
+        model.addAttribute("ingresos", citaService.obtenerSumaDeIngresos());
+
+        model.addAttribute("servicios", citaService.obtenerServicioPorCantidad());
+        model.addAttribute("cantidadServicio", citaService.obtenerCantidadPorServicio());
+        
+        model.addAttribute("diasCitas" , citaService.obtenerDiaPorCantidad());
+        model.addAttribute("cantidadCitas", citaService.obtenerCantidadPorDia());
 
         return "Metricas";
     } 

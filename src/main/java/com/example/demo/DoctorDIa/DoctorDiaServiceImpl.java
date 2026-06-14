@@ -1,11 +1,12 @@
 package com.example.demo.DoctorDIa;
 
 import java.time.DayOfWeek;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import com.example.demo.Doctor.DoctorEntity;
 import com.example.demo.Doctor.DoctorRepository;
@@ -24,9 +25,22 @@ public class DoctorDiaServiceImpl implements DoctorDiaService {
 
         return doctorDiaRepository.findByDoctorId(idDoctor)
                 .stream()
-                .map(DoctorDiaEntity :: getDiaSemana)
+                .map(DoctorDiaEntity::getDiaSemana)
                 .toList();
-        
+
+    }
+
+    @Override
+    public List<String> obtenerDiasEspanol(Long idDoctor) {
+
+        return doctorDiaRepository.findByDoctorId(idDoctor)
+                .stream()
+                .map(DoctorDiaEntity::getDiaSemana)
+                .map(dia -> dia.getDisplayName(
+                        TextStyle.FULL,
+                        new Locale("es", "PE")))
+                .toList();
+
     }
 
     @Override
