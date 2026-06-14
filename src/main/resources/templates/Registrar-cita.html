@@ -25,15 +25,26 @@
         </div>
 
         <div class="buscador-seccion">
+
+            <h2>Datos del Paciente</h2>
+
             <form th:action="@{/cita/buscar}" method="get" class="buscador-form">
                 <input type="text" name="numeroDocumento" placeholder="Ingrese el número de documento del paciente..."
                     class="buscador-input" required>
                 <button type="submit" class="btn-primario">Buscar Paciente</button>
             </form>
+
+            <div class="campo">
+                <input type="text" th:value="${paciente != null ? paciente.nombres : ''}" class="solo-lectura" readonly>
+            </div>
         </div>
+
+
 
         <div class="formulario-card">
             <h2>Datos de la Cita</h2>
+
+
 
             <div th:if="${error != null}">
                 <div class="error-alert">
@@ -42,34 +53,80 @@
                 </div>
             </div>
 
-            <form th:action="@{/cita/guardar}" method="post">
-                <!-- Datos del paciente -->
-                <div class="campo">
-                    <label>Paciente</label>
-                    <input type="text" th:value="${paciente != null ? paciente.nombres : ''}" class="solo-lectura" readonly>
-                    <input type="hidden" name="paciente" th:value="${paciente != null ? paciente.id : 0}">
-                </div>
+            <form th:action="@{/cita/ver-horario}" method="get">
 
-                <!-- Servicio y especialidad -->
+                <input type="hidden" name="paciente" th:value="${paciente != null ? paciente.id : 0}">
+
                 <div class="fila-form">
                     <div>
                         <label>Servicio (Especialidad)</label>
                         <select name="servicio" id="servicioSelect">
                             <option value="0">— Seleccione un servicio —</option>
-                            <option th:each="servicio : ${servicios}" th:if="${servicio.estado}" th:value="${servicio.id}"
-                                th:text="${servicio.nombre}"></option>
+                            <option th:each="servicio : ${servicios}" th:if="${servicio.estado}"
+                                th:value="${servicio.id}" th:text="${servicio.nombre}"
+                                th:selected="${servicio.id == servicioid}"></option>
                         </select>
                     </div>
+
+                </div>
+
+                <div class="fila-form">
+
                     <div>
                         <label>Doctor Asignado</label>
                         <select name="doctor" id="doctorSelect">
                             <option value="0">— Seleccione un doctor —</option>
                             <option th:each="doctor : ${doctores}" th:value="${doctor.id}" th:text="${doctor.nombre}"
-                                th:attr="data-servicio=${doctor.servicio != null ? doctor.servicio.id : 0}">
+                                th:attr="data-servicio=${doctor.servicio != null ? doctor.servicio.id : 0}"
+                                th:selected="${doctor.id == doctorid}">
                             </option>
                         </select>
                     </div>
                 </div>
+
+
+                <button type="submit" class="btn-primario">Ver Horario</button>
+
+                <div class="card-horario" th:if="${horarios != null}">
+
+                    <div class="card-horario-header">
+                        <h3>Horario de Atención</h3>
+                    </div>
+
+                    <div class="card-horario-body">
+
+                        <div class="horario-item">
+                            <span class="horario-label">Días de atención:</span>
+                            <ul th:each="horario : ${horarios}">
+
+                                <li th:text="${horario}"></li>
+
+                            </ul>
+                        </div>
+
+                        <div class="horario-item">
+                            <span class="horario-label">Hora de inicio:</span>
+                            <span class="horario-valor" th:text="${doctorEncontrado.horaAtencionInicio}"></span>
+                        </div>
+
+                        <div class="horario-item">
+                            <span class="horario-label">Hora de fin:</span>
+                            <span class="horario-valor" th:text="${doctorEncontrado.horaAtencionFin}"></span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </form>
+
+
+            <form th:action="@{/cita/guardar}" method="post">
+
+                <input type="hidden" name="paciente" th:value="${paciente != null ? paciente.id : ''}">
+                <input type="hidden" name="servicio" th:value="${servicioid}">
+                <input type="hidden" name="doctor" th:value="${doctorid}">
 
                 <!-- Fecha y hora -->
                 <div class="fila-form">

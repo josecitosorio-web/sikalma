@@ -26,6 +26,8 @@ public interface CitaService {
 
     String validarDatosEdicion(Long id, Long pacienteId, Long doctorId,Long servicioId, LocalDate fecha, LocalTime hora);
 
+    String validarDatosHorario(Long idPaciente, Long idServicio, Long idDoctor);
+
     void cambiarEstado(Long id, String estado);
 
     boolean existeCitaDoctor(Long doctorId, LocalDate fecha, LocalTime hora);

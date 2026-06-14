@@ -6,12 +6,12 @@ import java.util.List;
 public interface DoctorDiaService {
 
     List<DayOfWeek> obtenerDiasPorDoctor(Long idDOctor);
+    
+    List<String> obtenerDiasEspanol(Long idDoctor);
 
     void agregar(Long idDoctor, List<DayOfWeek> diasLaborales);
 
     void editar(Long idDoctor, List<DayOfWeek> diasLaborales);
 
     String validarDatos(List<DayOfWeek> diasLaborales);
-   
-
 }
