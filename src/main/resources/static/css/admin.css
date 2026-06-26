@@ -214,7 +214,8 @@ td {
 .btn-desactivar,
 .btn-verHistorial,
 .btn-noAsistio,
-.btn-confirmar {
+.btn-confirmar,
+.btn-ausencias {
   padding: 0.35em 1em;
   text-decoration: none;
   color: white;
@@ -262,6 +263,10 @@ td {
 
 .btn-noAsistio {
   background-color: #f59e0b;
+}
+
+.btn-ausencias {
+  background-color: #FD7E14;
 }
 
 /* ── DISEÑO DE ESTADO DE LAS CITAS ── */

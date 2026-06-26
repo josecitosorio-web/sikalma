@@ -10,6 +10,11 @@ public class ServicioServiceImpl implements ServicioService {
     @Autowired
     private ServicioRepository servicioRepository;
 
+
+    public ServicioServiceImpl (ServicioRepository servicioRepository) {
+        this.servicioRepository = servicioRepository;
+    }
+
     @Override
     public void agregar(Servicio s) {
         servicioRepository.save(ServicioAdapter.toEntity(s));

@@ -3,7 +3,6 @@ package com.example.demo.Usuario;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Doctor.Doctor;
@@ -15,11 +14,16 @@ import com.example.demo.Doctor.DoctorRepository;
 public class UsuarioServiceImpl implements UsuarioService {
 
     
-    @Autowired
-    private UsuarioRepository usuarioRepository;
 
-    @Autowired
+    private UsuarioRepository usuarioRepository;
     private DoctorRepository doctorRepository;
+
+    public UsuarioServiceImpl (UsuarioRepository usuarioRepository, DoctorRepository doctorRepository){
+
+        this.usuarioRepository = usuarioRepository;
+        this.doctorRepository = doctorRepository;
+
+    }
 
     private Usuario usuarioActual;
     

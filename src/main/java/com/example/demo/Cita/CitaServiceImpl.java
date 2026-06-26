@@ -2,6 +2,7 @@ package com.example.demo.Cita;
 
 import com.example.demo.Doctor.Doctor;
 import com.example.demo.Doctor.DoctorService;
+import com.example.demo.DoctorAusencia.DoctorAusenciaService;
 import com.example.demo.DoctorDIa.DoctorDiaService;
 import com.example.demo.HistorialCita.HistorialCita;
 import com.example.demo.HistorialCita.HistorialCitaService;
@@ -9,8 +10,6 @@ import com.example.demo.Paciente.Paciente;
 import com.example.demo.Paciente.PacienteService;
 import com.example.demo.Usuario.Usuario;
 import com.example.demo.Usuario.UsuarioService;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -23,24 +22,31 @@ import java.util.List;
 @Service
 public class CitaServiceImpl implements CitaService {
 
-    @Autowired
-    private CitaRepository citaRepository;
+    private final CitaRepository citaRepository;
 
-    @Autowired
-    private PacienteService pacienteService;
+    private final PacienteService pacienteService;
 
-    @Autowired
-    private DoctorService doctorService;
+    private final DoctorService doctorService;
 
+    private final UsuarioService usuarioService;
 
-    @Autowired
-    private UsuarioService usuarioService;
+    private final HistorialCitaService historialCitaService;
 
-    @Autowired
-    private HistorialCitaService historialCitaService;
+    private final DoctorDiaService doctorDiaService;
 
-    @Autowired
-    private DoctorDiaService doctorDiaService;
+    private final DoctorAusenciaService doctorAusenciaService;
+
+    public CitaServiceImpl (CitaRepository citaRepository, PacienteService pacienteService,  DoctorService doctorService, UsuarioService usuarioService,  HistorialCitaService historialCitaService, DoctorDiaService doctorDiaService, DoctorAusenciaService doctorAusenciaService ) {
+
+        this.citaRepository = citaRepository;
+        this.pacienteService = pacienteService;
+        this.doctorService = doctorService;
+        this.usuarioService = usuarioService;
+        this.historialCitaService = historialCitaService;
+        this.doctorDiaService = doctorDiaService;
+        this.doctorAusenciaService = doctorAusenciaService;
+
+    }
 
     @Override
     public List<Cita> listar() {
@@ -122,7 +128,7 @@ public class CitaServiceImpl implements CitaService {
     }
 
     @Override
-    public long contarPorEstado(String estado){
+    public long contarPorEstado(String estado) {
 
         return citaRepository.countByEstado(estado);
 
@@ -230,26 +236,23 @@ public class CitaServiceImpl implements CitaService {
     @Override
     public String validarDatosHorario(Long idPaciente, Long idServicio, Long idDoctor) {
 
-        if(idPaciente == null || idPaciente == 0) {
+        if (idPaciente == null || idPaciente == 0) {
 
             return "Debe seleccionar un paciente";
 
-        }else if (idServicio == null || idServicio == 0) {
+        } else if (idServicio == null || idServicio == 0) {
 
             return "Debe seleccionar un servicio";
 
-        } else if (idDoctor == null || idDoctor == 0){
+        } else if (idDoctor == null || idDoctor == 0) {
 
             return "Debe seleccionar un doctor";
 
         }
 
-        
-
         return null;
 
     }
-
 
     // METRICAS
 
@@ -259,7 +262,7 @@ public class CitaServiceImpl implements CitaService {
         List<Object[]> resultados = citaRepository.obtenerCitasPorFecha();
         List<String> fechas = new ArrayList<>();
 
-        for(Object[] fila : resultados) {
+        for (Object[] fila : resultados) {
 
             fechas.add(fila[0].toString());
 
@@ -275,7 +278,7 @@ public class CitaServiceImpl implements CitaService {
         List<Object[]> resultados = citaRepository.obtenerCitasPorFecha();
         List<Long> cantidades = new ArrayList<>();
 
-        for(Object[] fila : resultados) {
+        for (Object[] fila : resultados) {
 
             cantidades.add((Long) fila[1]);
 
@@ -286,12 +289,12 @@ public class CitaServiceImpl implements CitaService {
     }
 
     @Override
-    public List<String> obtenerEstadoPorCantidad(){
+    public List<String> obtenerEstadoPorCantidad() {
 
         List<Object[]> resultados = citaRepository.contarPorEstado();
         List<String> servicios = new ArrayList<>();
 
-        for(Object[] fila : resultados) {
+        for (Object[] fila : resultados) {
 
             servicios.add(fila[0].toString());
 
@@ -307,7 +310,7 @@ public class CitaServiceImpl implements CitaService {
         List<Object[]> resultados = citaRepository.contarPorEstado();
         List<Long> cantidad = new ArrayList<>();
 
-        for(Object[] fila : resultados) {
+        for (Object[] fila : resultados) {
 
             cantidad.add((Long) fila[1]);
 
@@ -323,7 +326,7 @@ public class CitaServiceImpl implements CitaService {
         List<Object[]> resultados = citaRepository.ingresosPorDia();
         List<String> fechas = new ArrayList<>();
 
-        for(Object[] fila : resultados) {
+        for (Object[] fila : resultados) {
 
             fechas.add(fila[0].toString());
 
@@ -338,7 +341,7 @@ public class CitaServiceImpl implements CitaService {
         List<Object[]> resultados = citaRepository.ingresosPorDia();
         List<Double> ingresos = new ArrayList<>();
 
-        for(Object[] fila : resultados) {
+        for (Object[] fila : resultados) {
 
             ingresos.add((Double) fila[1]);
 
@@ -346,17 +349,15 @@ public class CitaServiceImpl implements CitaService {
 
         return ingresos;
 
-
     }
 
     @Override
     public List<String> obtenerServicioPorCantidad() {
 
-
         List<Object[]> resultados = citaRepository.contarPorServicio();
         List<String> servicios = new ArrayList<>();
 
-        for(Object[] fila : resultados) {
+        for (Object[] fila : resultados) {
 
             servicios.add(fila[0].toString());
         }
@@ -371,14 +372,13 @@ public class CitaServiceImpl implements CitaService {
         List<Object[]> resultados = citaRepository.contarPorServicio();
         List<Long> cantidad = new ArrayList<>();
 
-        for(Object[] fila : resultados) {
+        for (Object[] fila : resultados) {
 
             cantidad.add((Long) fila[1]);
 
         }
 
         return cantidad;
-
 
     }
 
@@ -388,7 +388,7 @@ public class CitaServiceImpl implements CitaService {
         List<Object[]> resultados = citaRepository.contarPorDiaSemana();
         List<String> dias = new ArrayList<>();
 
-        for(Object[] fila : resultados) {
+        for (Object[] fila : resultados) {
 
             dias.add(fila[0].toString());
 
@@ -401,16 +401,14 @@ public class CitaServiceImpl implements CitaService {
     @Override
     public List<Long> obtenerCantidadPorDia() {
 
-
         List<Object[]> resultados = citaRepository.contarPorDiaSemana();
         List<Long> cantidad = new ArrayList<>();
-        
-        for(Object[] fila : resultados) {
+
+        for (Object[] fila : resultados) {
 
             cantidad.add((Long) fila[1]);
 
         }
-
 
         return cantidad;
 
@@ -448,11 +446,16 @@ public class CitaServiceImpl implements CitaService {
             return "La hora de la cita no puede ser anterior a la hora actual";
 
         } else if (fecha.getDayOfWeek() == DayOfWeek.SUNDAY) {
-            
 
             return "No se pueden registrar citas los domingos";
 
-        } else {
+        } else if(doctorAusenciaService.existeAusencia(doctorId, fecha)){ 
+
+            return "El doctor no atenderá en esa fecha por ausencia planificada";
+
+        }
+            
+        else {
 
             List<Cita> citasPaciente = CitaAdapter.toModelList(citaRepository.findByPacienteId(pacienteId));
 
@@ -514,7 +517,7 @@ public class CitaServiceImpl implements CitaService {
             }
 
             List<DayOfWeek> diasDoctor = doctorDiaService.obtenerDiasPorDoctor(doctorId);
-            if(!diasDoctor.contains(fecha.getDayOfWeek())) {
+            if (!diasDoctor.contains(fecha.getDayOfWeek())) {
 
                 return "El doctor no atiende esos dias, escoga otro día";
 
@@ -561,6 +564,10 @@ public class CitaServiceImpl implements CitaService {
 
             return "No se pueden registrar citas los domingos";
 
+        } else if(doctorAusenciaService.existeAusencia(doctorId, fecha)){ 
+
+            return "El doctor no atenderá en esa fecha por ausencia planificada";
+
         } else {
 
             Doctor d = doctorService.buscarPorId(doctorId);
@@ -602,7 +609,7 @@ public class CitaServiceImpl implements CitaService {
             }
 
             List<DayOfWeek> diasDoctor = doctorDiaService.obtenerDiasPorDoctor(doctorId);
-            if(!diasDoctor.contains(fecha.getDayOfWeek())) {
+            if (!diasDoctor.contains(fecha.getDayOfWeek())) {
 
                 return "El doctor no atiende esos dias, escoga otro día";
 
@@ -638,7 +645,5 @@ public class CitaServiceImpl implements CitaService {
         return null;
 
     }
-
-    
 
 }
