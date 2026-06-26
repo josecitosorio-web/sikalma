@@ -107,11 +107,18 @@ public class UsuarioServiceImpl implements UsuarioService {
         Usuario usuario = new Usuario(correo,contrasena,rol,doctor);
 
         String error = validacionesGenerales(usuario);
+
         if(error != null) {
+
             return error;
+
         } else if (usuarioRepository.findByCorreo(usuario.getCorreo()).isPresent()){
 
             return "Ya hay un usuario registrado con ese correo";
+
+        } else if (usuarioRepository.findByDoctorId(idDoctor) != null){
+
+            return "Este doctor ya tiene un usuario ascociado";
 
         }
 
