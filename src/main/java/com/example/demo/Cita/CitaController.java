@@ -83,6 +83,9 @@ public class CitaController {
             model.addAttribute("doctores", doctorService.buscarPorEstado(true));
             model.addAttribute("servicios", servicioService.listar());
             model.addAttribute("usuario", usuarioService.obtenerUsuarioActual());
+            model.addAttribute("servicioSeleccionado", servicio);
+            model.addAttribute("doctorSeleccionado", doctor);
+
             return "Registrar-cita";
 
         }
@@ -137,6 +140,45 @@ public class CitaController {
         model.addAttribute("usuario", usuarioService.obtenerUsuarioActual());
 
         return "Registrar-cita";
+
+    }
+
+    @GetMapping("/ver-horario-edicion")
+    public String verHorarioEdicion(@RequestParam Long CitaId,@RequestParam Long paciente, @RequestParam Long servicio, @RequestParam Long doctor,
+            Model model) {
+
+        Paciente pacienteEncontrado = pacienteService.buscarPorId(paciente);
+        List<String> horario = doctorDiaService.obtenerDiasEspanol(doctor);
+        Doctor doctorEncontrado = doctorService.buscarPorId(doctor);
+
+        String error = citaService.validarDatosHorario(paciente, servicio, doctor);
+
+        if (error != null) {
+            model.addAttribute("error", error);
+            model.addAttribute("paciente", pacienteEncontrado);
+            model.addAttribute("servicioid", servicio);
+            model.addAttribute("doctorid", doctor);
+            model.addAttribute("cita", citaService.buscarPorId(CitaId));
+            model.addAttribute("paginaActiva", "r-citas");
+            model.addAttribute("doctores", doctorService.buscarPorEstado(true));
+            model.addAttribute("servicios", servicioService.listar());
+            model.addAttribute("usuario", usuarioService.obtenerUsuarioActual());
+
+            return "Editar-cita";
+        }
+
+        model.addAttribute("cita", citaService.buscarPorId(CitaId));
+        model.addAttribute("horarios", horario);
+        model.addAttribute("doctorEncontrado", doctorEncontrado);
+        model.addAttribute("paciente", pacienteEncontrado);
+        model.addAttribute("servicioid", servicio);
+        model.addAttribute("doctorid", doctor);
+        model.addAttribute("paginaActiva", "r-citas");
+        model.addAttribute("doctores", doctorService.buscarPorEstado(true));
+        model.addAttribute("servicios", servicioService.listar());
+        model.addAttribute("usuario", usuarioService.obtenerUsuarioActual());
+
+        return "Editar-cita";
 
     }
 

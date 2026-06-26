@@ -64,7 +64,7 @@
                             <option value="0">— Seleccione un servicio —</option>
                             <option th:each="servicio : ${servicios}" th:if="${servicio.estado}"
                                 th:value="${servicio.id}" th:text="${servicio.nombre}"
-                                th:selected="${servicio.id == servicioid}"></option>
+                                th:selected="${servicio.id == servicioSeleccionado || servicio.id == servicioid}"></option>
                         </select>
                     </div>
 
@@ -78,7 +78,7 @@
                             <option value="0">— Seleccione un doctor —</option>
                             <option th:each="doctor : ${doctores}" th:value="${doctor.id}" th:text="${doctor.nombre}"
                                 th:attr="data-servicio=${doctor.servicio != null ? doctor.servicio.id : 0}"
-                                th:selected="${doctor.id == doctorid}">
+                                th:selected="${doctor.id == doctorSeleccionado || doctor.id == doctorid}">
                             </option>
                         </select>
                     </div>

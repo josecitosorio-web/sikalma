@@ -34,10 +34,10 @@
                 </div>
             </div>
 
-            <form th:action="@{/cita/actualizar}" method="post">
 
+            <form th:action="@{/cita/ver-horario-edicion}" method="get">
 
-                <input type="hidden" name="id" th:value="${cita.id}">
+                <input type="hidden" name="CitaId" th:value="${cita.id}">
 
                 <div class="campo">
                     <label>Paciente</label>
@@ -48,23 +48,68 @@
                 <div class="fila-form">
                     <div>
                         <label>Servicio (Especialidad)</label>
-                        <select name="servicio">
 
-                            <option th:each="servicio : ${servicios}" th:value="${servicio.id}"
-                                th:text="${servicio.nombre}" th:selected="${servicio.id == cita.doctor.servicio.id}">
-                            </option>
-
+                        <select name="servicio" id="servicioSelect">
+                            <option value="0">— Seleccione un servicio —</option>
+                            <option th:each="servicio : ${servicios}" th:if="${servicio.estado}"
+                                th:value="${servicio.id}" th:text="${servicio.nombre}"
+                                th:selected="${servicio.id == cita.doctor.servicio.id}"></option>
                         </select>
                     </div>
                     <div>
                         <label>Doctor Asignado</label>
-                        <select name="doctor">
+                        <select name="doctor" id="doctorSelect">
+                            <option value="0">— Seleccione un doctor —</option>
                             <option th:each="doctor : ${doctores}" th:value="${doctor.id}" th:text="${doctor.nombre}"
+                                th:attr="data-servicio=${doctor.servicio != null ? doctor.servicio.id : 0}"
                                 th:selected="${doctor.id == cita.doctor.id}">
                             </option>
                         </select>
                     </div>
                 </div>
+
+                <button type="submit" class="btn-primario">Ver Horario</button>
+
+                <div class="card-horario" th:if="${horarios != null}">
+
+                    <div class="card-horario-header">
+                        <h3>Horario de Atención</h3>
+                    </div>
+
+                    <div class="card-horario-body">
+
+                        <div class="horario-item">
+                            <span class="horario-label">Días de atención:</span>
+                            <ul th:each="horario : ${horarios}">
+
+                                <li th:text="${horario}"></li>
+
+                            </ul>
+                        </div>
+
+                        <div class="horario-item">
+                            <span class="horario-label">Hora de inicio:</span>
+                            <span class="horario-valor" th:text="${doctorEncontrado.horaAtencionInicio}"></span>
+                        </div>
+
+                        <div class="horario-item">
+                            <span class="horario-label">Hora de fin:</span>
+                            <span class="horario-valor" th:text="${doctorEncontrado.horaAtencionFin}"></span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </form>
+
+            <form th:action="@{/cita/actualizar}" method="post">
+
+                <input type="hidden" name="id" th:value="${cita.id}">
+                <input type="hidden" name="paciente" th:value="${paciente != null ? paciente.id : ''}">
+                <input type="hidden" name="servicio" th:value="${servicioid}">
+                <input type="hidden" name="doctor" th:value="${doctorid}">
 
                 <div class="fila-form">
                     <div>
@@ -89,6 +134,7 @@
             </form>
         </div>
     </main>
+    <script src="/js/registrar-cita.js"></script>
 </body>
 
 </html>
