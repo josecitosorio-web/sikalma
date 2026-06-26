@@ -1,6 +1,6 @@
 package com.example.demo.Paciente;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -9,8 +9,13 @@ import java.util.List;
 @Service
 public class PacienteServiceImpl implements PacienteService {
 
-    @Autowired
     private PacienteRepository pacienteRepository;
+
+    public PacienteServiceImpl( PacienteRepository pacienteRepository) {
+
+        this.pacienteRepository = pacienteRepository;
+
+    }
 
     @Override
     public void agregar(Paciente p) {

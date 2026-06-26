@@ -1,6 +1,5 @@
 package com.example.demo.Doctor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Servicio.ServicioEntity;
@@ -16,14 +15,21 @@ import java.util.Optional;
 @Service
 public class DoctorServiceImpl implements DoctorService {
 
-    @Autowired
+    
     private DoctorRepository doctorRepository;
-
-    @Autowired
     private ServicioRepository servicioRepository;
-
-    @Autowired
     private UsuarioRepository usuarioRepository;
+
+    public DoctorServiceImpl( DoctorRepository doctorRepository
+        , ServicioRepository servicioRepository 
+        , UsuarioRepository usuarioRepository ){
+            this.doctorRepository = doctorRepository;
+            this.servicioRepository = servicioRepository;
+            this.usuarioRepository = usuarioRepository;
+        }
+
+
+
 
     @Override
     public Long agregar(Doctor doctor) {

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../images/logo-policlinico.png">
+    <title>Registrar Falta - SIKALMA</title>
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/registrar-atencion.css">
+</head>
+
+<body>
+    <div th:replace="fragments/menu :: menu"></div>
+
+    <main>
+        <div class="encabezado">
+            <div class="encabezado-texto">
+                <div class="retorno">
+                    <a th:href="@{/ausencia/gestion(id=${doctor.id})}">Gestión de Ausencias</a>
+                    <span>›</span>
+                    <span>Registrar Ausencia</span>
+                </div>
+                <h1>Registrar Ausencia</h1>
+                <p>Registre la ausencia del doctor</p>
+            </div>
+        </div>
+
+
+        <div class="cita-origen">
+            <h3 th:text="|DOCTOR — #D0${doctor.id}|"></h3>
+            <div class="cita-origen-datos">
+                <span><strong>Doctor:</strong><span th:text="${doctor.nombre}"></span></span>
+                <span><strong>Servicio:</strong><span th:text="${doctor.servicio.nombre}"></span></span>
+                <div class="dias-laborales">
+                    <strong>Días laborales:</strong>
+                    <ul>
+                        <li th:each="dia : ${diaLaborales}" th:text="${dia}"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="formulario-card">
+
+            <div th:if="${error != null}">
+                <div class="error-alert">
+                    <span class="error-icon">⚠️</span>
+                    <span class="error-message" th:text="${error}"></span>
+                </div>
+            </div>
+
+            <h2>Datos de la Ausencia</h2>
+
+            <form th:action="@{/ausencia/registrar}" method="post">
+
+                <input type="hidden" name="doctorId" th:value="${doctor.id}">
+
+                <div class="fila-form">
+                    <div>
+                        <label>Fecha de ausencia</label>
+                        <input type="date" name="fecha" th:value="${ausencia.fecha}">
+                    </div>
+                    <div class="campo">
+                        <label>Motivo</label>
+                        <textarea name="motivo" th:value="${ausencia.motivo}" rows="3" placeholder="Indique el motivo de la ausencia..."
+                            required></textarea>
+                    </div>
+                </div>
+
+                <div class="form-acciones">
+                    <a th:href="@{/ausencia/gestion(id=${doctor.id})}" class="btn-cancelar">Cancelar</a>
+                    <button type="submit" class="btn-primario">Registrar</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

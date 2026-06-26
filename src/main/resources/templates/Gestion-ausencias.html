@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Ausencias Programadas - SIKALMA</title>
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+    <div th:replace="fragments/menu :: menu"></div>
+    <main>
+        <div class="encabezado">
+            <div class="encabezado-texto">
+                <h1>Gestión de Ausencias Programadas</h1>
+                <p>Visualice y administre la información de las ausencias registradas</p>
+            </div>
+            <a th:href="@{/ausencia/nuevo(id=${idDoctor})}" class="btn-primario">+ Registrar Ausencia</a>
+        </div>
+
+        <div class="tabla-contenedor">
+            <table class="tabla-gestion">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Doctor</th>
+                        <th>Fecha de Ausencia Programada</th>
+                        <th>Motivo</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="falta : ${faltas}">
+                        <td th:text="|#F${falta.id}|"></td>
+                        <td th:text="${falta.doctor.nombre}"></td>
+                        <td th:text="${falta.fecha}"></td>
+                        <td th:text="${falta.motivo}"></td>
+                        <td class="acciones-celda">
+                            <a th:href="@{/ausencia/editar(id=${falta.id})}" class="btn-editar">Editar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+
+</html>

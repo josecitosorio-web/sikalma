@@ -5,7 +5,6 @@ import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Doctor.DoctorEntity;
@@ -14,11 +13,16 @@ import com.example.demo.Doctor.DoctorRepository;
 @Service
 public class DoctorDiaServiceImpl implements DoctorDiaService {
 
-    @Autowired
     private DoctorDiaRepository doctorDiaRepository;
-
-    @Autowired
     private DoctorRepository doctorRepository;
+
+    public DoctorDiaServiceImpl (DoctorDiaRepository doctorDiaRepository, DoctorRepository doctorRepository) {
+
+        this.doctorDiaRepository = doctorDiaRepository;
+        this.doctorRepository = doctorRepository;
+
+    }
+
 
     @Override
     public List<DayOfWeek> obtenerDiasPorDoctor(Long idDoctor) {

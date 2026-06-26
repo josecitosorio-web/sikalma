@@ -3,14 +3,17 @@ package com.example.demo.HistorialCita;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class HistorialCitaImpl implements HistorialCitaService {
 
-    @Autowired
+
     private HistorialCitaRepository historialCitaRepository;
+
+    public HistorialCitaImpl (HistorialCitaRepository historialCitaRepository) {
+        this.historialCitaRepository = historialCitaRepository;
+    }
 
     @Override
     public void registrarHistorial(HistorialCita historial) {

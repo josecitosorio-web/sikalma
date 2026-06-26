@@ -26,3 +26,27 @@
 .cita-origen-datos strong {
     color: #322418;
 }
+
+.cita-origen-datos ul {
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    padding: 0;
+    margin: 0;
+}
+
+.cita-origen-datos ul li {
+    background-color: #e9ecef;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+}
+
+.dias-laborales {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88em;
+    color: #5a4e4e;
+}
