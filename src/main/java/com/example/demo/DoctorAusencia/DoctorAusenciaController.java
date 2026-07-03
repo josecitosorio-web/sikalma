@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.Cita.CitaService;
 import com.example.demo.Doctor.DoctorService;
 import com.example.demo.DoctorDIa.DoctorDiaService;
 import com.example.demo.Usuario.UsuarioService;
@@ -22,14 +23,16 @@ public class DoctorAusenciaController {
     private final UsuarioService usuarioService;
     private final DoctorService doctorService;
     private final DoctorDiaService doctorDiaService;
+    private final CitaService citaService;
 
     public DoctorAusenciaController(DoctorAusenciaService doctorAusenciaService, UsuarioService usuarioService,
-            DoctorService doctorService, DoctorDiaService doctorDiaService) {
+            DoctorService doctorService, DoctorDiaService doctorDiaService, CitaService citaService) {
 
         this.doctorAusenciaService = doctorAusenciaService;
         this.usuarioService = usuarioService;
         this.doctorService = doctorService;
         this.doctorDiaService = doctorDiaService;
+        this.citaService = citaService;
     }
 
     @GetMapping("/gestion")
@@ -69,25 +72,28 @@ public class DoctorAusenciaController {
         }
 
         doctorAusenciaService.agregar(fecha,motivo,doctorId);
+        citaService.cancelarCitasPorAusencia(doctorId, fecha);
+        
 
         return "redirect:/ausencia/gestion?id=" + doctorId;
 
     }
 
     @GetMapping("/editar")
-    public String editarAusencia(@RequestParam Long id, Model model) {
+    public String editarAusencia(@RequestParam Long idAusencia, @RequestParam Long idDoctor, Model model) {
+
 
         model.addAttribute("paginaActiva", "personal");
         model.addAttribute("usuario", usuarioService.obtenerUsuarioActual());
-        model.addAttribute("doctor", doctorService.buscarPorId(id));
-        model.addAttribute("diaLaborales", doctorDiaService.obtenerDiasEspanol(id));
-        model.addAttribute("ausencia", doctorAusenciaService.buscarAusencia(id));
+        model.addAttribute("doctor", doctorService.buscarPorId(idDoctor));
+        model.addAttribute("diaLaborales", doctorDiaService.obtenerDiasEspanol(idDoctor));
+        model.addAttribute("ausencia", doctorAusenciaService.buscarAusencia(idAusencia));
 
         return "Editar-Ausencia";
     }
 
     @PostMapping("/actualizar")
-    public String guardarCambios(@RequestParam LocalDate fecha,@RequestParam String motivo, @RequestParam Long doctorId, @RequestParam Long ausenciaId, Model model) {
+    public String guardarCambios(@RequestParam LocalDate fecha,@RequestParam String motivo, @RequestParam Long doctorId, @RequestParam Long ausenciaId,@RequestParam LocalDate fechaAnterior, Model model) {
 
         String error = doctorAusenciaService.validacionesEdicion(fecha,motivo,doctorId);
         if (error != null) {
@@ -100,7 +106,9 @@ public class DoctorAusenciaController {
             return "Editar-Ausencia";
         }
 
+        citaService.actualizarCitasEdicionAusencia(doctorId, fechaAnterior);
         doctorAusenciaService.actualizar(fecha,motivo,doctorId,ausenciaId);
+        citaService.cancelarCitasPorAusencia(doctorId, fecha);
 
         return "redirect:/ausencia/gestion?id=" + doctorId;
 

@@ -54,6 +54,8 @@
                         <td th:if="${cambio.tipoCambio == 'CAMBIO DE DOCTOR'}" th:text="${cambio.doctorNuevo}"></td>
                         <td th:if="${cambio.tipoCambio == 'CAMBIO DE ESTADO'}" th:text="${cambio.estadoAnterior}"></td>
                         <td th:if="${cambio.tipoCambio == 'CAMBIO DE ESTADO'}" th:text="${cambio.estadoNuevo}"></td>
+                        <td th:if="${cambio.tipoCambio == 'INDISPONIBILIDAD DEL DOCTOR'}" th:text="${cambio.estadoAnterior}"></td>
+                        <td th:if="${cambio.tipoCambio == 'INDISPONIBILIDAD DEL DOCTOR'}" th:text="${cambio.estadoNuevo}"></td>
                     </tr>
                 </tbody>
             </table>

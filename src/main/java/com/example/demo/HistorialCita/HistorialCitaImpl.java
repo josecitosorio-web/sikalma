@@ -1,9 +1,13 @@
 package com.example.demo.HistorialCita;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+
+
+import com.example.demo.Cita.CitaEntity;
 
 @Service
 public class HistorialCitaImpl implements HistorialCitaService {
@@ -29,6 +33,13 @@ public class HistorialCitaImpl implements HistorialCitaService {
 
         return HistorialCitaAdapter.toModelList(historialCitaRepository.findByCitaEntityId(citaId)) ;
         
+    }
+
+    @Override
+    public List<CitaEntity> obtenerCitasCanceladasFecha(Long doctorId, LocalDate fecha) {
+
+        return historialCitaRepository.findCitasCanceladasPorIndisponibilidad(doctorId, fecha);
+
     }
 
     

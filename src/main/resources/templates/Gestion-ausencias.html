@@ -36,7 +36,7 @@
                         <td th:text="${falta.fecha}"></td>
                         <td th:text="${falta.motivo}"></td>
                         <td class="acciones-celda">
-                            <a th:href="@{/ausencia/editar(id=${falta.id})}" class="btn-editar">Editar</a>
+                            <a th:href="@{/ausencia/editar(idAusencia=${falta.id} , idDoctor=${falta.doctor.id})}" class="btn-editar">Editar</a>
                         </td>
                     </tr>
                 </tbody>

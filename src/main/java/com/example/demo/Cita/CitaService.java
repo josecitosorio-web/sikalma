@@ -20,6 +20,10 @@ public interface CitaService {
 
     long contarPorEstado(String estado);
 
+    public void cancelarCitasPorAusencia (Long idDoctor, LocalDate fecha);
+
+    public void actualizarCitasEdicionAusencia (Long idDoctor, LocalDate fecha);
+
 
     // validaciones 
     String validarDatosRegistro(Long pacienteId, Long doctorId,Long servicioId, LocalDate fecha, LocalTime hora);

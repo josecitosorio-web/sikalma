@@ -36,7 +36,9 @@ public class CitaServiceImpl implements CitaService {
 
     private final DoctorAusenciaService doctorAusenciaService;
 
-    public CitaServiceImpl (CitaRepository citaRepository, PacienteService pacienteService,  DoctorService doctorService, UsuarioService usuarioService,  HistorialCitaService historialCitaService, DoctorDiaService doctorDiaService, DoctorAusenciaService doctorAusenciaService ) {
+    public CitaServiceImpl(CitaRepository citaRepository, PacienteService pacienteService, DoctorService doctorService,
+            UsuarioService usuarioService, HistorialCitaService historialCitaService, DoctorDiaService doctorDiaService,
+            DoctorAusenciaService doctorAusenciaService) {
 
         this.citaRepository = citaRepository;
         this.pacienteService = pacienteService;
@@ -131,6 +133,54 @@ public class CitaServiceImpl implements CitaService {
     public long contarPorEstado(String estado) {
 
         return citaRepository.countByEstado(estado);
+
+    }
+
+    @Override
+    public void cancelarCitasPorAusencia(Long idDoctor, LocalDate fecha) {
+
+        List<CitaEntity> citasPendientes = citaRepository.findByDoctorIdAndFechaAndEstado(idDoctor, fecha, "Pendiente");
+
+        for (CitaEntity cita : citasPendientes) {
+
+            String estadoAnterior = cita.getEstado();
+            Cita citaAnterior = CitaAdapter.toModel(cita);
+
+            cita.setEstado("Cancelado");
+            citaRepository.save(cita);
+
+            HistorialCita historialNuevo = new HistorialCita(citaAnterior, citaAnterior.getFecha(),
+                    null, citaAnterior.getHora(), null, citaAnterior.getDoctor().getNombre(),
+                    null, estadoAnterior,
+                    "Cancelado", LocalDateTime.now(), "Administrador", "INDISPONIBILIDAD DEL DOCTOR");
+
+            historialCitaService.registrarHistorial(historialNuevo);
+
+        }
+
+    }
+
+    @Override
+    public void actualizarCitasEdicionAusencia(Long idDoctor, LocalDate fecha) {
+
+        List<CitaEntity> citasCanceladas = historialCitaService.obtenerCitasCanceladasFecha(idDoctor, fecha);
+
+        for (CitaEntity cita : citasCanceladas) {
+
+            String estadoAnterior = cita.getEstado();
+            Cita citaAnterior = CitaAdapter.toModel(cita);
+
+            cita.setEstado("Pendiente");
+            citaRepository.save(cita);
+
+            HistorialCita historialNuevo = new HistorialCita(citaAnterior, citaAnterior.getFecha(),
+                    null, citaAnterior.getHora(), null, citaAnterior.getDoctor().getNombre(),
+                    null, estadoAnterior,
+                    "Pendiente", LocalDateTime.now(), "Administrador", "CAMBIO DE ESTADO");
+
+            historialCitaService.registrarHistorial(historialNuevo);
+
+        }
 
     }
 
@@ -449,12 +499,12 @@ public class CitaServiceImpl implements CitaService {
 
             return "No se pueden registrar citas los domingos";
 
-        } else if(doctorAusenciaService.existeAusencia(doctorId, fecha)){ 
+        } else if (doctorAusenciaService.existeAusencia(doctorId, fecha)) {
 
             return "El doctor no atenderá en esa fecha por ausencia planificada";
 
         }
-            
+
         else {
 
             List<Cita> citasPaciente = CitaAdapter.toModelList(citaRepository.findByPacienteId(pacienteId));
@@ -486,6 +536,14 @@ public class CitaServiceImpl implements CitaService {
                     || hora.equals(d.getHoraAtencionFin())) {
 
                 return "La hora de la cita está fuera del horario del doctor";
+
+            }
+
+            LocalTime finCita = hora.plusHours(1);
+
+            if (finCita.isAfter(d.getHoraAtencionFin())) {
+
+                return "La hora fin de la cita esta fuera del horario del doctor";
 
             }
 
@@ -564,7 +622,7 @@ public class CitaServiceImpl implements CitaService {
 
             return "No se pueden registrar citas los domingos";
 
-        } else if(doctorAusenciaService.existeAusencia(doctorId, fecha)){ 
+        } else if (doctorAusenciaService.existeAusencia(doctorId, fecha)) {
 
             return "El doctor no atenderá en esa fecha por ausencia planificada";
 
@@ -575,6 +633,14 @@ public class CitaServiceImpl implements CitaService {
             if (hora.isBefore(d.getHoraAtencionInicio()) || hora.isAfter(d.getHoraAtencionFin())) {
 
                 return "La hora de la cita está fuera del horario del doctor";
+
+            }
+
+            LocalTime finCita = hora.plusHours(1);
+
+            if (finCita.isAfter(d.getHoraAtencionFin())) {
+
+                return "La hora fin de la cita esta fuera del horario del doctor";
 
             }
 
