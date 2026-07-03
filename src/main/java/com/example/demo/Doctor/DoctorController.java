@@ -66,6 +66,7 @@ public class DoctorController {
             model.addAttribute("usuario", usuarioService.obtenerUsuarioActual());
             return "Registrar-doctor";
         }
+
         error = doctorDiaService.validarDatos(diasLaborales);
         if (error != null) {
             model.addAttribute("error", error);

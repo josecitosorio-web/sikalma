@@ -24,6 +24,8 @@ public interface CitaRepository extends JpaRepository<CitaEntity, Long> {
 
         boolean existsByDoctorIdAndFechaAndHora(Long doctorId, LocalDate fecha, LocalTime hora);
 
+        List<CitaEntity> findByDoctorIdAndFechaAndEstado(Long doctorId, LocalDate fecha, String estado);
+
         @Modifying
         @Transactional
         @Query("UPDATE cita c SET c.estado = :estado WHERE c.id = :id")
