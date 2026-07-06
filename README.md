@@ -58,8 +58,8 @@ Esta separación fue una decisión de diseño explícita durante la migración d
 Requiere JDK 17+.
 
 ```bash
-git clone https://github.com/josecitosorioweb/sikalma-grupo6.git
-cd sikalma-grupo6
+git clone https://github.com/josecitosorio-web/sikalma.git
+cd sikalma
 ./mvnw spring-boot:run
 ```
 
