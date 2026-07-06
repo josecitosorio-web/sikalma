@@ -68,7 +68,7 @@ App disponible en `http://localhost:8080`. Usa H2 en memoria con datos precargad
 **Credenciales de prueba:**
 
 | Rol    | Correo             | Contraseña |
-|--------|--------------------|------------|
+| ------ | ------------------ | ---------- |
 | ADMIN  | admin@gmail.com    | 123        |
 | DOCTOR | cmendoza@gmail.com | 123        |
 
@@ -84,6 +84,8 @@ Proyecto desarrollado en equipo (6 integrantes). Mis compañeros se encargaron d
 
 ## 🔭 Mejoras futuras
 
-- Reemplazar la validación manual de contraseñas por Spring Security + BCrypt
-- Sumar pruebas unitarias e integración
-- Migrar de H2 a una base de datos persistente (PostgreSQL/MySQL)
+- Migrar la autenticación a **Spring Security + BCrypt**, reemplazando la validación manual de contraseñas en texto plano y agregando control de acceso real por rol a nivel de endpoint (hoy el rol solo oculta opciones del menú, no protege las rutas).
+- Reemplazar el manejo de usuario actual (campo compartido en el service) por **`HttpSession`**, para soportar sesiones independientes por usuario y permitir múltiples cuentas conectadas al mismo tiempo sin interferencia entre ellas.
+- Agregar **pruebas unitarias** sobre las reglas de negocio (validaciones de ausencias, cancelación en cascada, historial), que es la lógica más crítica del sistema.
+- Reemplazar los estados de cita (`String`) por un **enum `EstadoCita`**, para evitar errores de tipeo y validar en tiempo de compilación.
+- Migrar de H2 a una base de datos persistente (PostgreSQL/MySQL), con manejo de migraciones vía Flyway o Liquibase.
